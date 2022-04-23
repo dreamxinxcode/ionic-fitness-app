@@ -8,27 +8,35 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
-        loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
+        path: 'workouts-tab',
+        loadChildren: () => import('../workouts-tab/workouts-tab.module').then(m => m.WorkoutsTabPageModule)
       },
       {
-        path: 'tab2',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+        path: 'meals-tab',
+        loadChildren: () => import('../meals-tab/meals-tab.module').then(m => m.MealsTabPageModule)
       },
       {
-        path: 'tab3',
-        loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
+        path: 'profile-tab',
+        loadChildren: () => import('../profile-tab/profile-tab.module').then(m => m.ProfileTabPageModule)
+      },
+      {
+        path: 'analytics-tab',
+        loadChildren: () => import('../analytics-tab/analytics-tab.module').then(m => m.AnalyticsTabPageModule)
+      },
+      {
+        path: 'settings-tab',
+        loadChildren: () => import('../settings-tab/settings-tab.module').then(m => m.SettingsTabPageModule)
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/tabs/workouts',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/workouts',
     pathMatch: 'full'
   }
 ];
