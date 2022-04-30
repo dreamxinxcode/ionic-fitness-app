@@ -20,6 +20,6 @@ export class SettingsTabPage implements OnInit {
   }
 
   saveSettings() {
-    localStorage.setItem('dark_theme', this.settingsForm.controls.themeToggle.value);
+    localStorage.setItem('dark_theme', this.settingsForm.value.themeToggle);
   }
 }
