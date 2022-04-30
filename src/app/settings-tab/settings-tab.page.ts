@@ -1,5 +1,6 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { SettingsService } from '../services/settings/settings.service';
 
 @Component({
   selector: 'app-settings-tab',
@@ -10,7 +11,7 @@ export class SettingsTabPage implements OnInit {
 
   settingsForm: FormGroup
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, private settingsService: SettingsService) {
     this.settingsForm = new FormGroup({
       themeToggle: new FormControl(localStorage.getItem('dark_theme')),
     });
@@ -20,11 +21,7 @@ export class SettingsTabPage implements OnInit {
   }
 
   saveSettings() {
-    localStorage.setItem('dark_theme', this.settingsForm.value.themeToggle);
-    if (JSON.parse(localStorage.getItem('dark_theme'))) {
-      this.renderer.setAttribute(document.body, 'color-theme', 'dark');
-    } else {
-      this.renderer.setAttribute(document.body, 'color-theme', 'light');
-    }
+    this.settingsService.toggleTheme(this.settingsForm.value.themeToggle)
+    this.settingsService.setTheme();
   }
 }

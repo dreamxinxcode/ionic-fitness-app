@@ -1,4 +1,5 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component } from '@angular/core';
+import { SettingsService } from './services/settings/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -6,15 +7,7 @@ import { Component, Renderer2 } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private renderer: Renderer2) {
-    this.setTheme();
-  }
-
-  setTheme() {
-    if (JSON.parse(localStorage.getItem('dark_theme'))) {
-      this.renderer.setAttribute(document.body, 'color-theme', 'dark');
-    } else {
-      this.renderer.setAttribute(document.body, 'color-theme', 'light');
-    }
+  constructor(private settingsService: SettingsService) {
+    this.settingsService.setTheme();
   }
 }
