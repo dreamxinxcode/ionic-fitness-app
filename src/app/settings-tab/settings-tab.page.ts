@@ -21,7 +21,6 @@ export class SettingsTabPage implements OnInit {
 
   saveSettings() {
     localStorage.setItem('dark_theme', this.settingsForm.value.themeToggle);
-    // TODO: move this logic to run when app loads
     if (JSON.parse(localStorage.getItem('dark_theme'))) {
       this.renderer.setAttribute(document.body, 'color-theme', 'dark');
     } else {
