@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-settings-tab',
@@ -7,12 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsTabPage implements OnInit {
 
-  constructor() { }
+  settingsForm: FormGroup
+
+  constructor() {
+    this.settingsForm = new FormGroup({
+      themeToggle: new FormControl(localStorage.getItem('dark_theme'))
+    });
+  }
 
   ngOnInit() {
   }
 
-  toggleTheme($event) {
-    localStorage.setItem('dark_theme', $event.detail.checked);
+  saveSettings() {
+    localStorage.setItem('dark_theme', this.settingsForm.controls.themeToggle.value);
   }
 }

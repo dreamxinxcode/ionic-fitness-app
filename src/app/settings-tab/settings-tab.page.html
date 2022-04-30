@@ -13,10 +13,12 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list>
-    <ion-item>
-      <ion-label>Dark Theme</ion-label>
-      <ion-toggle (ionChange)="toggleTheme($event)"></ion-toggle>
-    </ion-item>
-  </ion-list>
+  <ion-form [formGroup]="settingsForm">
+    <ion-list>
+      <ion-item>
+        <ion-label>Dark Theme</ion-label>
+        <ion-toggle formControlName="themeToggle" (ionChange)="saveSettings()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+  </ion-form>
 </ion-content>
