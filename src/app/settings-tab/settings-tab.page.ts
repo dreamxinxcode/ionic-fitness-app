@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -10,9 +10,9 @@ export class SettingsTabPage implements OnInit {
 
   settingsForm: FormGroup
 
-  constructor() {
+  constructor(private renderer: Renderer2) {
     this.settingsForm = new FormGroup({
-      themeToggle: new FormControl(localStorage.getItem('dark_theme'))
+      themeToggle: new FormControl(localStorage.getItem('dark_theme')),
     });
   }
 
@@ -21,5 +21,11 @@ export class SettingsTabPage implements OnInit {
 
   saveSettings() {
     localStorage.setItem('dark_theme', this.settingsForm.value.themeToggle);
+    // TODO: move this logic to run when app loads
+    if (JSON.parse(localStorage.getItem('dark_theme'))) {
+      this.renderer.setAttribute(document.body, 'color-theme', 'dark');
+    } else {
+      this.renderer.setAttribute(document.body, 'color-theme', 'light');
+    }
   }
 }
