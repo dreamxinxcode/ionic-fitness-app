@@ -12,4 +12,7 @@ export class SettingsTabPage implements OnInit {
   ngOnInit() {
   }
 
+  toggleTheme($event) {
+    localStorage.setItem('dark_theme', $event.detail.checked);
+  }
 }
