@@ -30,7 +30,7 @@ export class SettingsTabPage implements OnInit {
     this.settingsService.setTheme();
     const toast = await this.toastController.create({
       message: 'Your settings have been saved.',
-      duration: 2000
+      duration: 1000
     });
     toast.present();
   }
