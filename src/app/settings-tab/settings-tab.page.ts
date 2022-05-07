@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
@@ -13,7 +13,6 @@ export class SettingsTabPage implements OnInit {
   settingsForm: FormGroup
 
   constructor(
-    private renderer: Renderer2, 
     private settingsService: SettingsService,
     private toastController: ToastController
   ) {
@@ -30,7 +29,7 @@ export class SettingsTabPage implements OnInit {
     this.settingsService.setTheme();
     const toast = await this.toastController.create({
       message: 'Your settings have been saved.',
-      duration: 1000
+      duration: 1000,
     });
     toast.present();
   }
