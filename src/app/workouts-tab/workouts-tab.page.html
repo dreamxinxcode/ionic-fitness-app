@@ -13,4 +13,19 @@
     </ion-toolbar>
   </ion-header>
 
+  <h2>{{ date }}</h2>
+
+  <ion-button>
+    Start Workout
+  </ion-button>
+  
+  <ion-card *ngFor="let workout of workouts">
+    <ion-card-header>
+      {{ formatDate(workout.date) }}
+    </ion-card-header>
+    <ion-item *ngFor="let exercise of workout.exercises" class="ion-activated">
+      <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
+      <ion-label>{{ exercise.name }} - ({{ exercise.sets.length + ' sets' }})</ion-label>
+    </ion-item>
+  </ion-card>
 </ion-content>
