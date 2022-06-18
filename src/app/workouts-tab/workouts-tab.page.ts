@@ -39,15 +39,15 @@ export class WorkoutsTabPage implements OnInit {
             sets: [
               {
                 reps: 35,
-                weight: null,
+                weight: 25,
               },
               {
                 reps: 35,
-                weight: null,
+                weight: 25,
               },
               {
                 reps: 35,
-                weight: null,
+                weight: 20,
               },            
             ]
           },

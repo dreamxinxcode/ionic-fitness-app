@@ -23,9 +23,21 @@
     <ion-card-header>
       {{ formatDate(workout.date) }}
     </ion-card-header>
-    <ion-item *ngFor="let exercise of workout.exercises" class="ion-activated">
-      <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
-      <ion-label>{{ exercise.name }} - ({{ exercise.sets.length + ' sets' }})</ion-label>
-    </ion-item>
+
+    <ion-accordion-group [multiple]="true">
+      <ion-accordion *ngFor="let exercise of workout.exercises">
+        <ion-item slot="header">
+          <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
+          <ion-label>{{ exercise.name }}</ion-label>
+        </ion-item>
+    
+        <ion-list slot="content">
+          <ion-item *ngFor="let set of exercise.sets">
+            <ion-label>{{ set.weight }} x {{ set.reps }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-accordion>
+
+    </ion-accordion-group>
   </ion-card>
 </ion-content>
