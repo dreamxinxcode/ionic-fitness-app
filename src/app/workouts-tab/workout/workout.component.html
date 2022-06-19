@@ -19,39 +19,48 @@
       <ion-icon (click)="addExercise()" name="add" slot="end"></ion-icon>
     </ion-item>
 
-    <form (submit)="onSubmit()">
+    <form>
       <ion-list>
         <div *ngFor="let exercise of workoutForm.controls; let i = index">
 
-          <ion-label> Exercise </ion-label>
-          <ion-select>
+          <ion-select placeholder="Exercise">
             <ion-select-option> Pushups </ion-select-option>
             <ion-select-option> Squats </ion-select-option>
             <ion-select-option> Curls </ion-select-option>
             <ion-select-option> Bench press </ion-select-option>
           </ion-select>
 
-          <div *ngFor="let set of getSets(i).controls; let setIdx = index">
-            <ion-label> Set {{ setIdx + 1 }} </ion-label>
-            <ion-item>
-              <ion-label position="floating"> Repetitions </ion-label>
-              <ion-input 
-                type="text"
-              ></ion-input>
-            </ion-item>
+          <ion-accordion-group>
+            <ion-accordion>
+              <ion-item slot="header">
+                <ion-label> Sets ({{ getSets(i).controls.length }}) </ion-label>
+              </ion-item>
 
-            <ion-item>
-              <ion-label position="floating"> Weight (Optional) </ion-label>
-              <ion-input 
-                type="text"
-              ></ion-input>
-            </ion-item>
-          </div>
+              <ion-list slot="content">
+                <div *ngFor="let set of getSets(i).controls; let setIdx = index">
+                  <ion-label> Set {{ setIdx + 1 }} </ion-label>
+                  <ion-item>
+                    <ion-label position="floating"> Repetitions </ion-label>
+                    <ion-input 
+                      type="text"
+                    ></ion-input>
+                  </ion-item>
 
-          <ion-button (click)="addSet(i)"> Add Set </ion-button>
+                  <ion-item>
+                    <ion-label position="floating"> Weight (Optional) </ion-label>
+                    <ion-input 
+                      type="text"
+                    ></ion-input>
+                  </ion-item>
+                </div>
+                <ion-button (click)="addSet(i)"> Add Set </ion-button>
+              </ion-list>
+            </ion-accordion>
+          </ion-accordion-group>
+
         </div>
       </ion-list>
-      <ion-button> Finish </ion-button>
+      <ion-button (click)="presentAlertConfirm()"> Finish </ion-button>
     </form>
   </ion-card>
 </ion-content>

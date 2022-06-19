@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-workout',
@@ -10,7 +12,7 @@ export class WorkoutComponent implements OnInit {
 
   workoutForm: FormArray;
 
-  constructor() { }
+  constructor(public alertController: AlertController, private router: Router) { }
 
   ngOnInit() {
     this.workoutForm = new FormArray([
@@ -32,7 +34,12 @@ export class WorkoutComponent implements OnInit {
         name: new FormControl(),
         reps: new FormControl(),
         weight: new FormControl(),
-        sets: new FormArray([]),
+        sets: new FormArray([
+          new FormGroup({
+            reps: new FormControl(),
+            weight: new FormControl(),
+          }),
+        ]),
       })
     );
   }
@@ -50,8 +57,31 @@ export class WorkoutComponent implements OnInit {
   getSets(index: number) {
     return this.workoutForm.controls[index].get('sets') as FormArray;
   }
-  
-  public onSubmit():void {
-    console.log('Submitted')
+
+  async presentAlertConfirm() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Finished Your Workout?',
+      message: 'Your progress will be saved to your profile.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          id: 'cancel-button',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Yes',
+          id: 'confirm-button',
+          handler: () => {
+            this.router.navigate(['/tabs/workouts-tab']);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
