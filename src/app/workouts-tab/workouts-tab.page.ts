@@ -12,7 +12,7 @@ export class WorkoutsTabPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // Fetch past workouts from API
+    // TODO: Fetch past workouts from API
     this.workouts = [
       {
         date: new Date(2022, 4, 3),
@@ -39,15 +39,15 @@ export class WorkoutsTabPage implements OnInit {
             sets: [
               {
                 reps: 35,
-                weight: null,
+                weight: 25,
               },
               {
                 reps: 35,
-                weight: null,
+                weight: 25,
               },
               {
                 reps: 35,
-                weight: null,
+                weight: 20,
               },            
             ]
           },
@@ -234,6 +234,10 @@ export class WorkoutsTabPage implements OnInit {
         ]
       },
     ];
+  }
+
+  public onDelete(index: number):void {
+    this.workouts.splice(index, 1);
   }
 
   public formatDate(date):Date {

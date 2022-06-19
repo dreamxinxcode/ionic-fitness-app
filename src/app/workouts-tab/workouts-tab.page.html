@@ -13,19 +13,51 @@
     </ion-toolbar>
   </ion-header>
 
-  <h2>{{ date }}</h2>
+  <ion-item>
+    <h2>{{ date }}</h2>
 
-  <ion-button>
-    Start Workout
-  </ion-button>
+    <ion-button [routerLink]="['/tabs/workouts-tab/workout']" slot="end">
+      Start Workout
+    </ion-button>
+  </ion-item>
+
   
-  <ion-card *ngFor="let workout of workouts">
+  <ion-card *ngFor="let workout of workouts; let i = index">
     <ion-card-header>
-      {{ formatDate(workout.date) }}
+      <ion-item>
+        {{ formatDate(workout.date) }}
+        <ion-icon id="settings_{{ i }}" name="ellipsis-vertical" slot="end"></ion-icon>
+      </ion-item>
+      <ion-popover trigger="settings_{{ i }}" [dismissOnSelect]="true">
+        <ng-template>
+          <ion-content>
+            <ion-list>
+              <ion-item (click)="onDelete()" [button]="true" [detail]="false">
+                <ion-label>Delete</ion-label>
+              </ion-item>              
+              <ion-item [button]="true" [detail]="false">
+                <ion-label>Close</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
     </ion-card-header>
-    <ion-item *ngFor="let exercise of workout.exercises" class="ion-activated">
-      <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
-      <ion-label>{{ exercise.name }} - ({{ exercise.sets.length + ' sets' }})</ion-label>
-    </ion-item>
+
+    <ion-accordion-group [multiple]="true">
+      <ion-accordion *ngFor="let exercise of workout.exercises">
+        <ion-item slot="header">
+          <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
+          <ion-label>{{ exercise.name }}</ion-label>
+        </ion-item>
+    
+        <ion-list slot="content">
+          <ion-item *ngFor="let set of exercise.sets">
+            <ion-label>{{ set.weight && set.weight + ' lbs x' }} {{ set.reps + ' reps'}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-accordion>
+
+    </ion-accordion-group>
   </ion-card>
 </ion-content>

@@ -7,14 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { WorkoutsTabPageRoutingModule } from './workouts-tab-routing.module';
 
 import { WorkoutsTabPage } from './workouts-tab.page';
+import { WorkoutComponent } from './workout/workout.component';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    WorkoutsTabPageRoutingModule
+    WorkoutsTabPageRoutingModule,
   ],
-  declarations: [WorkoutsTabPage]
+  declarations: [WorkoutsTabPage, WorkoutComponent],
+  exports: [WorkoutComponent]
 })
 export class WorkoutsTabPageModule {}
