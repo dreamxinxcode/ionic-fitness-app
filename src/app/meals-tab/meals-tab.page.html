@@ -13,4 +13,43 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-header> Breakfast </ion-header>
+  <ion-card *ngFor="let meal of meals.breakfast">
+    <ion-card-title> {{ meal.title }} </ion-card-title>
+    <ion-footer>
+      <ion-badge *ngFor="let tag of meal.tags">{{ tag }}</ion-badge>
+    </ion-footer>
+  </ion-card>
+
+  <ion-header> Lunch </ion-header>
+  <ion-card *ngFor="let meal of meals.lunch">
+    <ion-card-title> {{ meal.title }} </ion-card-title>
+    <ion-footer>
+      <ion-badge *ngFor="let tag of meal.tags">{{ tag }}</ion-badge>
+    </ion-footer>
+  </ion-card>
+
+  <ion-header> Dinner </ion-header>
+  <ion-card *ngFor="let meal of meals.dinner">
+    <ion-card-title> {{ meal.title }} </ion-card-title>
+    <ion-footer>
+      <ion-badge *ngFor="let tag of meal.tags">{{ tag }}</ion-badge>
+    </ion-footer>
+  </ion-card>  
+  
+  <ion-header> Snacks </ion-header>
+  <ion-card *ngFor="let meal of meals.snacks">
+    <ion-card-title> {{ meal.title }} </ion-card-title>
+    <ion-footer>
+      <ion-badge *ngFor="let tag of meal.tags">{{ tag }}</ion-badge>
+    </ion-footer>
+  </ion-card>
+
+  <ion-header> Desserts </ion-header>
+  <ion-card *ngFor="let meal of meals.dessert">
+    <ion-card-title> {{ meal.title }} </ion-card-title>
+    <ion-footer>
+      <ion-badge *ngFor="let tag of meal.tags">{{ tag }}</ion-badge>
+    </ion-footer>
+  </ion-card>
 </ion-content>
