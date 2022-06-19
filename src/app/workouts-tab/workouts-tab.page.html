@@ -13,11 +13,14 @@
     </ion-toolbar>
   </ion-header>
 
-  <h2>{{ date }}</h2>
+  <ion-item>
+    <h2>{{ date }}</h2>
 
-  <ion-button [routerLink]="['/tabs/workouts-tab/workout']">
-    Start Workout
-  </ion-button>
+    <ion-button [routerLink]="['/tabs/workouts-tab/workout']" slot="end">
+      Start Workout
+    </ion-button>
+  </ion-item>
+
   
   <ion-card *ngFor="let workout of workouts; let i = index">
     <ion-card-header>
