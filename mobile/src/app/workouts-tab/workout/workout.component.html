@@ -24,10 +24,7 @@
         <div *ngFor="let exercise of workoutForm.controls; let i = index">
 
           <ion-select placeholder="Exercise">
-            <ion-select-option> Pushups </ion-select-option>
-            <ion-select-option> Squats </ion-select-option>
-            <ion-select-option> Curls </ion-select-option>
-            <ion-select-option> Bench press </ion-select-option>
+            <ion-select-option *ngFor="let exercise of exercises"> {{ exercise.name }} </ion-select-option>
           </ion-select>
 
           <ion-accordion-group>

@@ -22,9 +22,9 @@ export class WorkoutComponent implements OnInit {
 
   ngOnInit() {
     this.http.get('http://localhost:8000/api/exercises').subscribe((res) => {
-      console.log(res)
       this.exercises = res;
     });
+
     this.workoutForm = new FormArray([
       new FormGroup({
         name: new FormControl(),
@@ -86,6 +86,9 @@ export class WorkoutComponent implements OnInit {
           text: 'Yes',
           id: 'confirm-button',
           handler: () => {
+            this.http.post('http://localhost:8000/api/workout', this.workoutForm.value).subscribe((res) => {
+              console.log(res);
+            });
             this.router.navigate(['/tabs/workouts-tab']);
           }
         }
