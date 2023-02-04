@@ -1,0 +1,27 @@
+<ion-header>Hello</ion-header>
+
+<ion-card *ngFor="let meal of meals">
+  <img src="{{meal.image}}" alt="ion">
+  <ion-card-header>
+    <ion-card-title>{{meal.title}}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    {{meal.description}}
+  </ion-card-content>
+  <ion-footer>
+    <ion-row class="meal-card-actions">
+        <button>
+          <ion-icon name="thumbs-up"></ion-icon>
+          <div>1.5k Likes</div>
+        </button>
+        <button>
+          <ion-icon name="text"></ion-icon>
+          <div>{{meal.comments}} Comments</div>
+        </button>
+        <button>
+          <ion-icon name="time"></ion-icon>
+          <div>11h ago</div>
+        </button>
+    </ion-row>
+  </ion-footer>
+</ion-card>
