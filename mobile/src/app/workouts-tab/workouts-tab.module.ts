@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { HttpClientModule } from '@angular/common/http';
 import { IonicModule } from '@ionic/angular';
 
 import { WorkoutsTabPageRoutingModule } from './workouts-tab-routing.module';
@@ -16,6 +16,7 @@ import { WorkoutComponent } from './workout/workout.component';
     FormsModule,
     IonicModule,
     WorkoutsTabPageRoutingModule,
+    HttpClientModule,
   ],
   declarations: [WorkoutsTabPage, WorkoutComponent],
   exports: [WorkoutComponent]

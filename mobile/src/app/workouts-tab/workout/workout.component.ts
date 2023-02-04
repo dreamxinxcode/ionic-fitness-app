@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-workout',
@@ -11,10 +12,19 @@ import { AlertController } from '@ionic/angular';
 export class WorkoutComponent implements OnInit {
 
   workoutForm: FormArray;
+  exercises;
 
-  constructor(public alertController: AlertController, private router: Router) { }
+  constructor(
+    public alertController: AlertController, 
+    private router: Router,
+    private http: HttpClient,
+  ) { }
 
   ngOnInit() {
+    this.http.get('http://localhost:8000/api/exercises').subscribe((res) => {
+      console.log(res)
+      this.exercises = res;
+    });
     this.workoutForm = new FormArray([
       new FormGroup({
         name: new FormControl(),
