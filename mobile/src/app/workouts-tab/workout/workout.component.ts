@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class WorkoutComponent implements OnInit {
 
-  workoutForm: FormArray;
+  workoutForm: FormGroup;
   exercises;
 
   constructor(
@@ -25,21 +25,40 @@ export class WorkoutComponent implements OnInit {
       this.exercises = res;
     });
 
-    this.workoutForm = new FormArray([
-      new FormGroup({
-        name: new FormControl(),
-        sets: new FormArray([
-          new FormGroup({
-            reps: new FormControl(),
-            weight: new FormControl(),
-          }),
-        ]),
-      })
-    ]);
+    this.workoutForm = new FormGroup({
+      timestamp: new FormControl(),
+      sets: new FormArray([
+        new FormGroup({
+          name: new FormControl(),
+          sets: new FormArray([
+            new FormGroup({
+              reps: new FormControl(),
+              weight: new FormControl(),
+            }),
+          ]),
+        })
+      ]),
+    });
+
+    // this.workoutForm = new FormArray([
+    //   new FormGroup({
+    //     name: new FormControl(),
+    //     sets: new FormArray([
+    //       new FormGroup({
+    //         reps: new FormControl(),
+    //         weight: new FormControl(),
+    //       }),
+    //     ]),
+    //   })
+    // ]);
+  }
+
+  get sets() {
+    return this.workoutForm.controls.sets as FormArray;
   }
 
   public addExercise():void {
-    this.workoutForm.push(
+    this.sets.push(
       new FormGroup({
         name: new FormControl(),
         reps: new FormControl(),

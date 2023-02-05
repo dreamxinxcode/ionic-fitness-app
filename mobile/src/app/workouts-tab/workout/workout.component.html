@@ -14,49 +14,47 @@
   </ion-header>
 
   <ion-card>
-    <ion-item>
-      <ion-card-header> Workout </ion-card-header>
-      <ion-icon (click)="addExercise()" name="add" slot="end"></ion-icon>
-    </ion-item>
-
-    <form>
+    <form [formGroup]="workoutForm">
+      <ion-datetime formControlName="timestamp"></ion-datetime>
+      <ion-item>
+        <ion-card-header> Workout </ion-card-header>
+        <ion-icon (click)="addExercise()" name="add" slot="end"></ion-icon>
+      </ion-item>
+  
       <ion-list>
-        <div *ngFor="let exercise of workoutForm.controls; let i = index">
+        <ion-select placeholder="Exercise">
+          <ion-select-option *ngFor="let exercise of exercises"> {{ exercise.name }} </ion-select-option>
+        </ion-select>
 
-          <ion-select placeholder="Exercise">
-            <ion-select-option *ngFor="let exercise of exercises"> {{ exercise.name }} </ion-select-option>
-          </ion-select>
+        <!-- <ion-accordion-group>
+          <ion-accordion>
+            <ion-item slot="header">
+              <ion-label> Sets ({{ getSets(i).controls.length }}) </ion-label>
+            </ion-item>
 
-          <ion-accordion-group>
-            <ion-accordion>
-              <ion-item slot="header">
-                <ion-label> Sets ({{ getSets(i).controls.length }}) </ion-label>
-              </ion-item>
+            <ion-list slot="content">
+              <div *ngFor="let set of getSets(i).controls; let setIdx = index">
+                <ion-label> Set {{ setIdx + 1 }} </ion-label>
+                <ion-item>
+                  <ion-label position="floating"> Repetitions </ion-label>
+                  <ion-input 
+                    type="text"
+                  ></ion-input>
+                </ion-item>
 
-              <ion-list slot="content">
-                <div *ngFor="let set of getSets(i).controls; let setIdx = index">
-                  <ion-label> Set {{ setIdx + 1 }} </ion-label>
-                  <ion-item>
-                    <ion-label position="floating"> Repetitions </ion-label>
-                    <ion-input 
-                      type="text"
-                    ></ion-input>
-                  </ion-item>
-
-                  <ion-item>
-                    <ion-label position="floating"> Weight (Optional) </ion-label>
-                    <ion-input 
-                      type="text"
-                    ></ion-input>
-                  </ion-item>
-                </div>
-                <ion-button (click)="addSet(i)"> Add Set </ion-button>
-              </ion-list>
-            </ion-accordion>
-          </ion-accordion-group>
-
-        </div>
+                <ion-item>
+                  <ion-label position="floating"> Weight (Optional) </ion-label>
+                  <ion-input 
+                    type="text"
+                  ></ion-input>
+                </ion-item>
+              </div>
+              <ion-button (click)="addSet(i)"> Add Set </ion-button>
+            </ion-list>
+          </ion-accordion>
+        </ion-accordion-group> -->
       </ion-list>
+
       <ion-button (click)="presentAlertConfirm()"> Finish </ion-button>
     </form>
   </ion-card>
