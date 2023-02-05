@@ -1,8 +1,8 @@
-from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
 from ..models.exercise import Exercise
 
 
-class ExerciseSerializer(serializers.ModelSerializer):
+class ExerciseSerializer(ModelSerializer):
     class Meta:
         model = Exercise
         fields = '__all__'
