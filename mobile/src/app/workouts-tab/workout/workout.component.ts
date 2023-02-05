@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-workout',
@@ -12,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
 export class WorkoutComponent implements OnInit {
 
   workoutForm: FormGroup;
-  exercises;
+  exerciseOptions;
 
   constructor(
     public alertController: AlertController, 
@@ -22,47 +23,23 @@ export class WorkoutComponent implements OnInit {
 
   ngOnInit() {
     this.http.get('http://localhost:8000/api/exercises').subscribe((res) => {
-      this.exercises = res;
+      this.exerciseOptions = res;
     });
-
     this.workoutForm = new FormGroup({
       timestamp: new FormControl(),
-      sets: new FormArray([
-        new FormGroup({
-          name: new FormControl(),
-          sets: new FormArray([
-            new FormGroup({
-              reps: new FormControl(),
-              weight: new FormControl(),
-            }),
-          ]),
-        })
-      ]),
+      exercises: new FormArray([]),
     });
-
-    // this.workoutForm = new FormArray([
-    //   new FormGroup({
-    //     name: new FormControl(),
-    //     sets: new FormArray([
-    //       new FormGroup({
-    //         reps: new FormControl(),
-    //         weight: new FormControl(),
-    //       }),
-    //     ]),
-    //   })
-    // ]);
+    this.addExercise();
   }
 
-  get sets() {
-    return this.workoutForm.controls.sets as FormArray;
+  get exercises() {
+    return this.workoutForm.controls.exercises as FormArray;
   }
 
   public addExercise():void {
-    this.sets.push(
+    this.exercises.push(
       new FormGroup({
         name: new FormControl(),
-        reps: new FormControl(),
-        weight: new FormControl(),
         sets: new FormArray([
           new FormGroup({
             reps: new FormControl(),
@@ -74,8 +51,8 @@ export class WorkoutComponent implements OnInit {
   }
 
   public addSet(index: number):void {
-    const sets = this.workoutForm.controls[index].get('sets') as FormArray;
-    sets.push(          
+    const exercises = this.exercises.controls[index] as FormArray;
+    exercises.push(          
       new FormGroup({
         reps: new FormControl(),
         weight: new FormControl(),
@@ -84,7 +61,7 @@ export class WorkoutComponent implements OnInit {
   }
 
   getSets(index: number) {
-    return this.workoutForm.controls[index].get('sets') as FormArray;
+    return this.exercises.controls[index] as FormArray;
   }
 
   async presentAlertConfirm() {
@@ -105,7 +82,11 @@ export class WorkoutComponent implements OnInit {
           text: 'Yes',
           id: 'confirm-button',
           handler: () => {
-            this.http.post('http://localhost:8000/api/workout', this.workoutForm.value).subscribe((res) => {
+            const data = {
+              uuid: uuid(),
+              workout: this.workoutForm.value
+            };
+            this.http.post('http://localhost:8000/api/workout', data).subscribe((res) => {
               console.log(res);
             });
             this.router.navigate(['/tabs/workouts-tab']);
