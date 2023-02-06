@@ -13,7 +13,10 @@ import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 })
 export class WorkoutComponent implements OnInit {
 
-  workoutForm: FormGroup;
+  workoutForm = new FormGroup({
+    timestamp: new FormControl(),
+    exercises: new FormArray([]),
+  });
   exerciseOptions;
 
   constructor(
@@ -25,17 +28,17 @@ export class WorkoutComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // If URL has a uuid param -> fetch workout and fill form values
     this.route.paramMap.subscribe((params: ParamMap) => {
-      this.http.get(`http://localhost:8000/api/workout/${params.get('uuid')}`).subscribe((res) => {
-        this.workoutForm.setValue(res['workout_data']);
-      });
+      const uuid = params.get('uuid');
+      if (uuid) {
+        this.http.get(`http://localhost:8000/api/workout/${uuid}`).subscribe((res) => {
+          
+        });
+      }
     });
     this.http.get('http://localhost:8000/api/exercises').subscribe((res) => {
       this.exerciseOptions = res;
-    });
-    this.workoutForm = new FormGroup({
-      timestamp: new FormControl(),
-      exercises: new FormArray([]),
     });
     this.addExercise();
   }

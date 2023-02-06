@@ -20,10 +20,9 @@
     </ion-button>
   </ion-item>
 
-  
   <ion-card *ngFor="let workout of workouts; let i = index">
-    <ion-card-header [routerLink]="['/tabs/workouts-tab/workout', workout.uuid]">
-      <ion-item>
+    <ion-card-header>
+      <ion-item [routerLink]="['/tabs/workouts-tab/workout', workout.uuid]">
         {{ dateTimeService.formatDate(workout.workout_data.timestamp) }}
         <ion-icon id="settings_{{ i }}" name="ellipsis-vertical" slot="end"></ion-icon>
       </ion-item>
@@ -31,7 +30,7 @@
         <ng-template>
           <ion-content>
             <ion-list>
-              <ion-item (click)="onDelete()" [button]="true" [detail]="false">
+              <ion-item (click)="onDelete(i, workout.uuid)" [button]="true" [detail]="false">
                 <ion-label>Delete</ion-label>
               </ion-item>              
               <ion-item [button]="true" [detail]="false">
@@ -42,14 +41,12 @@
         </ng-template>
       </ion-popover>
     </ion-card-header>
-
     <ion-accordion-group [multiple]="true">
       <ion-accordion *ngFor="let exercise of workout.workout_data.exercises">
         <ion-item slot="header">
           <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
           <ion-label>{{ exercise.name }}</ion-label>
         </ion-item>
-    
         <ion-list slot="content">
           <ion-item *ngFor="let set of exercise.sets">
             <ion-label>{{ set.weight && set.weight + ' lbs x' }} {{ set.reps + ' reps'}}</ion-label>
