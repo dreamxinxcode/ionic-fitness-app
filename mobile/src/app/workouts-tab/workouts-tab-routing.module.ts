@@ -12,7 +12,11 @@ const routes: Routes = [
   {
     path: 'workout',
     component: WorkoutComponent
-  }
+  },
+  {
+    path: 'workout/:uuid',
+    component: WorkoutComponent
+  },
 ];
 
 @NgModule({
