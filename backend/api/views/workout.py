@@ -17,7 +17,11 @@ def get_all_workouts(request):
 
 @api_view(['GET'])
 def get_workout(request, id):
-    print('hellooooo')
     workout = Workout.objects.get(uuid=id)
     serializer = WorkoutSerializer(workout)
     return Response(serializer.data)
+
+@api_view(['DELETE'])
+def delete_workout(request, id):
+    Workout.objects.get(uuid=id).delete()
+    return Response('deleted')

@@ -23,3 +23,13 @@
 usermane: admin
 
 password: password
+
+# Concepts
+
+## Authentication
+
+- Routes protected with `guards`
+
+## Inputs
+
+- Input data validation with `validators`
