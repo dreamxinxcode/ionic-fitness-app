@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Workouts
+      Workout
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -15,8 +15,25 @@
 
   <ion-card>
     <form [formGroup]="workoutForm">
-      <ion-datetime formControlName="timestamp"></ion-datetime>
+      <ion-item id="open-modal">
+        <ion-label>MMMM YY</ion-label>
+        <ion-note slot="end" id="datetimeValue"></ion-note>
+      </ion-item>
+      <ion-modal trigger="open-modal">
+        <ion-content>
+          <ion-datetime
+            formControlName="timestamp"
+            id="datetime"
+            presentation="date"
+            min="1989-06-04"
+            max="2004-08-23"
+            value="1994-12-15T13:47:20.789"
+          ></ion-datetime>
+        </ion-content>
+      </ion-modal>
+      <!-- <ion-datetime formControlName="timestamp"></ion-datetime> -->
       <ion-item>
+        <ion-label> Add Exercise </ion-label>
         <ion-icon (click)="addExercise()" name="add" slot="end"></ion-icon>
       </ion-item>
       <ion-list *ngFor="let exercise of exercises.controls; let i = index">
@@ -25,11 +42,12 @@
             <ion-select-option *ngFor="let option of exerciseOptions">{{ option.name }} </ion-select-option>
           </ion-select>
           <ion-accordion-group>
-            <ion-accordion *ngFor="let set of exercise.controls.sets.controls" value="first">
+            <ion-accordion value="first">
               <ion-item slot="header">
-                <ion-label> Sets ({{ getSets(i).controls.length }}) </ion-label>
+                <ion-label> Sets ({{ getSets(i).length }}) </ion-label>
               </ion-item>
-              <div [formGroup]="set" class="ion-padding" slot="content">
+              <div *ngFor="let set of exercise.controls.sets.controls; let setIndex = index;" [formGroup]="set" class="ion-padding" slot="content">
+                <ion-label> Set #{{ setIndex + 1 }} </ion-label>
                 <ion-item>
                   <ion-label position="floating"> Repetitions </ion-label>
                   <ion-input
@@ -44,12 +62,32 @@
                     type="text"
                   ></ion-input>
                 </ion-item>
-              </div>
+                <ion-button (click)="addSet(i)" size="small">
+                  <ion-icon 
+                    slot="icon-only" 
+                    name="add"
+                  ></ion-icon>
+                </ion-button>
+                <ion-button 
+                  (click)="deleteSet(i)" 
+                  color="danger" 
+                  size="small"
+                >
+                  <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-button>
+              </div>             
             </ion-accordion>
           </ion-accordion-group>
         </div>
       </ion-list>
-      <ion-button (click)="presentAlertConfirm()"> Finish </ion-button>
+      <ion-button 
+        (click)="presentAlertConfirm()" 
+        color="success"
+        size="large"
+      >             
+        <ion-icon slot="start" name="checkmark"></ion-icon>
+        Finish Workout 
+      </ion-button>
     </form>
   </ion-card>
 </ion-content>

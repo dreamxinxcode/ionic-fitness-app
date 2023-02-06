@@ -6,12 +6,18 @@ from ..serializers.workout import WorkoutSerializer
 @api_view(['POST'])
 def add_new_workout(request):
     data = request.data
-    Workout.objects.create(uuid=data['uuid'], timestamp=data['workout']['timestamp'], workout_data=data['workout'])
+    Workout.objects.create(uuid=data['uuid'], workout_data=data['workout'])
     return Response('hello')
 
 @api_view(['GET'])
 def get_all_workouts(request):
-    print('hererere')
     workouts = Workout.objects.all()
     serializer = WorkoutSerializer(workouts, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_workout(request, id):
+    print('hellooooo')
+    workout = Workout.objects.get(uuid=id)
+    serializer = WorkoutSerializer(workout)
     return Response(serializer.data)

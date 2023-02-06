@@ -15,17 +15,16 @@
 
   <ion-item>
     <h2>{{ date }}</h2>
-
-    <ion-button [routerLink]="['workout']" slot="end">
+    <ion-button [routerLink]="['workout']" color='success' slot="end">
       Start Workout
     </ion-button>
   </ion-item>
 
   
   <ion-card *ngFor="let workout of workouts; let i = index">
-    <ion-card-header>
+    <ion-card-header [routerLink]="['/tabs/workouts-tab/workout', workout.uuid]">
       <ion-item>
-        {{ formatDate(workout.date) }}
+        {{ dateTimeService.formatDate(workout.workout_data.timestamp) }}
         <ion-icon id="settings_{{ i }}" name="ellipsis-vertical" slot="end"></ion-icon>
       </ion-item>
       <ion-popover trigger="settings_{{ i }}" [dismissOnSelect]="true">
@@ -45,7 +44,7 @@
     </ion-card-header>
 
     <ion-accordion-group [multiple]="true">
-      <ion-accordion *ngFor="let exercise of workout.exercises">
+      <ion-accordion *ngFor="let exercise of workout.workout_data.exercises">
         <ion-item slot="header">
           <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
           <ion-label>{{ exercise.name }}</ion-label>

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { v4 as uuid } from 'uuid';
+import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 
 @Component({
   selector: 'app-workout',
@@ -17,11 +18,18 @@ export class WorkoutComponent implements OnInit {
 
   constructor(
     public alertController: AlertController, 
+    private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
+    public dateTimeService: DateTimeService,
   ) { }
 
   ngOnInit() {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.http.get(`http://localhost:8000/api/workout/${params.get('uuid')}`).subscribe((res) => {
+        this.workoutForm.setValue(res['workout_data']);
+      });
+    });
     this.http.get('http://localhost:8000/api/exercises').subscribe((res) => {
       this.exerciseOptions = res;
     });
@@ -51,8 +59,7 @@ export class WorkoutComponent implements OnInit {
   }
 
   public addSet(index: number):void {
-    const exercises = this.exercises.controls[index] as FormArray;
-    exercises.push(          
+    this.getSets(index).push(          
       new FormGroup({
         reps: new FormControl(),
         weight: new FormControl(),
@@ -60,8 +67,13 @@ export class WorkoutComponent implements OnInit {
     );
   }
 
+  public deleteSet(index: number):void {
+    this.getSets(index).removeAt(index);
+  }
+
+
   getSets(index: number) {
-    return this.exercises.controls[index] as FormArray;
+    return this.exercises.controls[index].get('sets') as FormArray;
   }
 
   async presentAlertConfirm() {
