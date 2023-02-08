@@ -20,7 +20,7 @@
 
 # Admin Credentials
 
-usermane: admin
+email: example@example.com
 
 password: password
 
