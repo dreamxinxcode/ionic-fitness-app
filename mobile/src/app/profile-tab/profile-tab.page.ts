@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,8 +9,11 @@ import { Component, OnInit } from '@angular/core';
 export class ProfileTabPage implements OnInit {
 
   currentUser;
+  users;
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+  ) { }
 
   ngOnInit() {
     this.currentUser = {
@@ -22,6 +26,9 @@ export class ProfileTabPage implements OnInit {
       avatar: '../../assets/avatar.png',
       workouts_count: 263,
     };
+    this.http.get('http://localhost:8000/users').subscribe((res) => {
+      this.users = res;
+    });
   }
 
 }
