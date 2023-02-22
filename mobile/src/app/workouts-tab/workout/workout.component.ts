@@ -74,7 +74,6 @@ export class WorkoutComponent implements OnInit {
     this.getSets(index).removeAt(index);
   }
 
-
   getSets(index: number) {
     return this.exercises.controls[index].get('sets') as FormArray;
   }

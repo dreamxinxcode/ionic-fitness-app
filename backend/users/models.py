@@ -40,8 +40,6 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     username = models.CharField(max_length=20)
-    first_name = models.CharField(max_length=25)
-    last_name = models.CharField(max_length=25)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -54,3 +52,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
     
+
+class Profile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=25)
+    last_name = models.CharField(max_length=25)
+    avatar = models.ImageField(default='default.jpg', upload_to='avatars')
+    bio = models.TextField()
+
+    def __str__(self):
+        return self.user.username
