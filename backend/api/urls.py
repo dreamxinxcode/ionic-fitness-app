@@ -4,8 +4,8 @@ from rest_framework_simplejwt import views as jwt_views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('exercise', exercise.ExerciseViewSet, basename='exercise_viewset')
-router.register('workout', workout.WorkoutViewset, basename='workout_viewset')
+router.register('exercises', exercise.ExerciseViewSet, basename='exercise_viewset')
+router.register('workouts', workout.WorkoutViewset, basename='workout_viewset')
 
 urlpatterns = [
     path('', include(router.urls)),

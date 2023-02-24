@@ -26,9 +26,8 @@ export class ProfileTabPage implements OnInit {
       avatar: '../../assets/avatar.png',
       workouts_count: 263,
     };
-    this.http.get('http://localhost:8000/users').subscribe((res) => {
+    this.http.get('http://localhost:8000/users/').subscribe((res) => {
       this.users = res;
     });
   }
-
 }
