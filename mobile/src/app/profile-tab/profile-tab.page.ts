@@ -30,5 +30,4 @@ export class ProfileTabPage implements OnInit {
       this.users = res;
     });
   }
-
 }
