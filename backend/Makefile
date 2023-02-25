@@ -10,5 +10,8 @@ shell:
 migrate:
 	docker-compose exec web python manage.py migrate
 
+dump:
+	docker-compose exec web python manage.py dumpdata > dump.json
+
 create_superuser:
 	docker-compose exec web python manage.py createsuperuser

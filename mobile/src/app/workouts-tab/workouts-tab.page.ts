@@ -22,8 +22,8 @@ export class WorkoutsTabPage implements OnInit {
     });
   }
 
-  public onDelete(index: number, uuid):void {
-    this.http.delete(`http://localhost:8000/api/workout/delete/${uuid}/`).subscribe((res) => {
+  public onDelete(index: number, id):void {
+    this.http.delete(`http://localhost:8000/api/workouts/${id}/`).subscribe((res) => {
       this.workouts.splice(index, 1);
     });
   }

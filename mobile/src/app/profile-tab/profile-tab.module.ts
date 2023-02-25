@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ProfileTabPageRoutingModule } from './profile-tab-routing.module';
 
 import { ProfileTabPage } from './profile-tab.page';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProfileTabPageRoutingModule
+    ProfileTabPageRoutingModule,
+    HttpClientModule,
   ],
   declarations: [ProfileTabPage]
 })

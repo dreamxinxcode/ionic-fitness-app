@@ -1,4 +1,3 @@
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -14,15 +13,18 @@ class WorkoutViewset(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        # Workout.objects.create(uuid=data['uuid'], workout_data=data['workout'])
-        return
+        data = request.data
+        workout = Workout.objects.create(uuid=data['uuid'], workout_data=data['workout'])
+        serializer = WorkoutSerializer(workout)
+        return Response(serializer.data)
 
     def list(self, request):
         serializer = WorkoutSerializer(self.queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
-        workout = get_object_or_404(self.queryset, pk=pk)
+    def retrieve(self, request, *args, **kwargs):
+        uuid = kwargs['uuid']
+        workout = get_object_or_404(self.queryset, uuid=uuid)
         serializer = WorkoutSerializer(workout)
         return Response(serializer.data)
 
@@ -30,4 +32,6 @@ class WorkoutViewset(viewsets.ModelViewSet):
         pass
 
     def destroy(self, request, pk=None):
-        Workout.objects.get(uuid=id).delete()
+        workout = Workout.objects.get(id=pk).delete()
+        serializer = WorkoutSerializer(workout)
+        return Response(serializer.data)
