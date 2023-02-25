@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services/user/user.service';
 
 @Component({
   selector: 'app-profile-tab',
@@ -8,26 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileTabPage implements OnInit {
 
-  currentUser;
   users;
+  currentUser;
 
   constructor(
     private http: HttpClient,
+    public userService: UserService,
   ) { }
 
   ngOnInit() {
-    this.currentUser = {
-      first_name: 'Brandon',
-      last_name: 'Lecky',
-      username: 'dreamxinxcode',
-      age: 27,
-      city: 'Victoria',
-      country: 'Canada',
-      avatar: '../../assets/avatar.png',
-      workouts_count: 263,
-    };
     this.http.get('http://localhost:8000/users/').subscribe((res) => {
       this.users = res;
     });
+    this.currentUser = this.userService.currentUser;
   }
 }

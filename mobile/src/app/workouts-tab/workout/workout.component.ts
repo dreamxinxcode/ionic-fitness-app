@@ -99,7 +99,7 @@ export class WorkoutComponent implements OnInit {
               uuid: uuid(),
               workout: this.workoutForm.value
             };
-            this.http.post('http://localhost:8000/api/workout/', data).subscribe((res) => {
+            this.http.post('http://localhost:8000/api/workouts/', data).subscribe((res) => {
               console.log(res);
             });
             this.router.navigate(['/tabs/workouts-tab']);
