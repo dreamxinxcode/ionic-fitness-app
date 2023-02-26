@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-settings-tab',
@@ -14,7 +15,8 @@ export class SettingsTabPage implements OnInit {
 
   constructor(
     private settingsService: SettingsService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    public authService: AuthService,
   ) {
     this.settingsForm = new FormGroup({
       themeToggle: new FormControl(localStorage.getItem('dark_theme')),
