@@ -22,7 +22,7 @@ def register(request):
         username=data['username'],
     )
     Profile.objects.create(
-        data
+        user=CustomUser.objects(id=user.id)
     ) 
     return Response('hello')
 
