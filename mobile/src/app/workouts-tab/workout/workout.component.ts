@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
@@ -52,8 +52,8 @@ export class WorkoutComponent implements OnInit {
         name: new FormControl(),
         sets: new FormArray([
           new FormGroup({
-            reps: new FormControl(),
-            weight: new FormControl(),
+            reps: new FormControl('', [ Validators.required, Validators.min(1), ]),
+            weight: new FormControl('', [ Validators.required, Validators.min(0), ]),
           }),
         ]),
       })
