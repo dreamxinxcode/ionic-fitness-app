@@ -34,14 +34,14 @@
                   <ion-label position="floating"> Repetitions </ion-label>
                   <ion-input
                     formControlName="reps"
-                    type="text"
+                    type="number"
                   ></ion-input>
                 </ion-item>
                 <ion-item>
                   <ion-label position="floating"> Weight (Optional) </ion-label>
                   <ion-input 
                     formControlName="weight"
-                    type="text"
+                    type="number"
                   ></ion-input>
                 </ion-item>
               </div>
@@ -49,7 +49,7 @@
           </ion-accordion-group>
         </div>
       </ion-list>
-      <ion-button (click)="presentAlertConfirm()"> Finish </ion-button>
+      <ion-button (click)="presentAlertConfirm()" [disabled]="workoutForm.valid"> Finish </ion-button>
     </form>
   </ion-card>
 </ion-content>
