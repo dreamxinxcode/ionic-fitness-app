@@ -54,5 +54,10 @@
         </ion-list>
       </ion-accordion>
     </ion-accordion-group>
+    <ion-card-footer>
+      <p class="ion-text-end">
+        {{ dateTimeService.formatDistance(workout.workout_data.timestamp) }}
+      </p>
+    </ion-card-footer>
   </ion-card>
 </ion-content>
