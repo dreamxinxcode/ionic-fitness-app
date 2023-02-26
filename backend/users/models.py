@@ -57,6 +57,9 @@ class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
+    country = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    workout_count = models.IntegerField(default=0)
     avatar = models.ImageField(default='default.jpg', upload_to='avatars')
     bio = models.TextField()
 

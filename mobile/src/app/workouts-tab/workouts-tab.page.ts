@@ -17,13 +17,13 @@ export class WorkoutsTabPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.http.get('http://localhost:8000/api/workouts').subscribe((res) => {
+    this.http.get('http://localhost:8000/api/workouts/').subscribe((res) => {
       this.workouts = res;
     });
   }
 
-  public onDelete(index: number, uuid):void {
-    this.http.delete(`http://localhost:8000/api/workout/delete/${uuid}`).subscribe((res) => {
+  public onDelete(index: number, id):void {
+    this.http.delete(`http://localhost:8000/api/workouts/${id}/`).subscribe((res) => {
       this.workouts.splice(index, 1);
     });
   }

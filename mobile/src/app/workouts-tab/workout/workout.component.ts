@@ -32,12 +32,11 @@ export class WorkoutComponent implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       const uuid = params.get('uuid');
       if (uuid) {
-        this.http.get(`http://localhost:8000/api/workout/${uuid}`).subscribe((res) => {
-          
+        this.http.get(`http://localhost:8000/api/workouts/${uuid}/`).subscribe((res) => {
         });
       }
     });
-    this.http.get('http://localhost:8000/api/exercises').subscribe((res) => {
+    this.http.get('http://localhost:8000/api/exercises/').subscribe((res) => {
       this.exerciseOptions = res;
     });
     this.addExercise();
@@ -100,7 +99,7 @@ export class WorkoutComponent implements OnInit {
               uuid: uuid(),
               workout: this.workoutForm.value
             };
-            this.http.post('http://localhost:8000/api/workout', data).subscribe((res) => {
+            this.http.post('http://localhost:8000/api/workouts/', data).subscribe((res) => {
               console.log(res);
             });
             this.router.navigate(['/tabs/workouts-tab']);

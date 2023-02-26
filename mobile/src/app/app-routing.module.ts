@@ -22,7 +22,7 @@ const routes: Routes = [
   {
     path: 'workouts-tab',
     loadChildren: () => import('./workouts-tab/workouts-tab.module').then( m => m.WorkoutsTabPageModule),
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: 'meals-tab',
