@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -21,6 +22,7 @@ export class RegisterPage implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {

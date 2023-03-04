@@ -3,14 +3,14 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from ..models.workout import Workout
 from ..serializers.workout import WorkoutSerializer
-
+import pprint
 from rest_framework import viewsets
 
 class WorkoutViewset(viewsets.ModelViewSet):
     
     queryset = Workout.objects.all()
     serializer_class = WorkoutSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         data = request.data
@@ -19,6 +19,8 @@ class WorkoutViewset(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def list(self, request):
+        print(pprint.pprint(dir(request.authenticators)))
+        print(request.authenticators)
         serializer = WorkoutSerializer(self.queryset, many=True)
         return Response(serializer.data)
 

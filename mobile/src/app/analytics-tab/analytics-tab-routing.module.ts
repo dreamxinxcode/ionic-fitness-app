@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '../guards/auth/auth.guard';
 
 import { AnalyticsTabPage } from './analytics-tab.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: AnalyticsTabPage
+    component: AnalyticsTabPage,
+    canActivate: [AuthGuard]
   }
 ];
 

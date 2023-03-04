@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
 import { AuthService } from '../services/auth/auth.service';
+import { ToastService } from '../services/toast/toast.service';
 
 @Component({
   selector: 'app-settings-tab',
@@ -15,8 +16,8 @@ export class SettingsTabPage implements OnInit {
 
   constructor(
     private settingsService: SettingsService,
-    private toastController: ToastController,
     public authService: AuthService,
+    private toast: ToastService
   ) {
     this.settingsForm = new FormGroup({
       themeToggle: new FormControl(localStorage.getItem('dark_theme')),
@@ -26,13 +27,9 @@ export class SettingsTabPage implements OnInit {
   ngOnInit() {
   }
 
-  async saveSettings() {
+  saveSettings() {
     this.settingsService.toggleTheme(this.settingsForm.value.themeToggle)
     this.settingsService.setTheme();
-    const toast = await this.toastController.create({
-      message: 'Your settings have been saved.',
-      duration: 1000,
-    });
-    toast.present();
+    this.toast.render('Your settings have been saved.', 'success', 'settings-outline');
   }
 }
