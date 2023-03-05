@@ -23,7 +23,9 @@
   <ion-card *ngFor="let workout of workouts; let i = index">
     <ion-card-header>
       <ion-item>
-        {{ dateTimeService.formatDate(workout.workout_data.timestamp) }}
+        <ion-item [routerLink]="['/tabs/workouts-tab/workout', workout.uuid]">
+          {{ dateTimeService.formatDate(workout.workout_data.timestamp) }}
+        </ion-item>
         <ion-icon id="settings_{{ i }}" name="ellipsis-vertical" slot="end"></ion-icon>
       </ion-item>
       <ion-popover trigger="settings_{{ i }}" [dismissOnSelect]="true">
@@ -41,7 +43,7 @@
         </ng-template>
       </ion-popover>
     </ion-card-header>
-    <ion-accordion-group [routerLink]="['/tabs/workouts-tab/workout', workout.uuid]"[multiple]="true">
+    <ion-accordion-group [multiple]="true">
       <ion-accordion *ngFor="let exercise of workout.workout_data.exercises">
         <ion-item slot="header">
           <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
