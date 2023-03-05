@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      {{ userService.currentUser.username }}
+      {{ userService.user.username }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -16,15 +16,16 @@
   <div class="card-body">
     <div class="ion-text-center">
       <ion-avatar id="profile-avatar">
-        <img src="{{ userService.currentUser.avatar }}">
+        <img src="{{ userService.user.avatar }}">
       </ion-avatar>
-      <h3>{{ userService.currentUser.first_name }} {{ userService.currentUser.last_name }}</h3>
-      <h6>{{ userService.currentUser.username }}</h6>
-      <h5>{{ userService.currentUser.city }}, {{ userService.currentUser.country }}</h5>
+      <h3>{{ userService.user.profile.first_name }} {{ userService.user.profile.last_name }}</h3>
+      <h6>{{ userService.user.username }}</h6>
+      <h5>{{ userService.user.profile.city }}, {{ userService.user.profile.country }}</h5>
       <h6>Current workouts: <ion-chip>
-        <ion-label>{{ userService.currentUser.workouts_count }}</ion-label>
+        <ion-label>{{ userService.user.profile.workout_count }}</ion-label>
         </ion-chip>
       </h6>
+      <i>{{ userService.user.profile.bio }}</i>
     </div>
     <ion-button expand="full" color="primary">FOLLOW</ion-button>
     <ion-button expand="full" color="secondary">SEND MESSAGE</ion-button>

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastService } from '../toast/toast.service';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private userService: UserService
   ) { }
 
   getToken() {
@@ -30,7 +32,8 @@ export class AuthService {
     this.http.post('http://localhost:8000/login/', creds).subscribe({
       next: (res: any) => {
         localStorage.setItem('access_token', res.access);
-        localStorage.setItem('refresh', res.refresh);        
+        localStorage.setItem('refresh', res.refresh);   
+        this.userService.getUser();  
         this.router.navigate(['/tabs/workouts-tab']);
         this.toast.render('Success! Welcome!', 'success', 'person-outline')
       },
