@@ -16,13 +16,16 @@ def logout(request):
 @api_view(['POST'])
 def register(request):
     data = request.data
+    print(request.data)
     user = CustomUser.objects.create(
         email=data['email'],
         password=data['password'],
         username=data['username'],
     )
     Profile.objects.create(
-        user=CustomUser.objects(id=user.id)
+        user = user,
+        first_name=data['first_name'],
+        last_name=data['last_name'],
     ) 
     return Response('hello')
 
