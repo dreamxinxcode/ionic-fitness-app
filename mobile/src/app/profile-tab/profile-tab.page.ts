@@ -18,9 +18,6 @@ export class ProfileTabPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.http.get('http://localhost:8000/users/').subscribe((res) => {
-      this.users = res;
-    });
-    this.currentUser = this.userService.currentUser;
+    this.currentUser = this.userService.user;
   }
 }
