@@ -1,0 +1,28 @@
+<ion-tabs>
+
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="workouts-tab">
+      <ion-icon name="barbell-outline"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="meals-tab">
+      <ion-icon name="restaurant-outline"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="profile-tab">
+      <ion-avatar *ngIf="userService.currentUser?.avatar">
+        <img id='avatar-icon' src={{userService.currentUser.avatar}} />
+      </ion-avatar>
+      <ion-icon *ngIf="!userService.currentUser?.avatar" name="accessibility-outline"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="analytics-tab">
+      <ion-icon name="analytics-outline"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="settings-tab">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-tab-button>
+  </ion-tab-bar>
+
+</ion-tabs>
