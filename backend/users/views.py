@@ -1,6 +1,8 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 from .models import CustomUser, Profile
 from .serializers import UserSerializer
 
@@ -29,10 +31,23 @@ def register(request):
     ) 
     return Response('hello')
 
-
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_users(request):
-    users = CustomUser.objects.all()
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
+def me(request):
+    id = request.user.id
+    user = get_object_or_404(CustomUser, id=id)
+    return Response(UserSerializer(user).data)
+
+class UserViewset(viewsets.ModelViewSet):
+
+    def list(self):
+        queryset = CustomUser.objects.all()
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        id = kwargs['uuid']
+        user = get_object_or_404(self.queryset, id=id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+
