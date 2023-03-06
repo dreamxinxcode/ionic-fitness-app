@@ -1,9 +1,11 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from ..models.workout import Workout
 from ..serializers.workout import WorkoutSerializer
-from rest_framework import viewsets
+from users.views import CustomUser
+
 
 class WorkoutViewset(viewsets.ModelViewSet):
     
@@ -13,12 +15,14 @@ class WorkoutViewset(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        workout = Workout.objects.create(uuid=data['uuid'], workout_data=data['workout'])
+        user = request.user
+        workout = Workout.objects.create(uuid=data['uuid'], user=user, workout_data=data['workout'])
         serializer = WorkoutSerializer(workout)
         return Response(serializer.data)
 
     def list(self, request):
-        serializer = WorkoutSerializer(self.queryset, many=True)
+        queryset = Workout.objects.filter(user=request.user)
+        serializer = WorkoutSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
