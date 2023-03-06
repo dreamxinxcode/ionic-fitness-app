@@ -10,7 +10,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
-    authentication_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def list(self, request):
         queryset = Exercise.objects.all()
