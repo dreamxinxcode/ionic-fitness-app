@@ -25,6 +25,34 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+@font-face {
+    font-family: 'jakarta';
+    src: url("./assets/fonts/PlusJakartaSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'noize';
+    src: url("./assets/fonts/NoizeSportFreeVertionRegular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'spartan';
+    src: url("./assets/fonts/Spantaran.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'techno';
+    src: url("./assets/fonts/TechnoRaceItalic-eZRWe.otf") format("opentype");
+}
+
+* {
+    font-family: 'jakarta' !important;
+}
+
+.spartan {
+    font-family: 'spartan';
+}
+
 ion-card {
     border-radius: 1.5rem;
 }

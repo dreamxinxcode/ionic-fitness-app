@@ -196,7 +196,8 @@ body[color-theme="dark"] {
   */
 
 .md body[color-theme="dark"] {
-  --ion-background-color: #141d3c;
+  // --ion-background-color: #141d3c;
+  --ion-background-color: #1f2128;
   --ion-background-color-rgb: 18,18,18;
 
   --ion-text-color: #ffffff;
@@ -204,7 +205,7 @@ body[color-theme="dark"] {
 
   --ion-border-color: #222222;
 
-  --ion-color-step-50: #1c2754;
+  --ion-color-step-50: #2b2f37;
   --ion-color-step-100: #2a2a2a;
   --ion-color-step-150: #363636;
   --ion-color-step-200: #414141;
@@ -224,11 +225,11 @@ body[color-theme="dark"] {
   --ion-color-step-900: #e7e7e7;
   --ion-color-step-950: #f3f3f3;
 
-  --ion-item-background: #1c2754;
+  --ion-item-background: #2b2f37;
 
-  --ion-toolbar-background: #1c2754;
+  --ion-toolbar-background: #2b2f37;
 
-  --ion-tab-bar-background: #1c2754;
+  --ion-tab-bar-background: #2b2f37;
 
-  --ion-card-background: #1c2754;
+  --ion-card-background: #2b2f37;
 }
