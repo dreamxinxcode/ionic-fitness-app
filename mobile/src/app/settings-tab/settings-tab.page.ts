@@ -4,6 +4,7 @@ import { ToastController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
 import { AuthService } from '../services/auth/auth.service';
 import { ToastService } from '../services/toast/toast.service';
+import { PickerController } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings-tab',
@@ -17,7 +18,8 @@ export class SettingsTabPage implements OnInit {
   constructor(
     private settingsService: SettingsService,
     public authService: AuthService,
-    private toast: ToastService
+    private toast: ToastService,
+    private pickerCtrl: PickerController,
   ) {
     this.settingsForm = new FormGroup({
       themeToggle: new FormControl(localStorage.getItem('dark_theme')),
@@ -25,6 +27,43 @@ export class SettingsTabPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  async openAccentPicker() {
+    const picker = await this.pickerCtrl.create({
+      columns: [
+        {
+          name: 'accents',
+          options: [
+            {
+              text: 'Red',
+              value: 'red',
+            },
+            {
+              text: 'Green',
+              value: 'green',
+            },
+            {
+              text: 'Blue',
+              value: 'blue',
+            },
+          ],
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirm',
+          handler: (value) => {
+            this.settingsService.setAccent(value.accents.value);
+          },
+        },
+      ],
+    });
+    await picker.present();
   }
 
   saveSettings() {
