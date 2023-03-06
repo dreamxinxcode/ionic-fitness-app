@@ -21,4 +21,16 @@ export class SettingsService {
       this.renderer.setAttribute(document.body, 'color-theme', 'light');
     }
   }
+
+  getTheme(): string {
+    return localStorage.getItem('dark_theme');
+  }
+
+  setAccent(accent: string): void {
+    localStorage.setItem('accent', accent);
+  }
+
+  getAccent(): string {
+    return localStorage.getItem('accent');
+  }
 }
