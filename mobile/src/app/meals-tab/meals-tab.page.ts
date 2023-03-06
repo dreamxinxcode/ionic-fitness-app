@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MealsService } from '../services/meals/meals.service';
 
 @Component({
   selector: 'app-meals-tab',
@@ -9,161 +10,20 @@ export class MealsTabPage implements OnInit {
 
   meals: any;
 
-  constructor() { }
+  constructor(private mealService: MealsService) { }
 
   ngOnInit() {
-    this.meals = {
-      breakfast: [
-        {
-          title: 'Title',
-          image: '',
-          tags: ['Low Carb', 'Berries'],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },
-      ],
-      lunch: [
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },
-      ],
-      dinner: [
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },
-      ],
-      snacks: [
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },
-      ],
-      dessert: [
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },        
-        {
-          title: 'Title',
-          image: '',
-          tags: [],
-          views: 0,
-          timestamp: new Date(),
-        },
-      ],
-    };
+    this.mealService.syncMeals().subscribe((res) => {
+      this.meals = res;
+    });
   }
 
+  handleRefresh(event) {
+    setTimeout(() => {
+      this.mealService.syncMeals().subscribe((res) => {
+        this.meals = res;
+      });
+      event.target.complete();
+    }, 2000);
+  }
 }
