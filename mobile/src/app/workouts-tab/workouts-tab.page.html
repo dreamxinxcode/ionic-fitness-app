@@ -15,16 +15,10 @@
 
   <ion-item>
     <h2>{{ date }}</h2>
-
-    <ion-button [routerLink]="['workout']" color="primary" slot="end">
-      <ion-icon slot="start" name="play"></ion-icon>
+    <ion-button [routerLink]="['workout']" color='success' slot="end">
       Start Workout
     </ion-button>
   </ion-item>
-  
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
 
   <ion-card *ngFor="let workout of workouts; let i = index">
     <ion-card-header>
