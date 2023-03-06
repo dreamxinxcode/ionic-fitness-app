@@ -1,0 +1,8 @@
+{
+  "name": "ionic-workout-app",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}
