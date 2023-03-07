@@ -13,6 +13,7 @@ MEAL_TYPE_CHOICES = (
 
 class Meal(models.Model):
   title = models.CharField(max_length=50)
+  image = models.ImageField(default='default.png', upload_to='meals')
   recipe = models.TextField()
   meal_type = models.CharField(max_length=50, choices=MEAL_TYPE_CHOICES)
   tags = models.ManyToManyField('Tag')
