@@ -15,6 +15,7 @@ export class WorkoutsTabPage implements OnInit {
   constructor(
     private http: HttpClient,
     private dateTimeService: DateTimeService,
+    private workoutsService: WorkoutsService
   ) { }
 
   ngOnInit() {
