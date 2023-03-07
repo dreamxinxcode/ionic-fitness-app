@@ -17,6 +17,8 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <app-meals-skeleton *ngIf="!loaded"></app-meals-skeleton>
+
   <ion-card *ngFor="let meal of meals">
     <ion-card-title> {{ meal.title }} </ion-card-title>
     <ion-footer>
