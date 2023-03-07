@@ -31,6 +31,7 @@
     "cordova-plugin-lottie-splashscreen": "^0.9.6",
     "date-fns": "^2.29.3",
     "rxjs": "~6.6.0",
+    "semver": "^7.3.8",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"
   },

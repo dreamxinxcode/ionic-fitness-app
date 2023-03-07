@@ -76,3 +76,17 @@ curl \
 ```
 {"access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3BrIjoxLCJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiY29sZF9zdHVmZiI6IuKYgyIsImV4cCI6MTIzNTY3LCJqdGkiOiJjNzE4ZTVkNjgzZWQ0NTQyYTU0NWJkM2VmMGI0ZGQ0ZSJ9.ekxRxgb9OKmHkfy-zs1Ro_xs1eMLXiR17dIDBVxeT-w"}
 ```
+
+# Semantic Versioning
+
+# Android
+
+`curl -d '{"os":"android"}' -H "Content-Type: application/json" -X POST http://localhost:8000/api/version/`
+
+`{"id":1,"os":"android","version":"1.0.0"}`
+
+# iOS
+
+`curl -d '{"os":"ios"}' -H "Content-Type: application/json" -X POST http://localhost:8000/api/version/`
+
+`{"id":2,"os":"ios","version":"1.0.0"}`
