@@ -9,6 +9,7 @@ export class WorkoutsService {
   constructor(private http: HttpClient) { }
 
   syncWorkouts() {
+    //
     return this.http.get('http://localhost:8000/api/workouts/');
   }
 }
