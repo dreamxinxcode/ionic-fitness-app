@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DateTimeService } from '../services/date-time/date-time.service';
-import { WorkoutsService } from '../services/workouts/workouts.service';
 
 @Component({
   selector: 'app-workouts-tab',
