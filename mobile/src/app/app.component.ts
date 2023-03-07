@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SettingsService } from './services/settings/settings.service';
-import { Platform } from '@ionic/angular';
+import { VersionService } from './services/version/version.service';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +10,12 @@ import { Platform } from '@ionic/angular';
 export class AppComponent {
   constructor(
     private settingsService: SettingsService,
-    private platform: Platform,
+    private versionService: VersionService
   ) {
     this.initializeApp();
     this.settingsService.setTheme();
+    this.versionService.os = this.versionService.determinePlatform();
+    this.versionService.checkForUpdates();
   }
 
   initializeApp() {
