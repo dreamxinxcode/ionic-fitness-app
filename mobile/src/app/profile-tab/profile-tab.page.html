@@ -16,7 +16,7 @@
   <div class="card-body">
     <div class="ion-text-center">
       <ion-avatar id="profile-avatar">
-        <img src="{{ userService.user.avatar }}">
+        <img src="http://localhost:8000/{{ userService.user.profile.avatar }}" alt="avatar">
       </ion-avatar>
       <h3>{{ userService.user.profile.first_name }} {{ userService.user.profile.last_name }}</h3>
       <h6>{{ userService.user.username }}</h6>
