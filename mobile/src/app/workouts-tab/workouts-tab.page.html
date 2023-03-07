@@ -26,13 +26,15 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <app-workouts-skeleton *ngIf="!loaded"></app-workouts-skeleton>
+
   <ion-card *ngFor="let workout of workouts; let i = index">
     <ion-card-header>
       <ion-item>
         <ion-item [routerLink]="['/tabs/workouts-tab/workout', workout.uuid]">
-          <p class="spartan">
+          <h3 class="spartan">
             {{ dateTimeService.formatDate(workout.workout_data.timestamp) }}
-          </p>
+          </h3>
         </ion-item>
         <ion-icon id="settings_{{ i }}" name="ellipsis-vertical" slot="end"></ion-icon>
       </ion-item>
