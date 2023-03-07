@@ -7,6 +7,7 @@ import { WorkoutsTabPageRoutingModule } from './workouts-tab-routing.module';
 
 import { WorkoutsTabPage } from './workouts-tab.page';
 import { WorkoutComponent } from './workout/workout.component';
+import { WorkoutsSkeletonComponent } from './workouts-skeleton/workouts-skeleton.component';
 
 
 @NgModule({
@@ -17,7 +18,6 @@ import { WorkoutComponent } from './workout/workout.component';
     WorkoutsTabPageRoutingModule,
     ReactiveFormsModule,
   ],
-  declarations: [WorkoutsTabPage, WorkoutComponent],
-  exports: [WorkoutComponent]
+  declarations: [WorkoutsTabPage, WorkoutComponent, WorkoutsSkeletonComponent],
 })
 export class WorkoutsTabPageModule {}
