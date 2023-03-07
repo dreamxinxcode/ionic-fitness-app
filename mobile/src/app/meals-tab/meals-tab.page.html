@@ -19,10 +19,21 @@
 
   <app-meals-skeleton *ngIf="!loaded"></app-meals-skeleton>
 
-  <ion-card *ngFor="let meal of meals">
-    <ion-card-title> {{ meal.title }} </ion-card-title>
-    <ion-footer>
-      <ion-badge *ngFor="let tag of meal.tags">{{ tag.title }}</ion-badge>
-    </ion-footer>
+  <ion-card *ngFor="let meal of meals" class="meal-card">
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <img src="http://localhost:8000{{ meal.image }}" alt="">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>
+          {{ meal.title }}
+        </h2>
+        {{ meal.recipe }}
+        <div>
+          <ion-badge *ngFor="let tag of meal.tags" color="primary">{{ tag.title }}</ion-badge>
+        </div>
+      </ion-label>
+    </ion-item>
   </ion-card>
+
 </ion-content>
