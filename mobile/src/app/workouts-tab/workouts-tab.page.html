@@ -20,11 +20,15 @@
     </ion-button>
   </ion-item>
 
+  <app-workouts-skeleton *ngIf="!loaded"></app-workouts-skeleton>
+
   <ion-card *ngFor="let workout of workouts; let i = index">
     <ion-card-header>
       <ion-item>
         <ion-item [routerLink]="['/tabs/workouts-tab/workout', workout.uuid]">
-          {{ dateTimeService.formatDate(workout.workout_data.timestamp) }}
+          <h3 class="spartan">
+            {{ dateTimeService.formatDate(workout.workout_data.timestamp) }}
+          </h3>
         </ion-item>
         <ion-icon id="settings_{{ i }}" name="ellipsis-vertical" slot="end"></ion-icon>
       </ion-item>

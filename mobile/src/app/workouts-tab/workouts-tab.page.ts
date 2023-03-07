@@ -8,8 +8,9 @@ import { DateTimeService } from '../services/date-time/date-time.service';
   styleUrls: ['./workouts-tab.page.scss'],
 })
 export class WorkoutsTabPage implements OnInit {
-  public date:any = this.dateTimeService.formatDate(new Date());
-  public workouts:any;
+  date:any = this.dateTimeService.formatDate(new Date());
+  workouts:any;
+  loaded = false;
 
   constructor(
     private http: HttpClient,
@@ -19,7 +20,18 @@ export class WorkoutsTabPage implements OnInit {
   ngOnInit() {
     this.http.get('http://localhost:8000/api/workouts/').subscribe((res) => {
       this.workouts = res;
+      this.loaded = true;
     });
+  }
+
+  handleRefresh(event) {
+    setTimeout(() => {
+      this.workoutsService.syncWorkouts().subscribe((res) => {
+        this.workouts = res;
+      });
+      event.target.complete();
+      this.loaded = true;
+    }, 2000);
   }
 
   public onDelete(index: number, id):void {
