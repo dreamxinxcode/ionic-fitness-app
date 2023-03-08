@@ -1,0 +1,38 @@
+<ion-content [fullscreen]="true" class="ion-page" id="main-content">
+  <app-menu></app-menu>
+  <app-header></app-header>
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)" show-clear-button="always"></ion-searchbar>
+
+  <div class="card-body">
+    <div class="ion-text-center">
+      <ion-avatar id="profile-avatar">
+        <img src="http://localhost:8000/{{ userService.user.profile.avatar }}" alt="avatar">
+      </ion-avatar>
+      <h3>{{ userService.user.profile.first_name }} {{ userService.user.profile.last_name }}</h3>
+      <h6>{{ userService.user.username }}</h6>
+      <h5>{{ userService.user.profile.city }}, {{ userService.user.profile.country }}</h5>
+      <h6>Current workouts: <ion-chip>
+        <ion-label>{{ userService.user.profile.workout_count }}</ion-label>
+        </ion-chip>
+      </h6>
+      <i>{{ userService.user.profile.bio }}</i>
+    </div>
+    <ion-button expand="full" color="primary">FOLLOW</ion-button>
+    <ion-button expand="full" color="secondary">SEND MESSAGE</ion-button>
+    <ion-button expand="full" color="secondary">WORKOUTS</ion-button>
+  </div>
+
+  <ion-list-header class="spartan"> Moments </ion-list-header>
+
+</ion-content>
