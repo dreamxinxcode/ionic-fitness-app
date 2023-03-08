@@ -35,4 +35,23 @@
 
   <ion-list-header class="spartan"> Moments </ion-list-header>
 
+  <ion-card *ngFor="let moment of moments">
+    <ion-card-header>
+      <ion-item>
+        <ion-avatar slot="start">
+          <img alt="Silhouette of a person's head" src="http://localhost:8000/{{ moment.user.profile.avatar }}" />
+        </ion-avatar>
+        <p>
+          {{ moment.user.profile.first_name }} {{ moment.user.profile.last_name }} ({{ moment.user.username }})
+        </p>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      <h3 class="spartan">{{ moment.text }}</h3>
+      <p class="ion-text-right">
+        {{ dateTimeService.formatDistance(moment.timestamp) }}
+      </p>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

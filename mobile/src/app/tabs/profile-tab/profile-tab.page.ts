@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { DateTimeService } from 'src/app/services/date-time/date-time.service';
+import { MomentsService } from 'src/app/services/moments/moments.service';
 import { UserService } from '../../services/user/user.service';
 
 @Component({
@@ -17,10 +19,15 @@ export class ProfileTabPage implements OnInit {
   constructor(
     private http: HttpClient,
     public userService: UserService,
+    private momentsService: MomentsService,
+    public dateTimeService: DateTimeService,
   ) { }
 
   ngOnInit() {
     this.currentUser = this.userService.user;
+    this.momentsService.syncMoments().subscribe((res) => {
+      this.moments = res;  
+    });
   }
 
   handleSearch(event) {
@@ -33,6 +40,9 @@ export class ProfileTabPage implements OnInit {
   handleRefresh(event) {
     setTimeout(() => {
       this.currentUser = this.userService.getUser();
+      this.momentsService.syncMoments().subscribe((res) => {
+        this.moments = res;  
+      });
       event.target.complete();
     }, 2000);
   }
