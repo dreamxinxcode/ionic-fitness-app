@@ -9,35 +9,39 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule),
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule),
   },
   {
     path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
   {
     path: 'forgot-password',
-    loadChildren: () => import('./forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule),
+    loadChildren: () => import('./pages/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule),
+  },
+  {
+    path: 'moments',
+    loadChildren: () => import('./pages/moments/moments.module').then( m => m.MomentsModule),
   },
   {
     path: 'workouts-tab',
-    loadChildren: () => import('./workouts-tab/workouts-tab.module').then( m => m.WorkoutsTabPageModule),
+    loadChildren: () => import('./tabs/workouts-tab/workouts-tab.module').then( m => m.WorkoutsTabPageModule),
   },
   {
     path: 'meals-tab',
-    loadChildren: () => import('./meals-tab/meals-tab.module').then( m => m.MealsTabPageModule),
+    loadChildren: () => import('./tabs/meals-tab/meals-tab.module').then( m => m.MealsTabPageModule),
   },
   {
     path: 'profile-tab',
-    loadChildren: () => import('./profile-tab/profile-tab.module').then( m => m.ProfileTabPageModule),
+    loadChildren: () => import('./tabs/profile-tab/profile-tab.module').then( m => m.ProfileTabPageModule),
   },
   {
     path: 'analytics-tab',
-    loadChildren: () => import('./analytics-tab/analytics-tab.module').then( m => m.AnalyticsTabPageModule),
+    loadChildren: () => import('./tabs/analytics-tab/analytics-tab.module').then( m => m.AnalyticsTabPageModule),
   },
   {
     path: 'settings-tab',
-    loadChildren: () => import('./settings-tab/settings-tab.module').then( m => m.SettingsTabPageModule),
+    loadChildren: () => import('./tabs/settings-tab/settings-tab.module').then( m => m.SettingsTabPageModule),
   },
 ];
 @NgModule({
