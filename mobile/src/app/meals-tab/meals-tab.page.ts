@@ -9,12 +9,14 @@ import { MealsService } from '../services/meals/meals.service';
 export class MealsTabPage implements OnInit {
 
   meals: any;
+  loaded = false;
 
   constructor(private mealService: MealsService) { }
 
   ngOnInit() {
     this.mealService.syncMeals().subscribe((res) => {
       this.meals = res;
+      this.loaded = true;
     });
   }
 
@@ -22,6 +24,7 @@ export class MealsTabPage implements OnInit {
     setTimeout(() => {
       this.mealService.syncMeals().subscribe((res) => {
         this.meals = res;
+        this.loaded = true;
       });
       event.target.complete();
     }, 2000);
