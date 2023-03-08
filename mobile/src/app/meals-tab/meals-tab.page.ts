@@ -23,7 +23,9 @@ export class MealsTabPage implements OnInit {
 
   handleSearch(event) {
     const query = event.target.value.toLowerCase();
-    this.results = this.meals.filter(d => d.title.toLowerCase().indexOf(query) > -1);
+    this.results = this.meals.filter((meal) => {
+      return meal.title.toLowerCase().indexOf(query) > -1
+    });
   }
 
   handleRefresh(event) {

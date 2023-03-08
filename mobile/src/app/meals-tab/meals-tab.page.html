@@ -17,7 +17,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)"></ion-searchbar>
+  <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)" show-clear-button="always"></ion-searchbar>
 
   <app-meals-skeleton *ngIf="!loaded"></app-meals-skeleton>
 
