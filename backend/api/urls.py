@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import exercise, workout, meal, version
+from .views import exercise, workout, meal, version, moment
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework.routers import DefaultRouter
 
@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register('exercises', exercise.ExerciseViewSet, basename='exercise_viewset')
 router.register('workouts', workout.WorkoutViewset, basename='workout_viewset')
 router.register('meals', meal.MealViewset, basename='meal_viewset')
+router.register('moments', moment.MomentViewset, basename='moment_viewset')
 
 urlpatterns = [
     path('', include(router.urls)),
