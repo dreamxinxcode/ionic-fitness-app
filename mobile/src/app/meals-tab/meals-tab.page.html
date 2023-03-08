@@ -17,9 +17,11 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)" show-clear-button="always"></ion-searchbar>
+
   <app-meals-skeleton *ngIf="!loaded"></app-meals-skeleton>
 
-  <ion-card *ngFor="let meal of meals" class="meal-card">
+  <ion-card *ngFor="let meal of results || meals" class="meal-card">
     <ion-item>
       <ion-thumbnail slot="start">
         <img src="http://localhost:8000{{ meal.image }}" alt="">

@@ -10,6 +10,7 @@ export class MealsTabPage implements OnInit {
 
   meals: any;
   loaded = false;
+  results;
 
   constructor(private mealService: MealsService) { }
 
@@ -17,6 +18,13 @@ export class MealsTabPage implements OnInit {
     this.mealService.syncMeals().subscribe((res) => {
       this.meals = res;
       this.loaded = true;
+    });
+  }
+
+  handleSearch(event) {
+    const query = event.target.value.toLowerCase();
+    this.results = this.meals.filter((meal) => {
+      return meal.title.toLowerCase().indexOf(query) > -1
     });
   }
 
