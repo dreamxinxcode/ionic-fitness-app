@@ -23,7 +23,7 @@
   <app-workouts-skeleton *ngIf="!loaded"></app-workouts-skeleton>
 
   <ion-card *ngFor="let workout of workouts; let i = index">
-    <ion-card-header>
+    <ion-card-content>
       <ion-item>
         <ion-item [routerLink]="['/tabs/workouts-tab/workout', workout.uuid]">
           <h3 class="spartan">
@@ -46,24 +46,22 @@
           </ion-content>
         </ng-template>
       </ion-popover>
-    </ion-card-header>
-    <ion-accordion-group [multiple]="true">
-      <ion-accordion *ngFor="let exercise of workout.workout_data.exercises">
-        <ion-item slot="header">
-          <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
-          <ion-label>{{ exercise.name }}</ion-label>
-        </ion-item>
-        <ion-list slot="content">
-          <ion-item *ngFor="let set of exercise.sets">
-            <ion-label>{{ set.weight && set.weight + ' lbs x' }} {{ set.reps + ' reps'}}</ion-label>
+      <ion-accordion-group [multiple]="true">
+        <ion-accordion *ngFor="let exercise of workout.workout_data.exercises">
+          <ion-item slot="header">
+            <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
+            <ion-label>{{ exercise.name }}</ion-label>
           </ion-item>
-        </ion-list>
-      </ion-accordion>
-    </ion-accordion-group>
-    <ion-card-footer>
+          <ion-list slot="content">
+            <ion-item *ngFor="let set of exercise.sets">
+              <ion-label>{{ set.weight && set.weight + ' lbs x' }} {{ set.reps + ' reps'}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-accordion>
+      </ion-accordion-group>
       <p class="ion-text-end">
         {{ dateTimeService.formatDistance(workout.workout_data.timestamp) }}
       </p>
-    </ion-card-footer>
+    </ion-card-content>  
   </ion-card>
 </ion-content>

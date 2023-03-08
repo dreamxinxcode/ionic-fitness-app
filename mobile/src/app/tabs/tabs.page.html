@@ -10,10 +10,10 @@
     </ion-tab-button>
 
     <ion-tab-button tab="profile-tab">
-      <ion-avatar *ngIf="userService.currentUser?.avatar">
-        <img id='avatar-icon' src={{userService.currentUser.avatar}} />
+      <ion-avatar *ngIf="userService.user?.profile.avatar">
+        <img id='avatar-icon' src='http://localhost:8000/{{userService.user.profile.avatar}}' />
       </ion-avatar>
-      <ion-icon *ngIf="!userService.currentUser?.avatar" name="accessibility-outline"></ion-icon>
+      <ion-icon *ngIf="!userService.user?.profile.avatar" name="accessibility-outline"></ion-icon>
     </ion-tab-button>
 
     <ion-tab-button tab="analytics-tab">
