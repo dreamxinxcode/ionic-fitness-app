@@ -1,0 +1,30 @@
+<ion-content [fullscreen]="true" class="ion-page" id="main-content">
+  <app-menu></app-menu>
+  <app-header></app-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)" show-clear-button="always"></ion-searchbar>
+
+  <app-meals-skeleton *ngIf="!loaded"></app-meals-skeleton>
+
+  <ion-card *ngFor="let meal of results || meals" class="meal-card">
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <img src="http://localhost:8000{{ meal.image }}" alt="">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>
+          {{ meal.title }}
+        </h2>
+        {{ meal.recipe }}
+        <div>
+          <ion-badge *ngFor="let tag of meal.tags" color="primary">{{ tag.title }}</ion-badge>
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+</ion-content>
