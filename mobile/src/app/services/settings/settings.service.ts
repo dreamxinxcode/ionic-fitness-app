@@ -8,6 +8,7 @@ export class SettingsService {
   private renderer: Renderer2;
 
   constructor(
+    private rendererFactory: RendererFactory2,
     private toastService: ToastService,
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
