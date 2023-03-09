@@ -13,19 +13,13 @@ import { PickerController } from '@ionic/angular';
 })
 export class SettingsTabPage implements OnInit {
 
-  settingsForm: FormGroup
-
   constructor(
     private settingsService: SettingsService,
     public authService: AuthService,
     private toast: ToastService,
     private pickerCtrl: PickerController,
     private actionSheetCtrl: ActionSheetController,
-  ) {
-    this.settingsForm = new FormGroup({
-      themeToggle: new FormControl(localStorage.getItem('dark_theme')),
-    });
-  }
+  ) {}
 
   ngOnInit() {
   }
@@ -98,8 +92,6 @@ export class SettingsTabPage implements OnInit {
   }
 
   saveSettings() {
-    this.settingsService.toggleTheme(this.settingsForm.value.themeToggle)
-    this.settingsService.setTheme();
     this.toast.render('Your settings have been saved.', 'success', 'settings-outline');
   }
 }
