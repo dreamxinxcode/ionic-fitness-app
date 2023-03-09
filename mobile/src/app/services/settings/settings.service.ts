@@ -1,4 +1,5 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { ToastService } from '../toast/toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -6,12 +7,17 @@ import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 export class SettingsService {
   private renderer: Renderer2;
 
-  constructor(private rendererFactory: RendererFactory2) {
+  constructor(
+    private toastService: ToastService,
+  ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
-  toggleTheme(isDark: string): void {
-    localStorage.setItem('dark_theme', isDark);
+  toggleDarkMode(event): void {
+    const value = event.detail.checked;
+    localStorage.setItem('dark_theme', value.toString());
+    this.setTheme();
+    this.toastService.render(`${value ? 'Dark' : 'Light'} Mode Enabled`, 'primary', 'moon');
   }
 
   setTheme(): void {
@@ -22,8 +28,8 @@ export class SettingsService {
     }
   }
 
-  getTheme(): string {
-    return localStorage.getItem('dark_theme');
+  isDark(): boolean {
+    return localStorage.getItem('dark_theme') === 'true';
   }
 
   setAccent(accent: string): void {
