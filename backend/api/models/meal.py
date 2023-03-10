@@ -16,13 +16,13 @@ class Meal(models.Model):
   image = models.ImageField(default='default.png', upload_to='meals')
   recipe = models.TextField()
   meal_type = models.CharField(max_length=50, choices=MEAL_TYPE_CHOICES)
-  tags = models.ManyToManyField('Tag')
+  tags = models.ManyToManyField('MealTag')
 
   def __str__(self):
     return str(self.title)
 
 
-class Tag(models.Model):
+class MealTag(models.Model):
   title = models.CharField(max_length=15)
 
   def __str__(self):

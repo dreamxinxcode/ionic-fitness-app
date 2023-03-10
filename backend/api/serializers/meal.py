@@ -1,14 +1,14 @@
 from rest_framework.serializers import ModelSerializer
-from ..models.meal import Meal, Tag
+from ..models.meal import Meal, MealTag
 
 
-class TagSerializer(ModelSerializer):
+class MealTagSerializer(ModelSerializer):
     class Meta:
-        model = Tag
+        model = MealTag
         fields = '__all__'
 
 class MealSerializer(ModelSerializer):
-    tags = TagSerializer(many=True)
+    tags = MealTagSerializer(many=True)
 
     class Meta:
         model = Meal

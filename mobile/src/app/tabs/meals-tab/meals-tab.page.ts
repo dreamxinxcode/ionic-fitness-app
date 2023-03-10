@@ -9,8 +9,10 @@ import { MealsService } from '../../services/meals/meals.service';
 export class MealsTabPage implements OnInit {
 
   meals: any;
+  tags;
   loaded = false;
   results;
+  selectedTags = [];
 
   constructor(private mealService: MealsService) { }
 
@@ -19,6 +21,16 @@ export class MealsTabPage implements OnInit {
       this.meals = res;
       this.loaded = true;
     });
+    this.mealService.syncMealTags().subscribe((res) => {
+      this.tags = res;
+    });
+  }
+
+  filterByTags(tag: string) {
+    this.selectedTags.push(tag);
+    this.mealService.filterByTags(this.selectedTags).subscribe((res) => {
+      this.results = res;
+    });    
   }
 
   handleSearch(event) {
