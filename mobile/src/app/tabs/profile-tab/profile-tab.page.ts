@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { MomentsService } from 'src/app/services/moments/moments.service';
 import { UserService } from '../../services/user/user.service';
@@ -17,6 +18,9 @@ export class ProfileTabPage implements OnInit {
   moments;
   loaded;
   loadingSearch = false;
+  momentForm = new FormGroup({
+    moment: new FormControl()
+  });
 
   constructor(
     private http: HttpClient,
@@ -29,6 +33,24 @@ export class ProfileTabPage implements OnInit {
     this.currentUser = this.userService.user;
     this.momentsService.syncMoments().subscribe((res) => {
       this.moments = res;
+    });
+  }
+
+  submitMoment() {
+    const moment = this.momentForm.value.moment;
+    this.http.post('http://localhost:8000/api/moments/', { text: moment }).subscribe({
+      next: () => {
+        this.momentForm.controls.moment.reset();
+        this.momentsService.syncMoments().subscribe((res) => {
+          this.moments = res;
+        });
+      },
+      error: (err) => {
+
+      },
+      complete: () => {
+
+      }
     });
   }
 

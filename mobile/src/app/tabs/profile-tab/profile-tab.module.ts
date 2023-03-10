@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ProfileTabPageRoutingModule } from './profile-tab-routing.module';
 import { ProfileTabPage } from './profile-tab.page';
@@ -13,7 +13,8 @@ import { UserSearchSkeletonComponent } from './user-search-skeleton/user-search-
     FormsModule,
     IonicModule,
     ProfileTabPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    ReactiveFormsModule,
   ],
   declarations: [ProfileTabPage, UserSearchSkeletonComponent]
 })

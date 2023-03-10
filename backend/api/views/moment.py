@@ -16,12 +16,12 @@ class MomentViewset(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         data = request.data
         user = request.user
-        moment = Moment.objects.create(uuid=data['uuid'], user=user, Moment_data=data['moment'])
+        moment = Moment.objects.create(user=user, text=data['text'])
         serializer = MomentSerializer(moment)
         return Response(serializer.data)
 
     def list(self, request):
-        queryset = Moment.objects.all()
+        queryset = Moment.objects.all().order_by('-timestamp')
         serializer = MomentSerializer(queryset, many=True)
         return Response(serializer.data)
 

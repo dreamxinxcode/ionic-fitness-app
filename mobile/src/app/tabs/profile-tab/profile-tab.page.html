@@ -48,6 +48,13 @@
     <ion-button expand="full" color="secondary">WORKOUTS</ion-button>
   </div>
 
+  <div [formGroup]="momentForm">
+    <ion-textarea formControlName='moment' placeholder="Type something here"></ion-textarea>
+    <ion-button (click)="submitMoment()">
+      <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
+  </div>
+  
   <ion-list-header class="spartan"> Moments </ion-list-header>
 
   <ion-list>
