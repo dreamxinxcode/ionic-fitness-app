@@ -8,7 +8,29 @@
 
   <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)" show-clear-button="always"></ion-searchbar>
 
-  <app-meals-skeleton *ngIf="!loaded"></app-meals-skeleton>
+  <ion-item *ngIf="tags.length">
+    <ion-button 
+    *ngFor="let tag of tags" 
+    (click)="filterByTags(tag.title)" 
+    [disabled]="selectedTags.includes(tag.title)" 
+    size='small' 
+    shape="round" 
+    class="meal-tag"
+  >
+    {{ tag.title }}
+  </ion-button>
+  <ion-button 
+    (click)="selectedTags=[]"
+    size='small' 
+    shape="round" 
+  >
+    <ion-icon slot="start" name="close"></ion-icon>
+    Clear
+  </ion-button>
+  
+  </ion-item>
+
+  <app-meals-skeleton *ngIf="loading"></app-meals-skeleton>
 
   <ion-card *ngFor="let meal of results || meals" class="meal-card">
     <ion-item>
