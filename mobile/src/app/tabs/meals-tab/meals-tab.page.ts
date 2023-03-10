@@ -9,8 +9,8 @@ import { MealsService } from '../../services/meals/meals.service';
 export class MealsTabPage implements OnInit {
 
   meals: any;
-  tags;
-  loaded = false;
+  tags = [];
+  loading = true;
   results;
   selectedTags = [];
 
@@ -19,17 +19,26 @@ export class MealsTabPage implements OnInit {
   ngOnInit() {
     this.mealService.syncMeals().subscribe((res) => {
       this.meals = res;
-      this.loaded = true;
+      this.loading = false;
     });
-    this.mealService.syncMealTags().subscribe((res) => {
+    this.mealService.syncMealTags().subscribe((res: any) => {
       this.tags = res;
     });
   }
 
   filterByTags(tag: string) {
     this.selectedTags.push(tag);
-    this.mealService.filterByTags(this.selectedTags).subscribe((res) => {
-      this.results = res;
+    this.loading = true;
+    this.mealService.filterByTags(this.selectedTags).subscribe({
+      next: (res) => {
+        this.results = res;
+      },
+      error: (err) => {
+
+      },
+      complete: () => {
+        this.loading = false;
+      }
     });    
   }
 
@@ -44,7 +53,7 @@ export class MealsTabPage implements OnInit {
     setTimeout(() => {
       this.mealService.syncMeals().subscribe((res) => {
         this.meals = res;
-        this.loaded = true;
+        this.loading = false;
       });
       event.target.complete();
     }, 2000);
