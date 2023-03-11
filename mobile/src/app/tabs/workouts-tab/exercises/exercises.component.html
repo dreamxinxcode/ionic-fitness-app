@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Exercises
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Exercises</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-item>
+    <ion-label position="floating">Create your own exercise</ion-label>
+    <ion-input [formControl]='exerciseControl' placeholder="Type here" [clearInput]="true"></ion-input>
+  </ion-item>
+  
+  <ion-button *ngIf="exerciseControl.value" (click)="submitExercise()" shape="round">
+    <ion-icon slot="icon-only" name="add"></ion-icon>
+  </ion-button>
+
+  <ion-list>
+    <ion-item *ngFor="let exercise of exercises">
+      {{ exercise.name }}
+    </ion-item>
+  </ion-list>
+
+</ion-content>
