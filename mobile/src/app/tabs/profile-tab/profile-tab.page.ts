@@ -50,7 +50,7 @@ export class ProfileTabPage implements OnInit {
         });
       },
       error: (err) => {
-        this.toast.render(err);
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
       },
       complete: () => {
 
@@ -66,7 +66,7 @@ export class ProfileTabPage implements OnInit {
         this.results = res;
       },
       error: (err) => {
-        this.toast.render(err);
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
       },
       complete: () => {
         this.loadingSearch = false; 

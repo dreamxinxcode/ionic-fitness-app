@@ -38,7 +38,7 @@ export class MealsTabPage implements OnInit {
         this.results = res;
       },
       error: (err) => {
-        this,this.toast.render(err);
+        this,this.toast.render(err.message, 'danger', 'alert-circle-outline');
       },
       complete: () => {
         this.loading = false;

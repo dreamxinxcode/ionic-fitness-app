@@ -28,7 +28,7 @@ export class WorkoutsTabPage implements OnInit {
         this.workouts = res;
       },
       error: (err) => {
-        this.toast.render(err);
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
       },
       complete: () => {
         this.loading = false;
