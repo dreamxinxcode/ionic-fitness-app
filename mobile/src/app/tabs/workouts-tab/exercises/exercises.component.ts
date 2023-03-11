@@ -41,6 +41,7 @@ export class ExercisesComponent implements OnInit {
     this.api.post('exercises', { name: this.exerciseControl.value }).subscribe({
       next: (res: any) => {
         this.exercises.unshift(res);
+        this.exerciseControl.reset();
       },
       error: (err) => {
         this.toast.render(err.message, 'danger', 'alert-circle-outline');
