@@ -37,8 +37,8 @@ export class AuthService {
         this.router.navigate(['/tabs/workouts-tab']);
         this.toast.render('Success! Welcome!', 'success', 'person-outline')
       },
-      error: (res) => {
-        this.toast.render('Whoops! Looks like you mistyped', 'danger', 'person-outline');
+      error: (err) => {
+        this.toast.render(err.message, 'danger', 'person-outline');
       },
       complete: () => {
 
