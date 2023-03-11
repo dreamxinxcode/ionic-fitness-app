@@ -10,6 +10,7 @@ import { WorkoutComponent } from './workout/workout.component';
 import { WorkoutsSkeletonComponent } from './workouts-skeleton/workouts-skeleton.component';
 import { MenuComponent } from '../../shared/components/menu/menu.component';
 import { ComponentsModule } from '../../shared/components/components.module';
+import { ExercisesComponent } from './exercises/exercises.component';
 
 
 @NgModule({
@@ -21,6 +22,11 @@ import { ComponentsModule } from '../../shared/components/components.module';
     ReactiveFormsModule,
     ComponentsModule
   ],
-  declarations: [WorkoutsTabPage, WorkoutComponent, WorkoutsSkeletonComponent],
+  declarations: [
+    WorkoutsTabPage, 
+    WorkoutComponent, 
+    WorkoutsSkeletonComponent,
+    ExercisesComponent,
+  ],
 })
 export class WorkoutsTabPageModule {}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastService } from 'src/app/services/toast/toast.service';
 import { MealsService } from '../../services/meals/meals.service';
 
 @Component({
@@ -10,11 +11,14 @@ export class MealsTabPage implements OnInit {
 
   meals: any;
   tags = [];
-  loading = true;
+  loading: boolean = true;
   results;
   selectedTags = [];
 
-  constructor(private mealService: MealsService) { }
+  constructor(
+    private mealService: MealsService,
+    private toast: ToastService,
+  ) { }
 
   ngOnInit() {
     this.mealService.syncMeals().subscribe((res) => {
@@ -34,7 +38,7 @@ export class MealsTabPage implements OnInit {
         this.results = res;
       },
       error: (err) => {
-
+        this,this.toast.render(err.message, 'danger', 'alert-circle-outline');
       },
       complete: () => {
         this.loading = false;

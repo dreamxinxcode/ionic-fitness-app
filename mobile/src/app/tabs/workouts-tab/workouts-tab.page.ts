@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DateTimeService } from '../../services/date-time/date-time.service';
 import { WorkoutsService } from '../../services/workouts/workouts.service';
+import { ApiService } from 'src/app/services/api/api.service';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-workouts-tab',
@@ -11,18 +13,26 @@ import { WorkoutsService } from '../../services/workouts/workouts.service';
 export class WorkoutsTabPage implements OnInit {
   date:any = this.dateTimeService.formatDate(new Date());
   workouts:any;
-  loaded = false;
+  loading: boolean = true;
 
   constructor(
-    private http: HttpClient,
+    private api: ApiService,
+    private toast: ToastService,
     private dateTimeService: DateTimeService,
     private workoutsService: WorkoutsService
   ) { }
 
   ngOnInit() {
-    this.http.get('http://localhost:8000/api/workouts/').subscribe((res) => {
-      this.workouts = res;
-      this.loaded = true;
+    this.api.get('workouts').subscribe({
+      next: (res) => {
+        this.workouts = res;
+      },
+      error: (err) => {
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
+      },
+      complete: () => {
+        this.loading = false;
+      }
     });
   }
 
@@ -32,12 +42,12 @@ export class WorkoutsTabPage implements OnInit {
         this.workouts = res;
       });
       event.target.complete();
-      this.loaded = true;
+      this.loading = true;
     }, 2000);
   }
 
   public onDelete(index: number, id):void {
-    this.http.delete(`http://localhost:8000/api/workouts/${id}/`).subscribe((res) => {
+    this.api.delete(`workouts/${id}`).subscribe((res) => {
       this.workouts.splice(index, 1);
     });
   }

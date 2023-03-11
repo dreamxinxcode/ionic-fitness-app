@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ApiService } from 'src/app/services/api/api.service';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { MomentsService } from 'src/app/services/moments/moments.service';
+import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from '../../services/user/user.service';
 
 @Component({
@@ -16,7 +18,7 @@ export class ProfileTabPage implements OnInit {
   results;
   currentUser;
   moments;
-  loaded;
+  loading: boolean = true;
   loadingSearch = false;
   momentForm = new FormGroup({
     moment: new FormControl()
@@ -24,9 +26,11 @@ export class ProfileTabPage implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private api: ApiService,
     public userService: UserService,
     private momentsService: MomentsService,
     private dateTimeService: DateTimeService,
+    private toast: ToastService,
   ) { }
 
   ngOnInit() {
@@ -38,7 +42,7 @@ export class ProfileTabPage implements OnInit {
 
   submitMoment() {
     const moment = this.momentForm.value.moment;
-    this.http.post('http://localhost:8000/api/moments/', { text: moment }).subscribe({
+    this.api.post('moments', { text: moment }).subscribe({
       next: () => {
         this.momentForm.controls.moment.reset();
         this.momentsService.syncMoments().subscribe((res) => {
@@ -46,7 +50,7 @@ export class ProfileTabPage implements OnInit {
         });
       },
       error: (err) => {
-
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
       },
       complete: () => {
 
@@ -57,16 +61,15 @@ export class ProfileTabPage implements OnInit {
   handleSearch(event) {
     this.loadingSearch = true;
     const query = event.target.value.toLowerCase();
-    this.http.get(`http://localhost:8000/users/query/?q=${query}`).subscribe({
+    this.api.get(`users/query/?q=${query}`).subscribe({
       next: (res) => {
-        this.results = res;console.log('next')
+        this.results = res;
       },
       error: (err) => {
-        
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
       },
       complete: () => {
         this.loadingSearch = false; 
-        console.log('comp', this.results)
       },
     });
   }

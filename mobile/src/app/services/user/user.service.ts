@@ -16,7 +16,7 @@ export class UserService {
   }
 
   getUser() {
-    this.http.get(this.config.BASE_URL + 'users/me/').subscribe((res: any) => {
+    this.http.get(`${this.config.BASE_URL}/users/me/`).subscribe((res: any) => {
       this.user = res;
     });
   }
