@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,8 @@ export class RegisterPage implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private toast: ToastService,
   ) { }
 
   ngOnInit() {
@@ -30,10 +32,20 @@ export class RegisterPage implements OnInit {
 
   registerSubmit() {
     this.http.post(
-      'http://localhost:8000/register/',
+      'http://localhost:8000/users/register/',
       this.registerForm.value,
-    ).subscribe((res) => {
-      this.router.navigate(['http://localhost:8000/workouts-tab']);
+    ).subscribe({
+      next: () => {
+        this.router.navigate(['http://localhost:8000/workouts-tab/workouts/']);
+      },
+      error: (err) => {
+        err.error.password.forEach((i) => {
+          this.toast.render(i, 'danger', 'alert-circle-outline');
+        });
+      },
+      complete: () => {
+
+      }
     });
   }
 }

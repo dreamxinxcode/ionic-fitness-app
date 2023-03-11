@@ -1,11 +1,11 @@
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from .models import CustomUser, Profile
-from .serializers import UserSerializer
+from .serializers import UserSerializer, RegistrationSerializer
 
 
 class UserViewset(viewsets.ModelViewSet):
@@ -58,3 +58,19 @@ class UserViewset(viewsets.ModelViewSet):
             last_name=data['last_name'],
         ) 
         return Response(user)
+
+
+    @action(detail=False, methods=['POST'])
+    def register(self, request):
+        serializer = RegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({'id': user.id, 'email': user.email}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    @action(detail=False, methods=['get'])
+    def recent_users(self, request):
+        recent_users = CustomUser.objects.all().order_by('-last_login')
+        serializer = UserSerializer(recent_users)
+        return Response(serializer.data)
