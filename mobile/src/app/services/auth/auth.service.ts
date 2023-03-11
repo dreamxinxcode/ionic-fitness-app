@@ -16,23 +16,28 @@ export class AuthService {
     private userService: UserService
   ) { }
 
-  getToken() {
-    return localStorage.getItem('access_token');
-  }
-
   isAuthenticated(): boolean {
     return this.getToken() !== null ? true : false
   }
 
-  setToken(creds) {
+  getToken() {
+    return localStorage.getItem('access_token');
+  }
 
+  setToken(creds) {
+    localStorage.setItem('access_token', creds.access);
+    localStorage.setItem('refresh', creds.refresh);   
+  }
+
+  clearToken() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh');
   }
 
   login(creds) {
     this.http.post('http://localhost:8000/login/', creds).subscribe({
       next: (res: any) => {
-        localStorage.setItem('access_token', res.access);
-        localStorage.setItem('refresh', res.refresh);   
+        this.setToken(res); 
         this.userService.getUser();  
         this.router.navigate(['/tabs/workouts-tab']);
         this.toast.render('Success! Welcome!', 'success', 'person-outline')
@@ -47,8 +52,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh');    
+    this.clearToken(); 
     this.toast.render('Success! Logged out!', 'success', 'person-outline');
     this.router.navigate(['/login']);
   }
