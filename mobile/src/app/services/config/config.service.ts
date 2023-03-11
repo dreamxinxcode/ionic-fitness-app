@@ -6,7 +6,8 @@ import { Injectable } from '@angular/core';
 export class ConfigService {
 
   PORT = 8000
-  BASE_URL = `http://localhost:${this.PORT}/`
+  BASE_URL = `http://localhost:${this.PORT}`;
+  API_URL = `http://localhost:${this.PORT}`;
 
   constructor() { }
 }

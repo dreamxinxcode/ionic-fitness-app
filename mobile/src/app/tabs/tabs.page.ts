@@ -9,5 +9,4 @@ import { UserService } from '../services/user/user.service';
 export class TabsPage {
 
   constructor(public userService: UserService) {}
-
 }

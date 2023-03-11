@@ -9,12 +9,16 @@ import * as semver from 'semver';
 })
 export class VersionService {
 
-  os;
-  currentVersion = '1.0.0';
+  os: string;
+  currentVersion: string = '1.0.0';
 
-  constructor(private http: HttpClient, private platform: Platform, private toastService: ToastService) { }
+  constructor(
+    private http: HttpClient,
+    private platform: Platform,
+    private toastService: ToastService
+  ) { }
 
-  determinePlatform() {
+  determinePlatform(): string {
     let os = '';
     if (this.platform.is('android')) {
       os = 'android';
