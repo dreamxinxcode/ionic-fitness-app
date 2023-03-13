@@ -1,0 +1,56 @@
+<ion-content [fullscreen]="true" class="ion-page" id="main-content">
+  <app-menu></app-menu>
+  <app-header></app-header>
+
+  <ion-item>
+    <h2>{{ date }}</h2>
+    <ion-button [routerLink]="['workout']" color='success' slot="end">
+      Start Workout
+    </ion-button>
+  </ion-item>
+
+  <app-workouts-skeleton *ngIf="loading"></app-workouts-skeleton>
+
+  <ion-card *ngFor="let workout of workouts; let i = index">
+    <ion-card-content>
+      <ion-item>
+        <ion-item [routerLink]="['/tabs/workouts-tab/workout', workout.uuid]">
+          <h3 class="spartan">
+            {{ dateTimeService.formatDate(workout.workout_data.timestamp) }}
+          </h3>
+        </ion-item>
+        <ion-icon id="settings_{{ i }}" name="ellipsis-vertical" slot="end"></ion-icon>
+      </ion-item>
+      <ion-popover trigger="settings_{{ i }}" [dismissOnSelect]="true">
+        <ng-template>
+          <ion-content>
+            <ion-list>
+              <ion-item (click)="onDelete(i, workout.id)" [button]="true" [detail]="false">
+                <ion-label>Delete</ion-label>
+              </ion-item>              
+              <ion-item [button]="true" [detail]="false">
+                <ion-label>Close</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+      <ion-accordion-group [multiple]="true">
+        <ion-accordion *ngFor="let exercise of workout.workout_data.exercises">
+          <ion-item slot="header">
+            <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
+            <ion-label>{{ exercise.name }}</ion-label>
+          </ion-item>
+          <ion-list slot="content">
+            <ion-item *ngFor="let set of exercise.sets">
+              <ion-label>{{ set.weight && set.weight + ' lbs x' }} {{ set.reps + ' reps'}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-accordion>
+      </ion-accordion-group>
+      <p class="ion-text-end">
+        {{ dateTimeService.formatDistance(workout.workout_data.timestamp) }}
+      </p>
+    </ion-card-content>  
+  </ion-card>
+</ion-content>

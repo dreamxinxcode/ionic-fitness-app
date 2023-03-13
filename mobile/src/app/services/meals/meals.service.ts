@@ -11,4 +11,13 @@ export class MealsService {
   syncMeals() {
     return this.http.get('http://localhost:8000/api/meals/');
   }
+
+  syncMealTags() {
+    return this.http.get('http://localhost:8000/api/meals/tags/');
+  } 
+
+  filterByTags(tags) {
+    const params = tags.join(); 
+    return this.http.get(`http://localhost:8000/api/meals/filter_by_tags/?q=${params}/`);
+  }
 }

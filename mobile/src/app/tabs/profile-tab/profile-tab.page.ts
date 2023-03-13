@@ -1,5 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ApiService } from 'src/app/services/api/api.service';
+import { DateTimeService } from 'src/app/services/date-time/date-time.service';
+import { MomentsService } from 'src/app/services/moments/moments.service';
+import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from '../../services/user/user.service';
 
 @Component({
@@ -13,26 +18,68 @@ export class ProfileTabPage implements OnInit {
   results;
   currentUser;
   moments;
-  
+  loading: boolean = true;
+  loadingSearch = false;
+  momentForm = new FormGroup({
+    moment: new FormControl()
+  });
+
   constructor(
     private http: HttpClient,
+    private api: ApiService,
     public userService: UserService,
+    private momentsService: MomentsService,
+    private dateTimeService: DateTimeService,
+    private toast: ToastService,
   ) { }
 
   ngOnInit() {
     this.currentUser = this.userService.user;
+    this.momentsService.syncMoments().subscribe((res) => {
+      this.moments = res;
+    });
+  }
+
+  submitMoment() {
+    const moment = this.momentForm.value.moment;
+    this.api.post('moments', { text: moment }).subscribe({
+      next: () => {
+        this.momentForm.controls.moment.reset();
+        this.momentsService.syncMoments().subscribe((res) => {
+          this.moments = res;
+        });
+      },
+      error: (err) => {
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
+      },
+      complete: () => {
+
+      }
+    });
   }
 
   handleSearch(event) {
+    this.loadingSearch = true;
     const query = event.target.value.toLowerCase();
-    this.results = this.users.filter((meal) => {
-      return meal.title.toLowerCase().indexOf(query) > -1
+    this.api.get(`users/query/?q=${query}`).subscribe({
+      next: (res) => {
+        this.results = res;
+      },
+      error: (err) => {
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
+      },
+      complete: () => {
+        this.loadingSearch = false; 
+      },
     });
   }
 
   handleRefresh(event) {
     setTimeout(() => {
       this.currentUser = this.userService.getUser();
+      this.momentsService.syncMoments().subscribe((res) => {
+        this.moments = res;
+      });
       event.target.complete();
     }, 2000);
   }

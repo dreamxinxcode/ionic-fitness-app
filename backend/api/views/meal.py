@@ -1,9 +1,11 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
-from ..models.meal import Meal
-from ..serializers.meal import MealSerializer
+from django.db.models import Q
+from ..models.meal import Meal, MealTag
+from ..serializers.meal import MealSerializer, MealTagSerializer
 
 
 class MealViewset(viewsets.ModelViewSet):
@@ -31,4 +33,19 @@ class MealViewset(viewsets.ModelViewSet):
     def destroy(self, request, pk=None):
         meal = Meal.objects.get(id=pk).delete()
         serializer = MealSerializer(meal)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['GET'])
+    def tags(self, request):
+        tags = MealTag.objects.all()
+        serializer = MealTagSerializer(tags, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['GET'])
+    def filter_by_tags(self, request):
+        # Get the tags parameter from the request query string
+        tags = request.query_params.getlist('tags')
+        # Filter meals by the tags
+        meals = Meal.objects.filter(tags__title__in=tags)
+        serializer = MealSerializer(meals, many=True)
         return Response(serializer.data)

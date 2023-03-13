@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DateTimeService } from 'src/app/services/date-time/date-time.service';
+import { MomentsService } from 'src/app/services/moments/moments.service';
 
 @Component({
   selector: 'app-moments',
@@ -7,10 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MomentsPage implements OnInit {
 
-  constructor() { }
+  moments;
+  results;
+
+  constructor(
+    private momentsService: MomentsService,
+    public dateTimeService: DateTimeService,
+  ) { }
 
   ngOnInit() {
-    console.log('hello')
+    this.momentsService.syncMoments().subscribe((res: any) => {
+      this.moments = res;
+    });
   }
 
+  handleSearch(event) {
+    const query = event.target.value.toLowerCase();
+    console.log(query)
+    this.results = this.moments.filter(d => d.text.toLowerCase().indexOf(query) > -1);
+  }
 }

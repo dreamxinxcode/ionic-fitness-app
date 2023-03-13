@@ -2,11 +2,22 @@
   <app-menu></app-menu>
   <app-header></app-header>
 
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-
+  <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)" show-clear-button="always"></ion-searchbar>
+  
+  <ion-card *ngFor="let moment of results || moments">
+    <ion-item>
+      <ion-avatar slot="start">
+        <img alt="Silhouette of a person's head" src="http://localhost:8000/{{ moment.user.profile.avatar }}" />
+      </ion-avatar>
+      <p>
+        {{ moment.user.profile.first_name }} {{ moment.user.profile.last_name }} ({{ moment.user.username }})
+      </p>
+    </ion-item>
+    <ion-card-content>
+      <h3 class="spartan">{{ moment.text }}</h3>
+      <p class="ion-text-right">
+        {{ dateTimeService.formatDistance(moment.timestamp) }}
+      </p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
