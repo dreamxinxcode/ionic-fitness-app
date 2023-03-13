@@ -17,6 +17,9 @@
       <ion-label (click)="openAccentPicker()">Accent</ion-label>
     </ion-item>
     <ion-item>
+      <ion-label [routerLink]="['/privacy']">Privacy</ion-label>
+    </ion-item>
+    <ion-item>
       <ion-label (click)="presentLogoutActionSheet()" color="danger">Log out</ion-label>
     </ion-item>
   </ion-list>

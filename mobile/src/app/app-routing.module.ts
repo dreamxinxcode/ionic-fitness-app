@@ -20,6 +20,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule),
   },
   {
+    path: 'privacy',
+    loadChildren: () => import('./pages/privacy/privacy.module').then( m => m.PrivacyPageModule),
+  },
+  {
     path: 'moments',
     loadChildren: () => import('./pages/moments/moments.module').then( m => m.MomentsModule),
   },
@@ -42,6 +46,10 @@ const routes: Routes = [
   {
     path: 'settings-tab',
     loadChildren: () => import('./tabs/settings-tab/settings-tab.module').then( m => m.SettingsTabPageModule),
+  },
+  {
+    path: 'privacy',
+    loadChildren: () => import('./pages/privacy/privacy.module').then( m => m.PrivacyPageModule)
   },
 ];
 @NgModule({

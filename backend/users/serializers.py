@@ -15,5 +15,4 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
         related_object = 'profile'
-        fields = ['profile', 'email', 'username', 'last_login', 'date_joined', 'is_active', 'is_staff']
-
+        exclude = ['password']

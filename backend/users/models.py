@@ -43,6 +43,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
+    # Privacy settings
+    show_first_name = models.BooleanField(default=True)
+    show_last_name = models.BooleanField(default=True)
+    show_age = models.BooleanField(default=True)
+    show_weight = models.BooleanField(default=True)
+    show_height = models.BooleanField(default=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
