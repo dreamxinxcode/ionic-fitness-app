@@ -43,6 +43,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
+    ip = models.GenericIPAddressField(blank=True, null=True)
+    is_banned = models.BooleanField(default=False)
     # Privacy settings
     show_first_name = models.BooleanField(default=True)
     show_last_name = models.BooleanField(default=True)
@@ -66,8 +68,22 @@ class Profile(models.Model):
     country = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     workout_count = models.IntegerField(default=0)
-    avatar = models.ImageField(default='default.jpg', upload_to='avatars')
+    avatar = models.ImageField(default='/media/avatar.jpg', upload_to='avatars')
     bio = models.TextField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'
+    
+
+class Ban(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
+    reason = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    expiry_date = models.DateField(null=True, blank=True)
+
+    def __str__(self) -> str:
+        return f'{self.ip} - {self.reason}'
+    
+    def save(self, *args, **kwargs):
+        self.user.is_banned = True;
+        super().save(*args, **kwargs) 

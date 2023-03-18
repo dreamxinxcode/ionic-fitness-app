@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>privacy</ion-title>
+    <ion-button (click)="save()" slot='end' fill="clear">Save</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <form [formGroup]="privacyForm">
+      <ion-item>
+        <ion-label>
+          First name
+        </ion-label>
+        <ion-toggle formControlName='firstName'slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          Last name
+        </ion-label>
+        <ion-toggle formControlName='lastName'slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          Age
+        </ion-label>
+        <ion-toggle formControlName='age'slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          Weight
+        </ion-label>
+        <ion-toggle formControlName='weight'slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          Height
+        </ion-label>
+        <ion-toggle formControlName='height'slot="end"></ion-toggle>
+      </ion-item>
+    </form>
+  </ion-list>
+</ion-content>
