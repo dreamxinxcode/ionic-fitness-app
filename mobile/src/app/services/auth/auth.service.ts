@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   login(creds) {
-    this.http.post('http://localhost:8000/login/', creds).subscribe({
+    this.http.post('http://localhost:8000/users/login/', creds).subscribe({
       next: (res: any) => {
         this.setToken(res); 
         this.userService.getUser();  

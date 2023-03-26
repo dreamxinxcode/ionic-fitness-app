@@ -50,12 +50,12 @@ class UserViewset(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'])
     def login(self, request):
-        # Get the username and password from the request data
-        username = request.data.get('username')
+        # Get the email and password from the request data
+        email = request.data.get('email')
         password = request.data.get('password')
 
         # Authenticate the user
-        user = authenticate(username=username, password=password)
+        user = authenticate(email=email, password=password)
 
         # If authentication fails, return an error response
         if not user:
