@@ -61,6 +61,10 @@ class UserViewset(viewsets.ModelViewSet):
         if not user:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
+        # If user is banned
+        if user.is_banned:
+             return Response({'error': 'User is banned'}, status=status.HTTP_401_UNAUTHORIZED)
+
         # Generate a JWT token for the user
         refresh = RefreshToken.for_user(user)
         token = {
