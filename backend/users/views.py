@@ -9,7 +9,7 @@ from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from .models import CustomUser, Profile
-from .serializers import UserSerializer
+from .serializers import UserSerializer, ProfileSerializer
 
 
 class UserViewset(viewsets.ModelViewSet):
@@ -78,14 +78,21 @@ class UserViewset(viewsets.ModelViewSet):
     @action(detail=False, methods=['POST'])
     def register(self, request):
         data = request.data
-        user = CustomUser.objects.create(
-            email=data['email'],
-            password=data['password'],
-            username=data['username'],
-        )
-        Profile.objects.create(
-            user = user,
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-        ) 
-        return Response(user)
+        user_data = {
+            'username': data['username'],
+            'email': data['email'],
+            'password': data['password'],
+        }
+        profile_data = data['profile']
+        user_serializer = UserSerializer(data=data)
+        # profile_serializer = ProfileSerializer(data=profile_data)
+        if user_serializer.is_valid():
+            user = user_serializer.save()
+            Profile.objects.create(
+                user=user,
+                first_name=data['first_name'],
+                last_name=data['last_name'],
+            )
+            return Response(user_serializer.data)
+        else:
+            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

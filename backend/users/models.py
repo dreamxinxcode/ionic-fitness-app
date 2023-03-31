@@ -64,12 +64,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=25)
-    last_name = models.CharField(max_length=25)
-    country = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=25, blank=True, null=True)
+    country = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
     workout_count = models.IntegerField(default=0)
     avatar = models.ImageField(default='/media/avatar.jpg', upload_to='avatars')
-    bio = models.TextField()
+    bio = models.TextField(blank=True, null=True)
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'

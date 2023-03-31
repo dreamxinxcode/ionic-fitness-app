@@ -2,7 +2,6 @@ from rest_framework.serializers import ModelSerializer
 from .models import CustomUser, Profile
 
 
-
 class ProfileSerializer(ModelSerializer):
     class Meta:
         model = Profile
@@ -16,3 +15,9 @@ class UserSerializer(ModelSerializer):
         model = CustomUser
         related_object = 'profile'
         exclude = ['password']
+
+    def create(self, validated_data):
+        profile_data = validated_data.pop('profile')
+        user = CustomUser.objects.create(**validated_data)
+        Profile.objects.create(user=user, **profile_data)
+        return user
