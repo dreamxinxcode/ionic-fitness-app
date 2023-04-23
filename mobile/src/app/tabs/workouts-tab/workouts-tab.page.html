@@ -9,12 +9,20 @@
     </ion-button>
   </ion-item>
 
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime id="datetime"></ion-datetime>
+    </ng-template>
+  </ion-modal>
+
   <app-workouts-skeleton *ngIf="loading"></app-workouts-skeleton>
+
+  <ion-icon *ngIf="!workouts?.length" id='empty-workouts' [routerLink]="['workout']" name="add"></ion-icon>
 
   <ion-card *ngFor="let workout of workouts; let i = index">
     <ion-card-content>
       <ion-item>
-        <ion-item [routerLink]="['/tabs/workouts-tab/workout', workout.uuid]">
+        <ion-item [routerLink]="['/tabs/workouts/workout', workout.uuid]">
           <h3 class="spartan">
             {{ dateTimeService.formatDate(workout.workout_data.timestamp) }}
           </h3>
@@ -42,8 +50,13 @@
             <ion-label>{{ exercise.name }}</ion-label>
           </ion-item>
           <ion-list slot="content">
-            <ion-item *ngFor="let set of exercise.sets">
-              <ion-label>{{ set.weight && set.weight + ' lbs x' }} {{ set.reps + ' reps'}}</ion-label>
+            <ion-item *ngFor="let set of exercise.sets; let i = index">
+              <div class="set-detail">
+                <p>Weight</p> <p class="set-detail-value">{{ set.weight && set.weight }}</p>
+              </div>
+              <div class="set-detail">
+                <p>Reps</p> <p class="set-detail-value">{{ set.reps }}</p>
+              </div>
             </ion-item>
           </ion-list>
         </ion-accordion>

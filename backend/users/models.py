@@ -4,6 +4,10 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
 
+UNITS = (
+    ('lbs', 'lbs'),
+    ('kg', 'kg'),
+)
 
 class CustomUserManager(BaseUserManager):
     """
@@ -70,6 +74,7 @@ class Profile(models.Model):
     workout_count = models.IntegerField(default=0)
     avatar = models.ImageField(default='/media/avatar.jpg', upload_to='avatars')
     bio = models.TextField(blank=True, null=True)
+    units = models.CharField(choices=UNITS, default='lbs', max_length=3)
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'

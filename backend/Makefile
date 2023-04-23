@@ -7,6 +7,9 @@ start:
 shell:
 	docker exec -it fitness_api bash
 
+db_shell:
+	docker exec -it fitness_db bash
+
 migrate:
 	docker-compose exec web python manage.py migrate
 

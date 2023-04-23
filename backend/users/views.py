@@ -53,7 +53,6 @@ class UserViewset(viewsets.ModelViewSet):
         # Get the email and password from the request data
         email = request.data.get('email')
         password = request.data.get('password')
-
         # Authenticate the user
         user = authenticate(email=email, password=password)
 
@@ -83,16 +82,19 @@ class UserViewset(viewsets.ModelViewSet):
             'email': data['email'],
             'password': data['password'],
         }
-        profile_data = data['profile']
+        # profile_data = data['profile']
+        profile_data = {
+            'first_name': data['profile']['first_name'],
+            'last_name': data['profile']['last_name'],
+            'country': data['profile']['country'],
+            'city': data['profile']['city'],
+            # 'avatar': data['avatar'],
+        }
         user_serializer = UserSerializer(data=data)
-        # profile_serializer = ProfileSerializer(data=profile_data)
-        if user_serializer.is_valid():
-            user = user_serializer.save()
-            Profile.objects.create(
-                user=user,
-                first_name=data['first_name'],
-                last_name=data['last_name'],
-            )
+        profile_serializer = ProfileSerializer(data=profile_data)
+        if user_serializer.is_valid() and profile_serializer.is_valid():
+            user_serializer.save()
+            profile_serializer.save()
             return Response(user_serializer.data)
         else:
             return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

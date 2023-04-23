@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +14,7 @@ export class RegisterPage implements OnInit {
 
   registerForm = new FormGroup({
     username: new FormControl(),
+    avatar: new FormControl(),
     first_name: new FormControl(),
     last_name: new FormControl(),
     country: new FormControl(),
@@ -24,7 +26,8 @@ export class RegisterPage implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private toast: ToastService,
   ) { }
 
   ngOnInit() {
@@ -36,18 +39,24 @@ export class RegisterPage implements OnInit {
       username: registerForm.username,
       email: registerForm.email,
       password: registerForm.password,
-      // profile: {
+      profile: {
         first_name: registerForm.first_name,
         last_name: registerForm.last_name,
         country: registerForm.country,
         city: registerForm.city,
-      // }
+        // avatar: registerForm.avatar,
+      }
     }
     this.http.post(
       'http://localhost:8000/users/register/',
       data,
-    ).subscribe((res) => {
-      this.router.navigate(['http://localhost:8000/workouts-tab']);
+    ).subscribe({
+      next: (res) => {
+        this.toast.render('', 'success');
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      }
     });
   }
 }

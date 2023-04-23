@@ -1,7 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Workouts
+    <ion-title id="workout-toolbar">
+      Workout
+      <ion-icon (click)="counting ? timerPause() : timerStart()" [name]='counting ? "pause" : "play"'></ion-icon>
+      <p class="spartan">
+        {{ elapsedTime }}
+      </p>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -14,8 +18,14 @@
   </ion-header>
 
   <ion-card>
-    <form [formGroup]="workoutForm">
-      <ion-datetime formControlName="timestamp"></ion-datetime>
+    <form [formGroup]="workoutForm">      
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime formControlName="timestamp" id="datetime"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+            
       <ion-item>
         <ion-icon (click)="addExercise()" name="add" slot="end"></ion-icon>
       </ion-item>
@@ -25,9 +35,9 @@
             <ion-select-option *ngFor="let option of exerciseOptions"> {{ option.name }} </ion-select-option>
           </ion-select>
           <ion-accordion-group>
-            <ion-accordion *ngFor="let set of exercise.controls.sets.controls" value="first">
+            <ion-accordion *ngFor="let set of exercise.controls.sets.controls; let setIndex = index" value="first">
               <ion-item slot="header">
-                <ion-label> Sets ({{ getSets(i).controls.length }}) </ion-label>
+                <ion-label> Set ({{ setIndex + 1 }}) </ion-label>
               </ion-item>
               <div [formGroup]="set" class="ion-padding" slot="content">
                 <ion-item>
@@ -44,12 +54,15 @@
                     type="number"
                   ></ion-input>
                 </ion-item>
+                <ion-button (click)="addSet(i)">
+                  Add Set
+                </ion-button>
               </div>
             </ion-accordion>
           </ion-accordion-group>
         </div>
       </ion-list>
-      <ion-button (click)="presentAlertConfirm()" [disabled]="workoutForm.valid"> Finish </ion-button>
+      <ion-button (click)="presentAlertConfirm()" class="spartan"> Finish </ion-button>
     </form>
   </ion-card>
 </ion-content>

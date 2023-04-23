@@ -5,9 +5,9 @@ from ..models.version import Version
 from ..serializers.version import VersionSerializer
 
 
-@api_view(['POST'])
-def version(request):
-    user_os = request.data['os']
-    version = get_object_or_404(Version, os=user_os)
+@api_view(['GET'])
+def version(request, os):
+    print('version', os)
+    version = get_object_or_404(Version, os=os)
     data = VersionSerializer(version).data
     return Response(data)

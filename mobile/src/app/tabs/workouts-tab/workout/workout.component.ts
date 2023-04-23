@@ -5,6 +5,7 @@ import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { v4 as uuid } from 'uuid';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-workout',
@@ -18,6 +19,12 @@ export class WorkoutComponent implements OnInit {
     exercises: new FormArray([]),
   });
   exerciseOptions;
+  startTimestamp;
+  datetime = new Date;
+  counting: boolean = false;
+  elapsedTime;
+  elapsedTimeMS = 0;
+
 
   constructor(
     public alertController: AlertController, 
@@ -40,6 +47,7 @@ export class WorkoutComponent implements OnInit {
       this.exerciseOptions = res;
     });
     this.addExercise();
+    this.timerStart();
   }
 
   get exercises() {
@@ -102,12 +110,28 @@ export class WorkoutComponent implements OnInit {
             this.http.post('http://localhost:8000/api/workouts/', data).subscribe((res) => {
               console.log(res);
             });
-            this.router.navigate(['/tabs/workouts-tab']);
+            this.router.navigate(['/tabs/workouts']);
           }
         }
       ]
     });
 
     await alert.present();
+  }
+
+  timerStart() {
+    this.counting = true;
+    this.startTimestamp = this.elapsedTimeMS || Date.now();
+    const interval = setInterval(() => {
+      this.elapsedTimeMS = Date.now() - this.startTimestamp;
+      this.elapsedTime = format(this.elapsedTimeMS, 'HH:mm:ss.SS');
+      if (!this.counting) {
+        clearInterval(interval);
+      }
+    }, 100);
+  }
+
+  timerPause() {
+    this.counting = false;
   }
 }

@@ -13,7 +13,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('version/', version.version, name='version'),
+    path('version/<str:os>/', version.version, name='version'),
     path('meals/tags/', meal.MealViewset.as_view({'get': 'tags'}), name='tags'),
     path('meals/filter_by_tags/', meal.MealViewset.as_view({'get': 'filter_by_tags'}), name='meal_filter_by_tags'),
 ]

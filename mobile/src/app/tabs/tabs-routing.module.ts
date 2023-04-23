@@ -8,23 +8,23 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'workouts-tab',
+        path: 'workouts',
         loadChildren: () => import('./workouts-tab/workouts-tab.module').then(m => m.WorkoutsTabPageModule)
       },
       {
-        path: 'meals-tab',
+        path: 'meals',
         loadChildren: () => import('./meals-tab/meals-tab.module').then(m => m.MealsTabPageModule)
       },
       {
-        path: 'profile-tab',
+        path: 'profile',
         loadChildren: () => import('./profile-tab/profile-tab.module').then(m => m.ProfileTabPageModule)
       },
       {
-        path: 'analytics-tab',
+        path: 'analytics',
         loadChildren: () => import('./analytics-tab/analytics-tab.module').then(m => m.AnalyticsTabPageModule)
       },
       {
-        path: 'settings-tab',
+        path: 'settings',
         loadChildren: () => import('./settings-tab/settings-tab.module').then(m => m.SettingsTabPageModule)
       },
       {

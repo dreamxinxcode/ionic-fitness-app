@@ -39,7 +39,7 @@ export class AuthService {
       next: (res: any) => {
         this.setToken(res); 
         this.userService.getUser();  
-        this.router.navigate(['/tabs/workouts-tab']);
+        this.router.navigate(['/tabs/workouts']);
         this.toast.render('Success! Welcome!', 'success', 'person-outline')
       },
       error: (err) => {
