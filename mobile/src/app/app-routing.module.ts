@@ -23,30 +23,30 @@ const routes: Routes = [
     path: 'privacy',
     loadChildren: () => import('./pages/privacy/privacy.module').then( m => m.PrivacyPageModule),
   },
-  {
-    path: 'moments',
-    loadChildren: () => import('./pages/moments/moments.module').then( m => m.MomentsModule),
-  },
-  {
-    path: 'workouts-tab',
-    loadChildren: () => import('./tabs/workouts-tab/workouts-tab.module').then( m => m.WorkoutsTabPageModule),
-  },
-  {
-    path: 'meals-tab',
-    loadChildren: () => import('./tabs/meals-tab/meals-tab.module').then( m => m.MealsTabPageModule),
-  },
-  {
-    path: 'profile-tab',
-    loadChildren: () => import('./tabs/profile-tab/profile-tab.module').then( m => m.ProfileTabPageModule),
-  },
-  {
-    path: 'analytics-tab',
-    loadChildren: () => import('./tabs/analytics-tab/analytics-tab.module').then( m => m.AnalyticsTabPageModule),
-  },
-  {
-    path: 'settings-tab',
-    loadChildren: () => import('./tabs/settings-tab/settings-tab.module').then( m => m.SettingsTabPageModule),
-  },
+  // {
+  //   path: 'moments',
+  //   loadChildren: () => import('./pages/moments/moments.module').then( m => m.MomentsModule),
+  // },
+  // {
+  //   path: 'workouts',
+  //   loadChildren: () => import('./tabs/workouts-tab/workouts-tab.module').then( m => m.WorkoutsTabPageModule),
+  // },
+  // {
+  //   path: 'meals',
+  //   loadChildren: () => import('./tabs/meals-tab/meals-tab.module').then( m => m.MealsTabPageModule),
+  // },
+  // {
+  //   path: 'profile',
+  //   loadChildren: () => import('./tabs/profile-tab/profile-tab.module').then( m => m.ProfileTabPageModule),
+  // },
+  // {
+  //   path: 'analytics',
+  //   loadChildren: () => import('./tabs/analytics-tab/analytics-tab.module').then( m => m.AnalyticsTabPageModule),
+  // },
+  // {
+  //   path: 'settings',
+  //   loadChildren: () => import('./tabs/settings-tab/settings-tab.module').then( m => m.SettingsTabPageModule),
+  // },
   {
     path: 'privacy',
     loadChildren: () => import('./pages/privacy/privacy.module').then( m => m.PrivacyPageModule)

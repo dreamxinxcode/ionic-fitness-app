@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { ConfigService } from '../config/config.service';
 import { ToastService } from '../toast/toast.service';
 
 @Injectable({
@@ -10,8 +12,17 @@ export class SettingsService {
   constructor(
     private rendererFactory: RendererFactory2,
     private toastService: ToastService,
+    private http: HttpClient,
+    private config: ConfigService,
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
+  }
+
+  setUnits(body) {
+    return this.http.post(
+      this.config.BASE_URL + '/users/units/', 
+      body
+    );
   }
 
   toggleDarkMode(event): void {

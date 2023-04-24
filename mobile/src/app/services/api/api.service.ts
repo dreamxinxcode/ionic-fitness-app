@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ConfigService } from '../config/config.service';
 
 @Injectable({
@@ -12,15 +13,15 @@ export class ApiService {
     private config: ConfigService,   
   ) { }
 
-  get(url: string) {
+  get(url: string): Observable<any> {
     return this.http.get(`${this.config.API_URL}/${url}/`);
   }
 
-  post(url: string, data:any) {
+  post(url: string, data:any): Observable<any> {
     return this.http.post(`${this.config.API_URL}/${url}/`, data);
   }
 
-  delete(url: string) {
+  delete(url: string): Observable<any> {
     return this.http.delete(`${this.config.API_URL}/${url}/`);
   }
 }

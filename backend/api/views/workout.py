@@ -4,7 +4,6 @@ from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from ..models.workout import Workout
 from ..serializers.workout import WorkoutSerializer
-from users.views import CustomUser
 
 
 class WorkoutViewset(viewsets.ModelViewSet):
@@ -33,8 +32,9 @@ class WorkoutViewset(viewsets.ModelViewSet):
 
     def update(self, request, pk=None):
         pass
-
-    def destroy(self, request, pk=None):
-        workout = Workout.objects.get(id=pk).delete()
-        serializer = WorkoutSerializer(workout)
-        return Response(serializer.data)
+    
+    def destroy(self, request, pk):
+        # uuid = kwargs['uuid']
+        workout = get_object_or_404(self.queryset, pk=pk)
+        self.perform_destroy(workout)
+        return Response('hello')

@@ -31,7 +31,7 @@ export class VersionService {
   }
 
   checkForUpdates() {
-    this.api.post('version', { os: this.os }).subscribe({
+    this.api.get(`version/${this.os}`).subscribe({
       next: (res: any) => {
         if (semver.lt(this.currentVersion, res.version)) {
           this.toast.render('There is a new update available!', 'primary');

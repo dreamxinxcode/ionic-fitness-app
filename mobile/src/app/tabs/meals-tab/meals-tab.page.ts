@@ -54,6 +54,7 @@ export class MealsTabPage implements OnInit {
   }
 
   handleRefresh(event) {
+    this.loading = true;
     setTimeout(() => {
       this.mealService.syncMeals().subscribe((res) => {
         this.meals = res;
