@@ -1,23 +1,28 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MealsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private config: ConfigService,
+  ) { }
 
-  syncMeals() {
-    return this.http.get('http://localhost:8000/api/meals/');
+  syncMeals(): Observable<any> {
+    return this.http.get(this.config.API_URL + '/meals/');
   }
 
-  syncMealTags() {
-    return this.http.get('http://localhost:8000/api/meals/tags/');
+  syncMealTags(): Observable<any> {
+    return this.http.get(this.config.API_URL + '/meals/tags/');
   } 
 
-  filterByTags(tags) {
+  filterByTags(tags): Observable<any> {
     const params = tags.join(); 
-    return this.http.get(`http://localhost:8000/api/meals/filter_by_tags/?q=${params}/`);
+    return this.http.get(`${this.config.API_URL}/meals/filter_by_tags/?q=${params}/`);
   }
 }

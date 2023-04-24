@@ -5,6 +5,7 @@ import { SettingsService } from '../../services/settings/settings.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { ToastService } from '../../services/toast/toast.service';
 import { PickerController } from '@ionic/angular';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-settings-tab',
@@ -16,6 +17,7 @@ export class SettingsTabPage implements OnInit {
   constructor(
     private settingsService: SettingsService,
     public authService: AuthService,
+    public userService: UserService,
     private toast: ToastService,
     private pickerCtrl: PickerController,
     private actionSheetCtrl: ActionSheetController,
@@ -84,6 +86,88 @@ export class SettingsTabPage implements OnInit {
           text: 'Confirm',
           handler: (value) => {
             this.settingsService.setAccent(value.accents.value);
+          },
+        },
+      ],
+    });
+    await picker.present();
+  }
+
+
+  async openHeightPicker() {
+    const picker = await this.pickerCtrl.create({
+      columns: [
+        {
+          name: 'units',
+          options: [
+            {
+              text: 'Imperial (ft/in)',
+              value: 'imperial',
+            },
+            {
+              text: 'Metric (cm)',
+              value: 'metric',
+            },
+          ],
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Save',
+          handler: (value) => {
+            this.settingsService.setUnits({ units_height: value.units.value }).subscribe({
+              next: (res) => {
+                this.toast.render('Settings saved', 'success', 'settings-outline');
+                this.userService.user.profile = res;
+              },
+              error: (err) => {
+                this.toast.render(err, 'danger', 'alert');
+              }
+            });
+          },
+        },
+      ],
+    });
+    await picker.present();
+  }
+
+  async openWeightPicker() {
+    const picker = await this.pickerCtrl.create({
+      columns: [
+        {
+          name: 'units',
+          options: [
+            {
+              text: 'Imperial (lbs)',
+              value: 'imperial',
+            },
+            {
+              text: 'Metric (kg)',
+              value: 'metric',
+            },
+          ],
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Save',
+          handler: (value) => {
+            this.settingsService.setUnits({ units_weight: value.units.value }).subscribe({
+              next: (res) => {
+                this.toast.render('Settings saved', 'success', 'settings-outline');
+              },
+              error: (err) => {
+                this.toast.render(err, 'danger', 'alert');
+              }
+            });
           },
         },
       ],

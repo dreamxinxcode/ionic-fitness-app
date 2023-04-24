@@ -19,7 +19,7 @@ services:
             POSTGRES_PASSWORD: postgres
         
         volumes:
-            - postgres_data:/var/lib/postgresql/data/
+            - ionic_fitness_postgres_data:/var/lib/postgresql/data/
 
 volumes:
-  postgres_data:
+  ionic_fitness_postgres_data:

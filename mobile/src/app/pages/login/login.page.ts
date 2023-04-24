@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { VersionService } from 'src/app/services/version/version.service';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class LoginPage implements OnInit {
   });
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    public versionService: VersionService,
   ) { }
 
   ngOnInit() {

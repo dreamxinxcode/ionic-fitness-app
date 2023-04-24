@@ -1,14 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MomentsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private config: ConfigService,
+  ) { }
 
-  syncMoments() {
-    return this.http.get('http://localhost:8000/api/moments/');
+  syncMoments(): Observable<any> {
+    return this.http.get(this.config.API_URL + '/moments/');
   }
 }

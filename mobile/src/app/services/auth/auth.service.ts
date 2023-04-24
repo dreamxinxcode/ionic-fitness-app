@@ -35,20 +35,17 @@ export class AuthService {
   }
 
   login(creds) {
-    this.http.post('http://localhost:8000/login/', creds).subscribe({
+    this.http.post('http://localhost:8000/users/login/', creds).subscribe({
       next: (res: any) => {
-        this.setToken(res); 
+        this.setToken(res);
         this.userService.getUser();  
-        this.router.navigate(['/tabs/workouts-tab']);
+        this.router.navigate(['/tabs/workouts']);
         this.toast.render('Success! Welcome!', 'success', 'person-outline')
       },
       error: (err) => {
-        this.toast.render(err.message, 'danger', 'person-outline');
-      },
-      complete: () => {
-
+        this.toast.render(err.error.detail, 'danger', 'person-outline');
       }
-    })
+    });
   }
 
   logout() {

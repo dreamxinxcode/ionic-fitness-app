@@ -90,3 +90,17 @@ curl \
 `curl -d '{"os":"ios"}' -H "Content-Type: application/json" -X POST http://localhost:8000/api/version/`
 
 `{"id":2,"os":"ios","version":"1.0.0"}`
+
+# Users
+
+Username	First Name	Last Name	Country	City	Email	Password
+jdoe123	John	Doe	USA	New York	johndoe@example.com	mypassword123
+asmith	Alice	Smith	Canada	Toronto	alice.smith@example.com	p@ssw0rd!
+bwilliams	Bob	Williams	Australia	Sydney	bwilliams@example.com	secret123
+klee	Kevin	Lee	USA	San Francisco	kevin.lee@example.com	letmein
+schan	Sarah	Chan	China	Beijing	sarah.chan@example.com	password123
+gjones	George	Jones	UK	London	george.jones@example.com	mysecretpass
+jwang	Jennifer	Wang	China	Shanghai	jennifer.wang@example.com	iloveyou
+rsmith	Robert	Smith	USA	Chicago	robert.smith@example.com	password123
+tlee	Tiffany	Lee	South Korea	Seoul	tiffany.lee@example.com	qwerty123
+mjohnson	Michael	Johnson	Canada	Vancouver	michael.johnson@example.com	hello123

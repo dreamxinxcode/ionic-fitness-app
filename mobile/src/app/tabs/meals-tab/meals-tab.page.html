@@ -22,7 +22,7 @@
   <ion-button 
     (click)="selectedTags=[]"
     size='small' 
-    shape="round" 
+    shape="round"
   >
     <ion-icon slot="start" name="close"></ion-icon>
     Clear
@@ -32,7 +32,7 @@
 
   <app-meals-skeleton *ngIf="loading"></app-meals-skeleton>
 
-  <ion-card *ngFor="let meal of results || meals" class="meal-card">
+  <ion-card *ngFor="let meal of results || meals" [routerLink]="['/tabs/meals/meal', meal.id]" class="meal-card">
     <ion-item>
       <ion-thumbnail slot="start">
         <img src="http://localhost:8000{{ meal.image }}" alt="">
