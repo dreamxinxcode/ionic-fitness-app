@@ -2,13 +2,13 @@ from django.db import models
 
 
 MEAL_TYPE_CHOICES = (
-  ('BREAKFAST', 'Breakfast'),
-  ('LUNCH', 'Lunch'),
-  ('DINNER', 'Dinner'),
-  ('SNACK', 'Snack'),
-  ('DESSERT', 'Dessert'),
-  ('Smoothie', 'Smoothie'),
-  ('DRINK', 'Drink'),
+  ('breakfast', 'Breakfast'),
+  ('lunch', 'Lunch'),
+  ('dinner', 'Dinner'),
+  ('snack', 'Snack'),
+  ('dessert', 'Dessert'),
+  ('smoothie', 'Smoothie'),
+  ('drink', 'Drink'),
 )
 
 class Meal(models.Model):

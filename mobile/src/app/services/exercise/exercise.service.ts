@@ -1,14 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExerciseService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private config: ConfigService,
+  ) { }
 
-  syncExercises() {
-    return this.http.get('http://localhost:8000/api/exercises/');
+  syncExercises(): Observable<any> {
+    return this.http.get(this.config.API_URL + '/exercises/');
   }
 }

@@ -5,8 +5,8 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
 
 UNITS = (
-    ('lbs', 'lbs'),
-    ('kg', 'kg'),
+    ('metric', 'Metric'),
+    ('imperial', 'Imperial'),
 )
 
 class CustomUserManager(BaseUserManager):
@@ -49,6 +49,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     ip = models.GenericIPAddressField(blank=True, null=True)
     is_banned = models.BooleanField(default=False)
+    
     # Privacy settings
     show_first_name = models.BooleanField(default=True)
     show_last_name = models.BooleanField(default=True)
@@ -74,7 +75,8 @@ class Profile(models.Model):
     workout_count = models.IntegerField(default=0)
     avatar = models.ImageField(default='/media/avatar.jpg', upload_to='avatars')
     bio = models.TextField(blank=True, null=True)
-    units = models.CharField(choices=UNITS, default='lbs', max_length=3)
+    units_height = models.CharField(choices=UNITS, default='imperial', max_length=8)
+    units_weight = models.CharField(choices=UNITS, default='imperial', max_length=8)
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'

@@ -98,3 +98,26 @@ class UserViewset(viewsets.ModelViewSet):
             return Response(user_serializer.data)
         else:
             return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['POST'])
+    def privacy(self, request):
+        settings = request.data
+        user = get_object_or_404(CustomUser, id=request.user.id)
+        user_serializer = UserSerializer(instance=user, data=settings, partial=True)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response(user_serializer.data)
+        else:
+            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    @action(detail=False, methods=['POST'])
+    def units(self, request):
+        settings = request.data
+        user = get_object_or_404(CustomUser, id=request.user.id)
+        profile = get_object_or_404(Profile, user=user)
+        profile_serializer = ProfileSerializer(instance=profile, data=settings, partial=True)
+        if profile_serializer.is_valid():
+            profile_serializer.save()
+            return Response(profile_serializer.data)
+        else:
+            return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 

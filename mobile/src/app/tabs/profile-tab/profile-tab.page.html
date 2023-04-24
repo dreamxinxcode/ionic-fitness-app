@@ -48,9 +48,9 @@
     <ion-button expand="full" color="secondary">WORKOUTS</ion-button>
   </div>
 
-  <div [formGroup]="momentForm">
+  <div [formGroup]="momentForm" id="moment-form">
     <ion-textarea formControlName='moment' placeholder="Type something here"></ion-textarea>
-    <ion-button (click)="submitMoment()">
+    <ion-button (click)="submitMoment()" fill="clear">
       <ion-icon slot="icon-only" name="send-outline"></ion-icon>
     </ion-button>
   </div>
