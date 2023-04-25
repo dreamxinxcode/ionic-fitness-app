@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { v4 as uuid } from 'uuid';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { format } from 'date-fns';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-workout',
@@ -31,6 +32,7 @@ export class WorkoutComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
+    private toast: ToastService,
     public dateTimeService: DateTimeService,
   ) { }
 
@@ -107,8 +109,13 @@ export class WorkoutComponent implements OnInit {
               uuid: uuid(),
               workout: this.workoutForm.value
             };
-            this.http.post('http://localhost:8000/api/workouts/', data).subscribe((res) => {
-              console.log(res);
+            this.http.post('http://localhost:8000/api/workouts/', data).subscribe({
+              next: (res) => {
+                this.toast.render('Success!', 'success', 'barbell-outline');
+              },
+              error: (err) => {
+                this.toast.render(err, 'danger', 'alert');
+              },
             });
             this.router.navigate(['/tabs/workouts']);
           }

@@ -9,7 +9,6 @@ import { ConfigService } from '../config/config.service';
 export class UserService {
 
   user;
-  weightType: string = 'lbs';
 
   constructor(private http: HttpClient, private config: ConfigService) { }
 
@@ -22,6 +21,15 @@ export class UserService {
       this.user = res;
     });
   }
+
+  getWeightUnits(): string {
+    return this.user.profile.units_weight === 'imperial' ? 'lbs' : 'kg';
+  }
+
+  getHeightUnits(): string {
+    return this.user.profile.units_weight === 'imperial' ? 'ft' : 'cm';
+  }
+
 
   /**
    * Saves the privacy settings for a user.

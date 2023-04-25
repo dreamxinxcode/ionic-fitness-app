@@ -50,7 +50,7 @@
 
   <div [formGroup]="momentForm" id="moment-form">
     <ion-textarea formControlName='moment' placeholder="Type something here"></ion-textarea>
-    <ion-button (click)="submitMoment()" fill="clear">
+    <ion-button (click)="submitMoment()" [disabled]="!momentForm.value.moment.trim().length" fill="clear">
       <ion-icon slot="icon-only" name="send-outline"></ion-icon>
     </ion-button>
   </div>

@@ -163,6 +163,7 @@ export class SettingsTabPage implements OnInit {
             this.settingsService.setUnits({ units_weight: value.units.value }).subscribe({
               next: (res) => {
                 this.toast.render('Settings saved', 'success', 'settings-outline');
+                this.userService.user.profile = res;
               },
               error: (err) => {
                 this.toast.render(err, 'danger', 'alert');
