@@ -93,8 +93,8 @@ curl \
 
 # Users
 
-Username	First Name	Last Name	Country	City	Email	Password
-jdoe123	John	Doe	USA	New York	johndoe@example.com	mypassword123
+Username	FirstName	LastName	Country	City	    Email	              Password
+jdoe123	  John	    Doe	      USA	    New York	johndoe@example.com	mypassword123
 asmith	Alice	Smith	Canada	Toronto	alice.smith@example.com	p@ssw0rd!
 bwilliams	Bob	Williams	Australia	Sydney	bwilliams@example.com	secret123
 klee	Kevin	Lee	USA	San Francisco	kevin.lee@example.com	letmein

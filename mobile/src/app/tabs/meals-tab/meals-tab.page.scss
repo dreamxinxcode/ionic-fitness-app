@@ -1,6 +1,14 @@
+#meal-tags-filter {
+  overflow-x: scroll;
+}
+
+.selected {
+  opacity: .5;
+}
+
 .meal-card {
   img {
-    height: 7rem;
+    height: 100%;
   }
 
   ion-badge {

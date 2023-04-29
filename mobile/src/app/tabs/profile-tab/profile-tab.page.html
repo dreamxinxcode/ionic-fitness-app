@@ -1,5 +1,4 @@
 <ion-content [fullscreen]="true" class="ion-page" id="main-content">
-  <app-menu></app-menu>
   <app-header></app-header>
 
   <ion-header collapse="condense">
@@ -32,11 +31,11 @@
   <div class="card-body">
     <div class="ion-text-center">
       <ion-avatar id="profile-avatar">
-        <img src="http://localhost:8000/{{ userService.user.profile.avatar }}" alt="avatar">
+        <img src="http://localhost:8000/{{ userService.user.profile.avatar || 'media/avatars/default.svg' }}" alt="avatar">
       </ion-avatar>
       <h3>{{ userService.user.profile.first_name }} {{ userService.user.profile.last_name }}</h3>
       <h6>{{ userService.user.username }}</h6>
-      <h5>{{ userService.user.profile.city }}, {{ userService.user.profile.country }}</h5>
+      <h5>{{ userService.user.profile.city }}, {{ userService.user.profile.country }} <span class="fi fi-{{userService.user.profile.country_code | lowercase}}"></span></h5>
       <h6>Current workouts: <ion-chip>
         <ion-label>{{ userService.user.profile.workout_count }}</ion-label>
         </ion-chip>
@@ -50,7 +49,7 @@
 
   <div [formGroup]="momentForm" id="moment-form">
     <ion-textarea formControlName='moment' placeholder="Type something here"></ion-textarea>
-    <ion-button (click)="submitMoment()" [disabled]="!momentForm.value.moment.trim().length" fill="clear">
+    <ion-button (click)="submitMoment()" [disabled]="!momentForm.value.moment?.trim().length" fill="clear">
       <ion-icon slot="icon-only" name="send-outline"></ion-icon>
     </ion-button>
   </div>

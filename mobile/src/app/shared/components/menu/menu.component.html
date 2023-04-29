@@ -1,7 +1,7 @@
 <ion-menu contentId="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>
+      <ion-title class="ion-text-center">
         <img id='logo' src="../../assets/logo.png">
       </ion-title>
     </ion-toolbar>
@@ -47,5 +47,18 @@
     <p class="ion-text-center">
       Version {{ versionService.currentVersion }}
     </p>
+
+
+    <div id="store-badges">
+      <img 
+        src="../../../../assets/app-store.png" 
+        class='store-badge' 
+      >
+      <img 
+        src="../../../../assets/google-play.png" 
+        class='store-badge' 
+      >
+    </div>
+    
   </ion-content>
 </ion-menu>

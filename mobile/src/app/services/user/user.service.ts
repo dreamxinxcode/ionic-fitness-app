@@ -10,16 +10,27 @@ export class UserService {
 
   user;
 
-  constructor(private http: HttpClient, private config: ConfigService) { }
+  constructor(
+    private http: HttpClient, 
+    private config: ConfigService
+  ) { 
+    this.user = JSON.parse(localStorage.getItem('user'));
+  }
 
-  isLoggedIn(): boolean {
-    return false;
+  setUser() {
+    this.http.get(this.config.BASE_URL + '/users/me/').subscribe((res: any) => {
+      localStorage.setItem('user', JSON.stringify(res));
+      this.user = res;
+    });
   }
 
   getUser() {
-    this.http.get(this.config.BASE_URL + '/users/me/').subscribe((res: any) => {
-      this.user = res;
-    });
+    return localStorage.getItem('user');
+  }
+
+  clearUser(): void {
+    localStorage.removeItem('user');
+    this.user = null;
   }
 
   getWeightUnits(): string {
@@ -30,13 +41,6 @@ export class UserService {
     return this.user.profile.units_weight === 'imperial' ? 'ft' : 'cm';
   }
 
-
-  /**
-   * Saves the privacy settings for a user.
-   *
-   * @param settings The privacy settings to save.
-   * @returns An Observable that emits the result of the HTTP request.
-   */
   savePrivacySettings(settings): Observable<any> {
     return this.http.post(this.config.BASE_URL + '/users/privacy/', settings);
   }

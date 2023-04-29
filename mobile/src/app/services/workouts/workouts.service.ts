@@ -16,4 +16,9 @@ export class WorkoutsService {
   syncWorkouts(): Observable<any> {
     return this.http.get(this.config.API_URL + '/workouts/');
   }
+
+  saveAsTempalte(schema): Observable<any> {
+    console.log(schema)
+    return this.http.post(this.config.API_URL + '', { schema });
+  }
 }

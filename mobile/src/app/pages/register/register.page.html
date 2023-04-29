@@ -20,7 +20,12 @@
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Country</ion-label>
-      <ion-input formControlName="country" type="text"></ion-input>
+      <ion-select formControlName="country" aria-label="Country" interface="action-sheet" placeholder="Select Country">
+        <ion-select-option *ngFor="let country of locationService.COUNTRIES" [value]="country">
+          <span class="fi fi-tw"></span>
+          {{ country.name }} 
+        </ion-select-option>
+      </ion-select>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">City</ion-label>

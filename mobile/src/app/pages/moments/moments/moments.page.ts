@@ -25,7 +25,6 @@ export class MomentsPage implements OnInit {
 
   handleSearch(event) {
     const query = event.target.value.toLowerCase();
-    console.log(query)
     this.results = this.moments.filter(d => d.text.toLowerCase().indexOf(query) > -1);
   }
 }

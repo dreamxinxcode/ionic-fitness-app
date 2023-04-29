@@ -7,6 +7,7 @@ import { v4 as uuid } from 'uuid';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { format } from 'date-fns';
 import { ToastService } from 'src/app/services/toast/toast.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-workout',
@@ -16,7 +17,7 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 export class WorkoutComponent implements OnInit {
 
   workoutForm = new FormGroup({
-    timestamp: new FormControl(),
+    timestamp: new FormControl(new Date()),
     exercises: new FormArray([]),
   });
   exerciseOptions;
@@ -32,6 +33,7 @@ export class WorkoutComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
+    private config: ConfigService,
     private toast: ToastService,
     public dateTimeService: DateTimeService,
   ) { }
@@ -41,12 +43,17 @@ export class WorkoutComponent implements OnInit {
     this.route.paramMap.subscribe((params: ParamMap) => {
       const uuid = params.get('uuid');
       if (uuid) {
-        this.http.get(`http://localhost:8000/api/workouts/${uuid}/`).subscribe((res) => {
+        this.http.get(this.config.API_URL + `/workouts/${uuid}/`).subscribe((res) => {
         });
       }
     });
-    this.http.get('http://localhost:8000/api/exercises/').subscribe((res) => {
-      this.exerciseOptions = res;
+    this.http.get(this.config.API_URL + '/exercises/').subscribe({
+      next: (res) => {
+        this.exerciseOptions = res;
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      }, 
     });
     this.addExercise();
     this.timerStart();
@@ -68,6 +75,10 @@ export class WorkoutComponent implements OnInit {
         ]),
       })
     );
+  }
+
+  deleteExercise(index: number) {
+    this.exercises.removeAt(index);
   }
 
   public addSet(index: number):void {
@@ -107,17 +118,18 @@ export class WorkoutComponent implements OnInit {
           handler: () => {
             const data = {
               uuid: uuid(),
-              workout: this.workoutForm.value
+              timestamp: this.workoutForm.value.timestamp,
+              workout: this.workoutForm.value.exercises,
             };
-            this.http.post('http://localhost:8000/api/workouts/', data).subscribe({
+            this.http.post(this.config.API_URL + '/workouts/', data).subscribe({
               next: (res) => {
                 this.toast.render('Success!', 'success', 'barbell-outline');
+                this.router.navigate(['/tabs/workouts']);
               },
               error: (err) => {
-                this.toast.render(err, 'danger', 'alert');
+                this.toast.render(err.statusText, 'danger', 'alert');
               },
             });
-            this.router.navigate(['/tabs/workouts']);
           }
         }
       ]
