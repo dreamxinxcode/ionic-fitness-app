@@ -4,6 +4,8 @@ import { WorkoutsService } from '../../services/workouts/workouts.service';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { ModalController } from '@ionic/angular';
+import { TemplateFormComponent } from './template-form/template-form.component';
 
 @Component({
   selector: 'app-workouts-tab',
@@ -21,6 +23,7 @@ export class WorkoutsTabPage implements OnInit {
     private dateTimeService: DateTimeService,
     private workoutsService: WorkoutsService,
     public userService: UserService,
+    public modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -48,6 +51,16 @@ export class WorkoutsTabPage implements OnInit {
     }, 2000);
   }
 
+  saveAsTemplate(name: string, schema) {
+    this.workoutsService.saveAsTempalte(schema).subscribe({
+      next: (res) => {},
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
+      complete: () => {},
+    });
+  }
+
   onDelete(index: number, id):void {
     this.api.delete(`workouts/${id}`).subscribe({
       next: (res) => {
@@ -60,5 +73,17 @@ export class WorkoutsTabPage implements OnInit {
 
       },
     });
+  }
+
+  async presentModal(workoutData) {
+    const modal = await this.modalController.create({
+      component: TemplateFormComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        workoutData,
+        modalController: this.modalController
+      }
+    });
+    return await modal.present();
   }
 }

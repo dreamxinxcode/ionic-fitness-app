@@ -18,3 +18,7 @@ dump:
 
 create_superuser:
 	docker-compose exec web python manage.py createsuperuser
+
+delete_db_container:
+	docker stop fitness_db
+	docker rm fitness_db

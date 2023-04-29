@@ -7,7 +7,6 @@ from ..serializers.workout import WorkoutSerializer
 
 
 class WorkoutViewset(viewsets.ModelViewSet):
-    
     queryset = Workout.objects.all()
     serializer_class = WorkoutSerializer
     permission_classes = [IsAuthenticated]
@@ -15,7 +14,12 @@ class WorkoutViewset(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         data = request.data
         user = request.user
-        workout = Workout.objects.create(uuid=data['uuid'], user=user, workout_data=data['workout'])
+        workout = Workout.objects.create(
+            uuid=data['uuid'], 
+            user=user, 
+            timestamp=data['timestamp'], 
+            workout_data=data['workout']
+        )
         serializer = WorkoutSerializer(workout)
         return Response(serializer.data)
 
@@ -34,7 +38,6 @@ class WorkoutViewset(viewsets.ModelViewSet):
         pass
     
     def destroy(self, request, pk):
-        # uuid = kwargs['uuid']
         workout = get_object_or_404(self.queryset, pk=pk)
         self.perform_destroy(workout)
         return Response('hello')

@@ -20,7 +20,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def list(self, request):
-        queryset = Exercise.objects.all()
+        queryset = Exercise.objects.all().order_by('name')
         serializer = ExerciseSerializer(queryset, many=True)
         return Response(serializer.data)
 

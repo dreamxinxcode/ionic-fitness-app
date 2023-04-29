@@ -76,7 +76,7 @@ export class ProfileTabPage implements OnInit {
 
   handleRefresh(event) {
     setTimeout(() => {
-      this.currentUser = this.userService.getUser();
+      this.currentUser = this.userService.setUser();
       this.momentsService.syncMoments().subscribe((res) => {
         this.moments = res;
       });

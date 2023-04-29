@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-title> Save Workout to Use Later </ion-title>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="templateForm">
+    <ion-item lines="full">
+      <ion-label position="floating">Title</ion-label>
+      <ion-input formControlName="title" type="text" required></ion-input>
+    </ion-item> 
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="handleSubmit()" fill="clear"> Save </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+  <ion-button (click)="dismiss()" fill="clear"> Cancel </ion-button>
+</ion-content>

@@ -1,5 +1,4 @@
 <ion-content [fullscreen]="true" class="ion-page" id="main-content">
-  <app-menu></app-menu>
   <app-header></app-header>
 
   <ion-item>
@@ -15,6 +14,10 @@
     </ng-template>
   </ion-modal>
 
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <app-workouts-skeleton *ngIf="loading"></app-workouts-skeleton>
 
   <ion-icon *ngIf="!workouts?.length" id='empty-workouts' [routerLink]="['workout']" name="add"></ion-icon>
@@ -24,7 +27,7 @@
       <ion-item>
         <ion-item [routerLink]="['/tabs/workouts/workout', workout.uuid]">
           <h3 class="spartan">
-            {{ dateTimeService.formatDate(workout.workout_data.timestamp) }}
+            {{ dateTimeService.formatDate(workout.timestamp) }}
           </h3>
         </ion-item>
         <ion-icon id="settings_{{ i }}" name="ellipsis-vertical" slot="end"></ion-icon>
@@ -35,16 +38,19 @@
             <ion-list>
               <ion-item (click)="onDelete(i, workout.id)" [button]="true" [detail]="false">
                 <ion-label>Delete</ion-label>
+              </ion-item> 
+              <ion-item (click)="presentModal(workout.workout_data)" [button]="true" [detail]="false">
+                <ion-label>Save as Template</ion-label>
               </ion-item>              
               <ion-item [button]="true" [detail]="false">
-                <ion-label>Close</ion-label>
+                <ion-label>Cancel</ion-label>
               </ion-item>
             </ion-list>
           </ion-content>
         </ng-template>
       </ion-popover>
       <ion-accordion-group [multiple]="true">
-        <ion-accordion *ngFor="let exercise of workout.workout_data.exercises">
+        <ion-accordion *ngFor="let exercise of workout.workout_data">
           <ion-item slot="header">
             <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
             <ion-label>{{ exercise.name }}</ion-label>
@@ -52,7 +58,7 @@
           <ion-list slot="content">
             <ion-item *ngFor="let set of exercise.sets; let i = index">
               <div class="set-detail">
-                <p>Weight</p> <p class="set-detail-value">{{ set.weight && set.weight }}</p>
+                <p>Weight</p> <p class="set-detail-value">{{ set.weight && set.weight }} {{ set.weight && userService.getWeightUnits() }}</p>
               </div>
               <div class="set-detail">
                 <p>Reps</p> <p class="set-detail-value">{{ set.reps }}</p>
@@ -62,7 +68,7 @@
         </ion-accordion>
       </ion-accordion-group>
       <p class="ion-text-end">
-        {{ dateTimeService.formatDistance(workout.workout_data.timestamp) }}
+        {{ dateTimeService.formatDistance(workout.timestamp) }}
       </p>
     </ion-card-content>  
   </ion-card>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfigService } from '../config/config.service';
 import { ToastService } from '../toast/toast.service';
 import { UserService } from '../user/user.service';
 
@@ -13,7 +14,8 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private toast: ToastService,
-    private userService: UserService
+    private userService: UserService,
+    private config: ConfigService,
   ) { }
 
   isAuthenticated(): boolean {
@@ -35,12 +37,12 @@ export class AuthService {
   }
 
   login(creds) {
-    this.http.post('http://localhost:8000/users/login/', creds).subscribe({
+    this.http.post(this.config.BASE_URL + '/users/login/', creds).subscribe({
       next: (res: any) => {
         this.setToken(res);
-        this.userService.getUser();  
+        this.userService.setUser();  
         this.router.navigate(['/tabs/workouts']);
-        this.toast.render('Success! Welcome!', 'success', 'person-outline')
+        this.toast.render(`Welcome back, ${this.userService.user.first_name || this.userService.user.username}!`, 'success', 'person-outline')
       },
       error: (err) => {
         this.toast.render(err.error.detail, 'danger', 'person-outline');
@@ -49,7 +51,8 @@ export class AuthService {
   }
 
   logout() {
-    this.clearToken(); 
+    this.clearToken();
+    this.userService.clearUser();
     this.toast.render('Success! Logged out!', 'success', 'person-outline');
     this.router.navigate(['/login']);
   }

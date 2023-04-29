@@ -6,19 +6,21 @@ import { ConfigService } from '../config/config.service';
 @Injectable({
   providedIn: 'root'
 })
-export class WorkoutsService {
+export class TemplateService {
 
   constructor(
     private http: HttpClient,
     private config: ConfigService,
   ) { }
 
-  syncWorkouts(): Observable<any> {
-    return this.http.get(this.config.API_URL + '/workouts/');
-  }
-
-  saveAsTempalte(schema): Observable<any> {
-    console.log(schema)
-    return this.http.post(this.config.API_URL + '', { schema });
+  save(title: string, template): Observable<any> {
+    return this.http.post(
+      this.config.API_URL + '/templates/', 
+      {
+        title, 
+        template,
+        timestamp: Date.now(), 
+      },    
+    );
   }
 }

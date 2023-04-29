@@ -31,7 +31,12 @@ export class MealsTabPage implements OnInit {
   }
 
   filterByTags(tag: string) {
-    this.selectedTags.push(tag);
+    // Check if tag is already in filter
+    if(this.selectedTags.includes(tag)) {
+      this.selectedTags = this.selectedTags.filter(t => t === tag);
+    } else {
+      this.selectedTags.push(tag);
+    }
     this.loading = true;
     this.mealService.filterByTags(this.selectedTags).subscribe({
       next: (res) => {
@@ -43,14 +48,23 @@ export class MealsTabPage implements OnInit {
       complete: () => {
         this.loading = false;
       }
-    });    
+    });
   }
 
   handleSearch(event) {
+    this.loading = true;
     const query = event.target.value.toLowerCase();
-    this.results = this.meals.filter((meal) => {
-      return meal.title.toLowerCase().indexOf(query) > -1
+    this.mealService.query(query).subscribe({
+      next: (res) => {
+        console.log(res)
+        this.meals = res;
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
+      complete: () => {},
     });
+    this.loading = false;
   }
 
   handleRefresh(event) {

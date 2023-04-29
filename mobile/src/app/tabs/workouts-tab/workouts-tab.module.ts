@@ -10,6 +10,7 @@ import { WorkoutComponent } from './workout/workout.component';
 import { WorkoutsSkeletonComponent } from './workouts-skeleton/workouts-skeleton.component';
 import { ComponentsModule } from '../../shared/components/components.module';
 import { ExercisesComponent } from './exercises/exercises.component';
+import { TemplateFormComponent } from './template-form/template-form.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { ExercisesComponent } from './exercises/exercises.component';
     WorkoutComponent, 
     WorkoutsSkeletonComponent,
     ExercisesComponent,
+    TemplateFormComponent,
   ],
 })
 export class WorkoutsTabPageModule {}

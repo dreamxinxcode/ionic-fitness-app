@@ -1,5 +1,4 @@
 <ion-content [fullscreen]="true" class="ion-page" id="main-content">
-  <app-menu></app-menu>
   <app-header></app-header>
 
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
@@ -8,26 +7,26 @@
 
   <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)" show-clear-button="always"></ion-searchbar>
 
-  <ion-item *ngIf="tags.length">
+  <ion-item *ngIf="tags.length" id="meal-tags-filter">
     <ion-button 
-    *ngFor="let tag of tags" 
-    (click)="filterByTags(tag.title)" 
-    [disabled]="selectedTags.includes(tag.title)" 
-    size='small' 
-    shape="round" 
-    class="meal-tag"
-  >
-    {{ tag.title }}
-  </ion-button>
-  <ion-button 
-    (click)="selectedTags=[]"
-    size='small' 
-    shape="round"
-  >
-    <ion-icon slot="start" name="close"></ion-icon>
-    Clear
-  </ion-button>
-  
+      *ngFor="let tag of tags" 
+      (click)="filterByTags(tag.title)"
+      [ngClass]="selectedTags.includes(tag.title) ? 'selected' : ''"
+      size='small' 
+      shape="round" 
+      class="meal-tag"
+    >
+      {{ tag.title }}
+    </ion-button>
+    <ion-button 
+      *ngIf="selectedTags.length"
+      (click)="selectedTags=[]"
+      size='small' 
+      shape="round"
+    >
+      <ion-icon slot="start" name="close"></ion-icon>
+      Clear
+    </ion-button>
   </ion-item>
 
   <app-meals-skeleton *ngIf="loading"></app-meals-skeleton>

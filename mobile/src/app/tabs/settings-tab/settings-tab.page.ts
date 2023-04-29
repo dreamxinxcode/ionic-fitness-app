@@ -26,73 +26,9 @@ export class SettingsTabPage implements OnInit {
   ngOnInit() {
   }
 
-  async presentLogoutActionSheet() {
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Logout?',
-      buttons: [
-        {
-          text: 'Logout',
-          role: 'destructive',
-          data: {
-            action: 'logout',
-          },
-        }, 
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          data: {
-            action: 'cancel',
-          },
-        },
-      ],
-    });
-
-    await actionSheet.present();
-
-    const result = await actionSheet.onDidDismiss();
-
-    if (result.data.action === 'logout') {
-      this.authService.logout();
-    }
+  saveSettings() {
+    this.toast.render('Your settings have been saved.', 'success', 'settings-outline');
   }
-
-  async openAccentPicker() {
-    const picker = await this.pickerCtrl.create({
-      columns: [
-        {
-          name: 'accents',
-          options: [
-            {
-              text: 'Red',
-              value: 'red',
-            },
-            {
-              text: 'Green',
-              value: 'green',
-            },
-            {
-              text: 'Blue',
-              value: 'blue',
-            },
-          ],
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-        },
-        {
-          text: 'Confirm',
-          handler: (value) => {
-            this.settingsService.setAccent(value.accents.value);
-          },
-        },
-      ],
-    });
-    await picker.present();
-  }
-
 
   async openHeightPicker() {
     const picker = await this.pickerCtrl.create({
@@ -163,6 +99,7 @@ export class SettingsTabPage implements OnInit {
             this.settingsService.setUnits({ units_weight: value.units.value }).subscribe({
               next: (res) => {
                 this.toast.render('Settings saved', 'success', 'settings-outline');
+                this.userService.user.profile = res;
               },
               error: (err) => {
                 this.toast.render(err, 'danger', 'alert');
@@ -175,7 +112,70 @@ export class SettingsTabPage implements OnInit {
     await picker.present();
   }
 
-  saveSettings() {
-    this.toast.render('Your settings have been saved.', 'success', 'settings-outline');
+  async openAccentPicker() {
+    const picker = await this.pickerCtrl.create({
+      columns: [
+        {
+          name: 'accents',
+          options: [
+            {
+              text: 'Red',
+              value: 'red',
+            },
+            {
+              text: 'Green',
+              value: 'green',
+            },
+            {
+              text: 'Blue',
+              value: 'blue',
+            },
+          ],
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirm',
+          handler: (value) => {
+            this.settingsService.setAccent(value.accents.value);
+          },
+        },
+      ],
+    });
+    await picker.present();
+  }
+
+  async presentLogoutActionSheet() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Logout?',
+      buttons: [
+        {
+          text: 'Logout',
+          role: 'destructive',
+          data: {
+            action: 'logout',
+          },
+        }, 
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          data: {
+            action: 'cancel',
+          },
+        },
+      ],
+    });
+
+    await actionSheet.present();
+
+    const result = await actionSheet.onDidDismiss();
+
+    if (result.data.action === 'logout') {
+      this.authService.logout();
+    }
   }
 }

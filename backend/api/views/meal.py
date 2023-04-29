@@ -49,3 +49,14 @@ class MealViewset(viewsets.ModelViewSet):
         meals = Meal.objects.filter(tags__title__in=tags)
         serializer = MealSerializer(meals, many=True)
         return Response(serializer.data)
+    
+    def get_queryset(self):
+        queryset = Meal.objects.all()
+        query = self.request.query_params.get('query', None)
+        if query:
+            queryset = queryset.filter(
+                Q(name__icontains=query) |
+                Q(description__icontains=query) |
+                Q(tags__title__icontains=query)
+            )
+        return queryset

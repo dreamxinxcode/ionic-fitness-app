@@ -21,6 +21,11 @@ export class MealsService {
     return this.http.get(this.config.API_URL + '/meals/tags/');
   } 
 
+  query(query: string): Observable<any> {
+    console.log(query)
+    return this.http.get(this.config.API_URL + `/meals/?query=${query}`);
+  }
+
   filterByTags(tags): Observable<any> {
     const params = tags.join(); 
     return this.http.get(`${this.config.API_URL}/meals/filter_by_tags/?q=${params}/`);
