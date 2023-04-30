@@ -5,9 +5,9 @@ import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { v4 as uuid } from 'uuid';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
-import { format } from 'date-fns';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { TimerService } from 'src/app/services/timer/timer.service';
 
 @Component({
   selector: 'app-workout',
@@ -15,18 +15,12 @@ import { ConfigService } from 'src/app/services/config/config.service';
   styleUrls: ['./workout.component.scss'],
 })
 export class WorkoutComponent implements OnInit {
-
+  timestamp = new FormControl(new Date());
   workoutForm = new FormGroup({
-    timestamp: new FormControl(new Date()),
     exercises: new FormArray([]),
   });
   exerciseOptions;
-  startTimestamp;
   datetime = new Date;
-  counting: boolean = false;
-  elapsedTime;
-  elapsedTimeMS = 0;
-
 
   constructor(
     public alertController: AlertController, 
@@ -36,6 +30,7 @@ export class WorkoutComponent implements OnInit {
     private config: ConfigService,
     private toast: ToastService,
     public dateTimeService: DateTimeService,
+    public timer: TimerService,
   ) { }
 
   ngOnInit() {
@@ -56,7 +51,6 @@ export class WorkoutComponent implements OnInit {
       }, 
     });
     this.addExercise();
-    this.timerStart();
   }
 
   get exercises() {
@@ -118,7 +112,7 @@ export class WorkoutComponent implements OnInit {
           handler: () => {
             const data = {
               uuid: uuid(),
-              timestamp: this.workoutForm.value.timestamp,
+              timestamp: this.timestamp.value,
               workout: this.workoutForm.value.exercises,
             };
             this.http.post(this.config.API_URL + '/workouts/', data).subscribe({
@@ -136,21 +130,5 @@ export class WorkoutComponent implements OnInit {
     });
 
     await alert.present();
-  }
-
-  timerStart() {
-    this.counting = true;
-    this.startTimestamp = this.elapsedTimeMS || Date.now();
-    const interval = setInterval(() => {
-      this.elapsedTimeMS = Date.now() - this.startTimestamp;
-      this.elapsedTime = format(this.elapsedTimeMS, 'HH:mm:ss.SS');
-      if (!this.counting) {
-        clearInterval(interval);
-      }
-    }, 100);
-  }
-
-  timerPause() {
-    this.counting = false;
   }
 }

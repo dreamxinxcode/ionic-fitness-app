@@ -31,21 +31,23 @@
 
   <app-meals-skeleton *ngIf="loading"></app-meals-skeleton>
 
-  <ion-card *ngFor="let meal of results || meals" [routerLink]="['/tabs/meals/meal', meal.id]" class="meal-card">
-    <ion-item>
-      <ion-thumbnail slot="start">
-        <img src="http://localhost:8000{{ meal.image }}" alt="">
-      </ion-thumbnail>
-      <ion-label>
-        <h2>
-          {{ meal.title }}
-        </h2>
-        {{ meal.recipe }}
-        <div>
-          <ion-badge *ngFor="let tag of meal.tags" color="primary">{{ tag.title }}</ion-badge>
-        </div>
-      </ion-label>
-    </ion-item>
-  </ion-card>
+  <div *ngIf="!loading">
+    <ion-card *ngFor="let meal of results || meals" [routerLink]="['/tabs/meals/meal', meal.id]" class="meal-card">
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img src="http://localhost:8000{{ meal.image }}" alt="">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>
+            {{ meal.title }}
+          </h2>
+          {{ meal.recipe }}
+          <div>
+            <ion-badge *ngFor="let tag of meal.tags" color="primary">{{ tag.title }}</ion-badge>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
 
 </ion-content>

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ApiService } from 'src/app/services/api/api.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { MomentsService } from 'src/app/services/moments/moments.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
@@ -31,6 +32,7 @@ export class ProfileTabPage implements OnInit {
     private momentsService: MomentsService,
     private dateTimeService: DateTimeService,
     private toast: ToastService,
+    private config: ConfigService,
   ) { }
 
   ngOnInit() {
@@ -61,7 +63,7 @@ export class ProfileTabPage implements OnInit {
   handleSearch(event) {
     this.loadingSearch = true;
     const query = event.target.value.toLowerCase();
-    this.api.get(`users/query/?q=${query}`).subscribe({
+    this.http.get(this.config.BASE_URL + `/users/query/?q=${query}`).subscribe({
       next: (res) => {
         this.results = res;
       },
