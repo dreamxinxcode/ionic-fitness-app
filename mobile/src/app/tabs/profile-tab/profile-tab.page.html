@@ -22,7 +22,7 @@
       </ion-thumbnail>
       <ion-label>
         <h3>
-          {{ result.profile.first_name }} {{ result.profile.last_name }} ({{ result.username }})
+          {{ result.profile.first_name }} {{ result.profile.last_name }} <span class="fi fi-{{userService.user.profile.country_code | lowercase}}"></span>
         </h3>
       </ion-label>
     </ion-item>

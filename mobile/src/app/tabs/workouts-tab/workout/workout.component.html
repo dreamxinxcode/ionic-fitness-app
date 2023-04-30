@@ -1,14 +1,18 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title id="workout-toolbar">
-      Workout
-      <div id="timer">
-        <ion-icon (click)="counting ? timerPause() : timerStart()" [name]='counting ? "pause" : "play"'></ion-icon>
-        <p class="spartan">
-          {{ elapsedTime }}
-        </p>
-      </div>
-    </ion-title>
+  <ion-toolbar id="timer">
+    <div id="timer">
+      <ion-icon (click)="counting ? timer.pause() : timer.start()" [name]='timer.counting ? "pause" : "play"'></ion-icon>
+      <p class="spartan">
+        {{ timer.elapsedTime }}
+      </p>
+    </div>
+
+    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime formControl="timestamp" id="datetime"></ion-datetime>
+      </ng-template>
+    </ion-modal>
   </ion-toolbar>
 </ion-header>
 
@@ -20,22 +24,29 @@
   </ion-header>
 
   <form [formGroup]="workoutForm">      
-    <ion-datetime-button datetime="datetime"></ion-datetime-button>
-    <ion-modal [keepContentsMounted]="true">
-      <ng-template>
-        <ion-datetime formControlName="timestamp" id="datetime"></ion-datetime>
-      </ng-template>
-    </ion-modal>
           
     <ion-card *ngFor="let exercise of exercises.controls; let i = index">
       <div [formGroup]="exercise">
-        <ion-select formControlName='name' placeholder="Exercise">
-          <ion-select-option *ngFor="let option of exerciseOptions"> {{ option.name }} </ion-select-option>
-        </ion-select>
+        <ion-item>
+          <ion-select 
+            formControlName='name' 
+            label="Floating label" 
+            label-placement="floating"
+            interface="action-sheet"
+            placeholder="Exercise"
+          >
+            <ion-select-option *ngFor="let option of exerciseOptions"> {{ option.name }} </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+
+        </ion-item>
+
         <ion-accordion-group>
           <ion-accordion *ngFor="let set of exercise.controls.sets.controls; let setIndex = index" value="first">
             <ion-item slot="header">
-              <ion-label> Set ({{ setIndex + 1 }}) </ion-label>
+              <ion-label class="spartan"> Set ({{ setIndex + 1 }}) </ion-label>
             </ion-item>
             <div [formGroup]="set" slot="content">
               <ion-item>
@@ -71,7 +82,7 @@
       </ion-button>
     </ion-card>
 
-    <ion-button (click)="addExercise()" fill='clear' class="spartan"> Add Exercise </ion-button>
-    <ion-button (click)="presentAlertConfirm()" fill='clear' class="spartan"> Finish </ion-button>
+    <ion-button (click)="addExercise()" fill='clear' class="spartan accent"> Add Exercise </ion-button>
+    <ion-button (click)="presentAlertConfirm()" fill='clear' class="spartan accent"> Finish </ion-button>
   </form>
 </ion-content>
