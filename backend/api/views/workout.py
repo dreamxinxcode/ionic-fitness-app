@@ -44,6 +44,11 @@ class WorkoutViewset(viewsets.ModelViewSet):
 
     def list(self, request):
         queryset = Workout.objects.filter(user=request.user).order_by('-timestamp')
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = WorkoutSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = WorkoutSerializer(queryset, many=True)
         return Response(serializer.data)
 

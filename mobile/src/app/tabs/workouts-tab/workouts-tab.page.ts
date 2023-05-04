@@ -4,7 +4,7 @@ import { WorkoutsService } from '../../services/workouts/workouts.service';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { ModalController } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, ModalController } from '@ionic/angular';
 import { TemplateFormComponent } from './template-form/template-form.component';
 
 @Component({
@@ -14,8 +14,9 @@ import { TemplateFormComponent } from './template-form/template-form.component';
 })
 export class WorkoutsTabPage implements OnInit {
   date:any = this.dateTimeService.formatDate(new Date());
-  workouts:any;
+  workouts:any = [];
   loading: boolean = true;
+  page = 1;
 
   constructor(
     private api: ApiService,
@@ -27,9 +28,14 @@ export class WorkoutsTabPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.api.get('workouts').subscribe({
+    this.loadWorkouts();
+  }
+
+  loadWorkouts() {
+    this.api.get('workouts', { params: { page: this.page.toString() } }).subscribe({
       next: (res) => {
-        this.workouts = res;
+        this.workouts = [...this.workouts, ...res.results];
+        this.page++;
       },
       error: (err) => {
         this.toast.render(err.message, 'danger', 'alert-circle-outline');
@@ -40,6 +46,13 @@ export class WorkoutsTabPage implements OnInit {
     });
   }
 
+  onIonInfinite(ev) {
+    this.loadWorkouts();
+    setTimeout(() => {
+      (ev as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
+  }
+  
   handleRefresh(event) {
     this.loading = true;
     setTimeout(() => {

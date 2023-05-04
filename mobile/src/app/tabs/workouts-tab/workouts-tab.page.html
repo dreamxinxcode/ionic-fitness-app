@@ -22,7 +22,7 @@
 
   <ion-icon *ngIf="!workouts?.length" id='empty-workouts' [routerLink]="['workout']" name="add"></ion-icon>
 
-  <div *ngIf="!loading">
+  <div *ngIf="workouts.length">
     <ion-card *ngFor="let workout of workouts; let i = index">
       <ion-card-content>
         <ion-item>
@@ -74,4 +74,7 @@
       </ion-card-content>  
     </ion-card>
   </div>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
