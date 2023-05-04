@@ -21,7 +21,19 @@ const routes: Routes = [
   },
   {
     path: 'privacy',
-    loadChildren: () => import('./pages/privacy/privacy.module').then( m => m.PrivacyPageModule),
+    loadChildren: () => import('./tabs/settings-tab/privacy-settings/privacy-settings.module').then( m => m.PrivacySettingsPageModule),
+  },
+  {
+    path: 'user/:id',
+    loadChildren: () => import('./tabs/profile-tab/user/user.module').then( m => m.UserPageModule)
+  },
+  {
+    path: 'moments',
+    loadChildren: () => import('./pages/moments/moments.module').then( m => m.MomentsModule)
+  },
+  {
+    path: 'notifications',
+    loadChildren: () => import('./pages/notifications/notifications.module').then( m => m.NotificationsPageModule)
   },
 ];
 @NgModule({

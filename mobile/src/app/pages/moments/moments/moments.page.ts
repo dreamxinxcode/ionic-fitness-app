@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfigService } from 'src/app/services/config/config.service';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { MomentsService } from 'src/app/services/moments/moments.service';
 
@@ -15,6 +16,7 @@ export class MomentsPage implements OnInit {
   constructor(
     private momentsService: MomentsService,
     public dateTimeService: DateTimeService,
+    public config: ConfigService,
   ) { }
 
   ngOnInit() {

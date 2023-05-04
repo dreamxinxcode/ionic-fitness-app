@@ -9,6 +9,14 @@ const routes: Routes = [
     path: '',
     component: SettingsTabPage,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'account',
+    loadChildren: () => import('./account-settings/account-settings.module').then( m => m.AccountSettingsPageModule)
+  },
+  {
+    path: 'privacy',
+    loadChildren: () => import('./privacy-settings/privacy-settings.module').then( m => m.PrivacySettingsPageModule)
   }
 ];
 

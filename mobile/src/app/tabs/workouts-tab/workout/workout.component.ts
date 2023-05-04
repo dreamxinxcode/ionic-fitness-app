@@ -8,6 +8,7 @@ import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { TimerService } from 'src/app/services/timer/timer.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-workout',
@@ -31,6 +32,7 @@ export class WorkoutComponent implements OnInit {
     private toast: ToastService,
     public dateTimeService: DateTimeService,
     public timer: TimerService,
+    public userService: UserService,
   ) { }
 
   ngOnInit() {
@@ -43,8 +45,11 @@ export class WorkoutComponent implements OnInit {
       }
     });
     this.http.get(this.config.API_URL + '/exercises/').subscribe({
-      next: (res) => {
-        this.exerciseOptions = res;
+      next: (res: any) => {
+        this.exerciseOptions = {
+          custom: res.filter(exercise => exercise.user),
+          default: res.filter(exercise => !exercise.user),
+        };
       },
       error: (err) => {
         this.toast.render(err.statusText, 'danger', 'alert');
@@ -92,6 +97,33 @@ export class WorkoutComponent implements OnInit {
     return this.exercises.controls[index].get('sets') as FormArray;
   }
 
+  getTargets(event) {
+    const exercise = event.detail.value.trim();
+    this.http.get(this.config.API_URL + `/workouts/targets/${exercise}/`).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
+      complete: () => {},
+    });
+  }
+
+  cleanup() {
+    this.workoutForm.value.exercises.forEach((exercise) => {
+      if (!exercise.name) {
+        return false;
+      }
+      exercise.sets = exercise.sets.filter((set) => {
+        return set.weight;
+      });
+      return exercise;
+    });
+
+    console.log(this.workoutForm.value);
+  }
+
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -110,6 +142,7 @@ export class WorkoutComponent implements OnInit {
           text: 'Yes',
           id: 'confirm-button',
           handler: () => {
+            this.cleanup();
             const data = {
               uuid: uuid(),
               timestamp: this.timestamp.value,
@@ -118,7 +151,7 @@ export class WorkoutComponent implements OnInit {
             this.http.post(this.config.API_URL + '/workouts/', data).subscribe({
               next: (res) => {
                 this.toast.render('Success!', 'success', 'barbell-outline');
-                this.router.navigate(['/tabs/workouts']);
+                this.router.navigate(['/tabs/workouts/']);
               },
               error: (err) => {
                 this.toast.render(err.statusText, 'danger', 'alert');

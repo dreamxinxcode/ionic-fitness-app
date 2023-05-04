@@ -19,7 +19,7 @@
       {{ tag.title }}
     </ion-button>
     <ion-button 
-      *ngIf="selectedTags.length"
+      [disabled]="!selectedTags.length"
       (click)="selectedTags=[]"
       size='small' 
       shape="round"
@@ -41,7 +41,7 @@
           <h2>
             {{ meal.title }}
           </h2>
-          {{ meal.recipe }}
+            {{ meal.recipe }}
           <div>
             <ion-badge *ngFor="let tag of meal.tags" color="primary">{{ tag.title }}</ion-badge>
           </div>

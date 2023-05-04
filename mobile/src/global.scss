@@ -51,6 +51,10 @@
     font-family: 'jakarta' !important;
 }
 
+.green {
+    color: #00fa9a;
+}
+
 .accent {
     color: #d4192c;
 }
@@ -58,6 +62,13 @@
 .spartan {
     font-family: 'noize' !important;
     font-size: 1.2rem;
+}
+
+#search-results {
+    opacity: 95%;
+    position: absolute;
+    z-index: 2;
+    width: 100%;
 }
 
 ion-card {

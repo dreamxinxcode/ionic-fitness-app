@@ -4,18 +4,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PrivacyPageRoutingModule } from './privacy-routing.module';
+import { PrivacySettingsPageRoutingModule } from './privacy-settings-routing.module';
 
-import { PrivacyPage } from './privacy.page';
+import { PrivacySettingsPage } from './privacy-settings.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PrivacyPageRoutingModule,
+    PrivacySettingsPageRoutingModule,
     ReactiveFormsModule,
   ],
-  declarations: [PrivacyPage]
+  declarations: [PrivacySettingsPage]
 })
-export class PrivacyPageModule {}
+export class PrivacySettingsPageModule {}

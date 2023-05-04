@@ -57,7 +57,7 @@ export class SettingsTabPage implements OnInit {
           handler: (value) => {
             this.settingsService.setUnits({ units_height: value.units.value }).subscribe({
               next: (res) => {
-                this.toast.render('Settings saved', 'success', 'settings-outline');
+                this.toast.render('Settings saved', 'light', 'settings-outline');
                 this.userService.user.profile = res;
               },
               error: (err) => {
@@ -98,7 +98,7 @@ export class SettingsTabPage implements OnInit {
           handler: (value) => {
             this.settingsService.setUnits({ units_weight: value.units.value }).subscribe({
               next: (res) => {
-                this.toast.render('Settings saved', 'success', 'settings-outline');
+                this.toast.render('Settings saved', 'light', 'settings-outline');
                 this.userService.user.profile = res;
               },
               error: (err) => {

@@ -5,3 +5,4 @@ from .version import *
 from .moment import *
 from .block import *
 from .template import *
+from .notification import *

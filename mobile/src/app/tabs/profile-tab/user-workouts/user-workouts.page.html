@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>user-workouts</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <app-workouts-skeleton *ngIf="loading"></app-workouts-skeleton>
+
+  <div *ngIf="!loading">
+    <ion-card *ngFor="let workout of workouts; let i = index">
+      <ion-card-content>
+        <ion-item>
+          <ion-item [routerLink]="['/tabs/workouts/workout', workout.uuid]">
+            <h3 class="spartan">
+              {{ dateTimeService.formatDate(workout.timestamp) }}
+            </h3>
+          </ion-item>
+        </ion-item>
+      
+        <ion-accordion-group [multiple]="true">
+          <ion-accordion *ngFor="let exercise of workout.workout_data">
+            <ion-item slot="header">
+              <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
+              <ion-label>{{ exercise.name }}</ion-label>
+            </ion-item>
+            <ion-list slot="content">
+              <ion-item *ngFor="let set of exercise.sets; let i = index">
+                <div class="set-detail">
+                  <p>Weight</p> <p class="set-detail-value">{{ set.weight && set.weight }} {{ set.weight && userService.getWeightUnits() }}</p>
+                </div>
+                <div class="set-detail">
+                  <p>Reps</p> <p class="set-detail-value">{{ set.reps }}</p>
+                </div>
+              </ion-item>
+            </ion-list>
+          </ion-accordion>
+        </ion-accordion-group>
+        <p class="ion-text-end">
+          {{ dateTimeService.formatDistance(workout.timestamp) }}
+        </p>
+      </ion-card-content>  
+    </ion-card>
+  </div>
+</ion-content>

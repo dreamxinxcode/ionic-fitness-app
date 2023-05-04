@@ -1,4 +1,5 @@
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
@@ -37,4 +38,10 @@ class MomentViewset(viewsets.ModelViewSet):
     def destroy(self, request, pk=None):
         moment = Moment.objects.get(id=pk).delete()
         serializer = MomentSerializer(moment)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['GET'])
+    def by_user(self, request, pk=None):
+        queryset = self.queryset.filter(user=pk).order_by('-timestamp')
+        serializer = MomentSerializer(queryset, many=True)
         return Response(serializer.data)
