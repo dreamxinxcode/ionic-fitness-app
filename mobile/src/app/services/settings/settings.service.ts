@@ -29,7 +29,7 @@ export class SettingsService {
     const value = event.detail.checked;
     localStorage.setItem('dark_theme', value.toString());
     this.setTheme();
-    this.toastService.render(`${value ? 'Dark' : 'Light'} Mode Enabled`, 'primary', `${value ? 'moon' : 'sunny-outline'}`);
+    this.toastService.render(`${value ? 'Dark' : 'Light'} Mode Enabled`, 'light', `${value ? 'moon' : 'sunny-outline'}`);
   }
 
   setTheme(): void {

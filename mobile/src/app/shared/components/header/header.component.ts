@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NotificationService } from 'src/app/services/notifications/notification.service';
+import { SettingsService } from 'src/app/services/settings/settings.service';
 
 @Component({
   selector: 'app-header',
@@ -7,8 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  notifications = [];
+  loading: boolean = true;
+
+  constructor(
+    public notificationService: NotificationService,
+    public settings: SettingsService,
+  ) { }
 
   ngOnInit() {}
-
 }

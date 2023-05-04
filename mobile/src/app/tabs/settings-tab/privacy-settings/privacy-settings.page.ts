@@ -4,11 +4,11 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
-  selector: 'app-privacy',
-  templateUrl: './privacy.page.html',
-  styleUrls: ['./privacy.page.scss'],
+  selector: 'app-privacy-settings',
+  templateUrl: './privacy-settings.page.html',
+  styleUrls: ['./privacy-settings.page.scss'],
 })
-export class PrivacyPage implements OnInit {
+export class PrivacySettingsPage implements OnInit {
   privacyForm = new FormGroup({
     show_first_name: new FormControl(this.userService.user.show_first_name),
     show_last_name: new FormControl(this.userService.user.show_last_name),

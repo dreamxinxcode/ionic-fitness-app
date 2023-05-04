@@ -49,6 +49,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     ip = models.GenericIPAddressField(blank=True, null=True)
     is_banned = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False)
     
     # Privacy settings
     show_first_name = models.BooleanField(default=True)
@@ -56,6 +57,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     show_age = models.BooleanField(default=True)
     show_weight = models.BooleanField(default=True)
     show_height = models.BooleanField(default=True)
+
+    pr = models.JSONField(blank=True, null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -74,7 +77,7 @@ class Profile(models.Model):
     country_code = models.CharField(max_length=3, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     workout_count = models.IntegerField(default=0)
-    avatar = models.ImageField(default='/media/avatar.jpg', blank=True, null=True, upload_to='avatars')
+    avatar = models.ImageField(blank=True, null=True, upload_to='avatars')
     bio = models.TextField(blank=True, null=True)
     units_height = models.CharField(choices=UNITS, default='imperial', max_length=8)
     units_weight = models.CharField(choices=UNITS, default='imperial', max_length=8)

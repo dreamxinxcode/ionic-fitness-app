@@ -9,6 +9,10 @@ const routes: Routes = [
     path: '',
     component: ProfileTabPage,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'user-workouts/:id',
+    loadChildren: () => import('./user-workouts/user-workouts.module').then( m => m.UserWorkoutsPageModule)
   }
 ];
 

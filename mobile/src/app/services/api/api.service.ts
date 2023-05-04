@@ -13,8 +13,8 @@ export class ApiService {
     private config: ConfigService,   
   ) { }
 
-  get(url: string): Observable<any> {
-    return this.http.get(`${this.config.API_URL}/${url}/`);
+  get(url: string, params?: any): Observable<any> {
+    return this.http.get(`${this.config.API_URL}/${url}/`, params);
   }
 
   post(url: string, data:any): Observable<any> {

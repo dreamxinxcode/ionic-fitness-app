@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ApiService } from 'src/app/services/api/api.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { MomentsService } from 'src/app/services/moments/moments.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
@@ -19,6 +20,7 @@ export class ProfileTabPage implements OnInit {
   currentUser;
   moments;
   loading: boolean = true;
+  loadingMoments: boolean = true;
   loadingSearch = false;
   momentForm = new FormGroup({
     moment: new FormControl()
@@ -29,23 +31,33 @@ export class ProfileTabPage implements OnInit {
     private api: ApiService,
     public userService: UserService,
     private momentsService: MomentsService,
-    private dateTimeService: DateTimeService,
+    private dateTimeService: DateTimeService, // Used in template
     private toast: ToastService,
+    private config: ConfigService,
   ) { }
 
   ngOnInit() {
     this.currentUser = this.userService.user;
-    this.momentsService.syncMoments().subscribe((res) => {
-      this.moments = res;
+    this.api.get('moments/by_user/' + this.userService.user.id).subscribe({
+      next: (res) => {
+        this.moments = res;
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
+      complete: () => {
+        this.loadingMoments = false;
+      },
     });
   }
 
   submitMoment() {
     const moment = this.momentForm.value.moment;
+    this.loadingMoments = true;
     this.api.post('moments', { text: moment }).subscribe({
       next: () => {
         this.momentForm.controls.moment.reset();
-        this.momentsService.syncMoments().subscribe((res) => {
+        this.api.get('moments/by_user/' + this.userService.user.id).subscribe((res) => {
           this.moments = res;
         });
       },
@@ -53,15 +65,33 @@ export class ProfileTabPage implements OnInit {
         this.toast.render(err.message, 'danger', 'alert-circle-outline');
       },
       complete: () => {
-
+        this.loadingMoments = false;
       }
+    });
+  }
+
+  deleteMoment(index: number, id: number) {
+    this.api.delete(`moments/${id}`).subscribe({
+      next: (res) => {
+        this.moments.splice(index, 1);
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
+      complete: () => {
+
+      },
     });
   }
 
   handleSearch(event) {
     this.loadingSearch = true;
-    const query = event.target.value.toLowerCase();
-    this.api.get(`users/query/?q=${query}`).subscribe({
+    const query = event.target.value.toLowerCase().trim();
+    if (!query) {
+      this.loadingSearch = false;
+      return
+    }
+    this.http.get(this.config.BASE_URL + `/users/query/?q=${query}`).subscribe({
       next: (res) => {
         this.results = res;
       },

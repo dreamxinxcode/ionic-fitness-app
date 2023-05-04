@@ -1,5 +1,4 @@
-from rest_framework.decorators import permission_classes, action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
@@ -13,6 +12,7 @@ from .serializers import UserSerializer, ProfileSerializer
 
 
 class UserViewset(viewsets.ModelViewSet):
+    
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
@@ -20,10 +20,10 @@ class UserViewset(viewsets.ModelViewSet):
         queryset = CustomUser.objects.all()
         serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data)
-
-    def retrieve(self, request, *args, **kwargs):
-        id = kwargs['uuid']
-        user = get_object_or_404(self.queryset, id=id)
+    
+    def retrieve(self, request, pk=None):
+        print('hellooo')
+        user = get_object_or_404(self.queryset, pk=pk)
         serializer = UserSerializer(user)
         return Response(serializer.data)
     
