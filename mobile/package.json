@@ -28,6 +28,7 @@
     "@capacitor/keyboard": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
     "@ionic/angular": "^6.2.1",
+    "chart.js": "^4.3.0",
     "cordova-plugin-lottie-splashscreen": "^0.9.6",
     "date-fns": "^2.29.3",
     "flag-icons": "^6.6.6",

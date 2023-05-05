@@ -5,14 +5,16 @@ from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from ..models.moment import Moment
 from ..serializers.moment import MomentSerializer
+from ..pagination import SmallResultsSetPagination, StandardResultsSetPagination
 from users.models import CustomUser
 
 
-class MomentViewset(viewsets.ModelViewSet):
+class MomentViewSet(viewsets.ModelViewSet):
     
     queryset = Moment.objects.all()
     serializer_class = MomentSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
 
     def create(self, request, *args, **kwargs):
         data = request.data
@@ -23,9 +25,14 @@ class MomentViewset(viewsets.ModelViewSet):
 
     def list(self, request):
         queryset = Moment.objects.all().order_by('-timestamp')
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = MomentSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = MomentSerializer(queryset, many=True)
         return Response(serializer.data)
-
+    
     def retrieve(self, request, *args, **kwargs):
         uuid = kwargs['uuid']
         moment = get_object_or_404(self.queryset, uuid=uuid)
@@ -43,5 +50,15 @@ class MomentViewset(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'])
     def by_user(self, request, pk=None):
         queryset = self.queryset.filter(user=pk).order_by('-timestamp')
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = MomentSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = MomentSerializer(queryset, many=True)
         return Response(serializer.data)
+    
+    def get_pagination_class(self):
+        if self.action == 'by_user':
+            return SmallResultsSetPagination
+        return self.pagination_class

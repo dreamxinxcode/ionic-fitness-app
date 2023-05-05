@@ -7,7 +7,7 @@ from ..models.workout import Workout
 from ..serializers.workout import WorkoutSerializer
 from ..pagination import StandardResultsSetPagination
 
-class WorkoutViewset(viewsets.ModelViewSet):
+class WorkoutViewSet(viewsets.ModelViewSet):
     queryset = Workout.objects.all()
     serializer_class = WorkoutSerializer
     pagination_class = StandardResultsSetPagination
@@ -21,10 +21,8 @@ class WorkoutViewset(viewsets.ModelViewSet):
             if exercise['name'] in user.pr.keys():
                 print('here')
             else:
-                print('exersice', exercise)
                 max_weight =  max(exercise['sets'], key=lambda x: x['weight'])
                 max_reps =  max(exercise['sets'], key=lambda x: x['reps'])
-                print('max:', max_weight)                
 
                 user.pr[exercise['name']] = {
                     'pr_weight': max_weight,

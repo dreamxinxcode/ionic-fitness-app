@@ -57,35 +57,9 @@
     </ion-button>
   </div>
   
-  <ion-card *ngFor="let moment of moments">
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="{{ moment.user.profile.avatar ? config.BASE_URL + moment.user.profile.avatar : config.ASSETS_URL + 'avatar.png' }}" alt="">
-      </ion-avatar>
-      <ion-label>
-        <h3>
-          {{ moment.text }}
-        </h3>
-        <p class="ion-text-right">
-          {{ dateTimeService.formatDistance(moment.timestamp) }}
-        </p>
-      </ion-label>
-      <ion-icon id="settings_{{ i }}" name="ellipsis-vertical" slot="end"></ion-icon>
-      <ion-popover trigger="settings_{{ i }}" [dismissOnSelect]="true">
-        <ng-template>
-          <ion-content>
-            <ion-list>
-              <ion-item (click)="deleteMoment(i, moment.id)" [button]="true" [detail]="false">
-                <ion-label>Delete</ion-label>
-              </ion-item>           
-              <ion-item [button]="true" [detail]="false">
-                <ion-label>Cancel</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-content>
-        </ng-template>
-      </ion-popover>
-    </ion-item>
-  </ion-card>
-
+  <app-moments-feed [moments]="moments"></app-moments-feed>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  
 </ion-content>
