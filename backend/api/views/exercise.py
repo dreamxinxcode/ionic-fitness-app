@@ -1,10 +1,10 @@
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import permission_classes, action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from ..models.exercise import Exercise
+from ..models.exercise import Exercise, ExerciseFavorites
 from ..serializers.exercise import ExerciseSerializer, ExerciseCreateSerializer
 
 
@@ -37,3 +37,21 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, pk=None):
         pass
+
+    @action(detail=False, methods=['GET'])
+    def by_user(self, request):
+        queryset = self.queryset.filter(user=request.user)
+        serializer = ExerciseSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['POST'])
+    def add_to_favorites(self, request):
+        user = request.user
+        exercise_name = request.data.get('name')
+        try:
+            exercise = Exercise.objects.get(name=exercise_name)
+        except Exercise.DoesNotExist:
+            return Response({'error': f'Exercise "{exercise_name}" does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+        favorites, _ = ExerciseFavorites.objects.get_or_create(user=user)
+        favorites.exercise.add(exercise)
+        return Response({'success': f'Exercise "{exercise_name}" added to favorites.'})

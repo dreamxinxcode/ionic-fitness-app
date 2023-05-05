@@ -8,7 +8,7 @@ from ..models.meal import Meal, MealTag
 from ..serializers.meal import MealSerializer, MealTagSerializer
 
 
-class MealViewset(viewsets.ModelViewSet):
+class MealViewSet(viewsets.ModelViewSet):
     
     queryset = Meal.objects.all()
     serializer_class = MealSerializer

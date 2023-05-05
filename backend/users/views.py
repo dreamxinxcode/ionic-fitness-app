@@ -11,7 +11,7 @@ from .models import CustomUser, Profile
 from .serializers import UserSerializer, ProfileSerializer
 
 
-class UserViewset(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer

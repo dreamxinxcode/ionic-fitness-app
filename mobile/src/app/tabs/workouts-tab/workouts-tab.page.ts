@@ -34,6 +34,7 @@ export class WorkoutsTabPage implements OnInit {
   loadWorkouts() {
     this.api.get('workouts', { params: { page: this.page.toString() } }).subscribe({
       next: (res) => {
+        console.log(res)
         this.workouts = [...this.workouts, ...res.results];
         this.page++;
       },

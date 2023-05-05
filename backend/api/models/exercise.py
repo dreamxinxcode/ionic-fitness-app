@@ -9,3 +9,13 @@ class Exercise(models.Model):
   def __str__(self):
       return self.name
     
+    
+class ExerciseFavorites(models.Model):
+   user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+   exercise = models.ManyToManyField(Exercise)
+
+   def __str__(self):
+      return self.user.username
+   
+   class Meta:
+      verbose_name_plural = 'Exercise Favorites'

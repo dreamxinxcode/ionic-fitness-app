@@ -13,6 +13,7 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 export class ExercisesComponent implements OnInit {
 
   exercises = [];
+  userExercises = [];
   exerciseControl = new FormControl('');
   loading: boolean = true;
 
@@ -23,6 +24,11 @@ export class ExercisesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadExercises();
+    this.loadUserExercises();
+  }
+
+  loadExercises() {
     this.exerciseService.syncExercises().subscribe({
       next: (res: any) => {
         this.exercises = res;
@@ -33,6 +39,38 @@ export class ExercisesComponent implements OnInit {
       complete: () => {
         this.loading = false;
       } 
+    });
+  }
+
+  loadUserExercises() {
+    this.api.get('exercises/by_user').subscribe({
+      next: (res: any) => {
+        this.userExercises = res;
+      },
+      error: (err) => {
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
+      },
+      complete: () => {
+        this.loading = false;
+      } 
+    });
+  
+  }
+
+  addExercise(exercise, index: number) {
+    console.log(exercise)
+    if (this.userExercises.includes(exercise)) {
+      this.userExercises.splice(index, 1);
+      return;
+    }
+    this.api.post('exercises/add_to_favorites', exercise).subscribe({
+      next: (res) => {
+        this.userExercises.push(exercise);
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
+      complete: () => {},
     });
   }
 

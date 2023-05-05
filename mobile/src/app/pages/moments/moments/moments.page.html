@@ -12,20 +12,8 @@
 
   <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)" show-clear-button="always"></ion-searchbar>
   
-  <ion-card *ngFor="let moment of results || moments">
-    <ion-item>
-      <ion-avatar [routerLink]="['/user/', moment.user.id]" slot="start">
-        <img alt="avatar" src="{{ moment.user.profile.avatar ? config.BASE_URL + moment.user.profile.avatar : config.ASSETS_URL + 'avatar.png' }}" />
-      </ion-avatar>
-      <p>
-        {{ moment.user.profile.first_name }} {{ moment.user.profile.last_name }} ({{ moment.user.username }})
-      </p>
-    </ion-item>
-    <ion-card-content>
-      <h3 class="spartan">{{ moment.text }}</h3>
-      <p class="ion-text-right">
-        {{ dateTimeService.formatDistance(moment.timestamp) }}
-      </p>
-    </ion-card-content>
-  </ion-card>
+  <app-moments-feed [moments]="moments"></app-moments-feed>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
