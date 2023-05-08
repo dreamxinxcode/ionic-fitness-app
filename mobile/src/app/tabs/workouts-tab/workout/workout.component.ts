@@ -148,6 +148,7 @@ export class WorkoutComponent implements OnInit {
               timestamp: this.timestamp.value,
               workout: this.workoutForm.value.exercises,
             };
+            console.log(data)
             this.http.post(this.config.API_URL + '/workouts/', data).subscribe({
               next: (res) => {
                 this.toast.render('Success!', 'success', 'barbell-outline');

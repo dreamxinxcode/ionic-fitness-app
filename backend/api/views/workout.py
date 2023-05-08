@@ -4,6 +4,8 @@ from rest_framework.decorators import action
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from ..models.workout import Workout
+from ..models.exercise import Exercise
+from ..models.set import Set
 from ..serializers.workout import WorkoutSerializer
 from ..pagination import StandardResultsSetPagination
 
@@ -17,26 +19,23 @@ class WorkoutViewSet(viewsets.ModelViewSet):
         data = request.data
         user = request.user
 
-        for exercise in data['workout']:
-            if exercise['name'] in user.pr.keys():
-                print('here')
-            else:
-                max_weight =  max(exercise['sets'], key=lambda x: x['weight'])
-                max_reps =  max(exercise['sets'], key=lambda x: x['reps'])
-
-                user.pr[exercise['name']] = {
-                    'pr_weight': max_weight,
-                    'pr_volume': max_reps,
-                }
-
-        user.save()
-
         workout = Workout.objects.create(
             uuid=data['uuid'], 
             user=user, 
             timestamp=data['timestamp'], 
-            workout_data=data['workout']
         )
+
+        # Create set objects
+        for exercise in data['workout']:
+            for set in exercise['sets']:
+                Set.objects.create(
+                    user=user, 
+                    workout=workout, 
+                    exercise=Exercise.objects.get(name=exercise['name']), 
+                    weight=set['weight'], 
+                    reps=set['reps']
+                )
+
         serializer = WorkoutSerializer(workout)
         return Response(serializer.data)
 
