@@ -1,5 +1,6 @@
 from .exercise import *
 from .workout import *
+from .set import *
 from .meal import *
 from .version import *
 from .moment import *

@@ -51,10 +51,10 @@
           </ng-template>
         </ion-popover>
         <ion-accordion-group [multiple]="true">
-          <ion-accordion *ngFor="let exercise of workout.workout_data">
+          <ion-accordion *ngFor="let exercise of workout.sets">
             <ion-item slot="header">
               <ion-icon name="checkmark-outline" class='green' slot="start"></ion-icon>
-              <ion-label>{{ exercise.name }}</ion-label>
+              <ion-label>{{ exercise.exercise }}</ion-label>
             </ion-item>
             <ion-list slot="content">
               <ion-item *ngFor="let set of exercise.sets; let i = index">

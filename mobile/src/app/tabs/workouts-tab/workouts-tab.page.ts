@@ -34,8 +34,21 @@ export class WorkoutsTabPage implements OnInit {
   loadWorkouts() {
     this.api.get('workouts', { params: { page: this.page.toString() } }).subscribe({
       next: (res) => {
-        console.log(res)
+        // Group sets by exercise
+        for (let item of res.results) {
+          console.log(item)
+          item.sets = item.sets.reduce((acc, curr) => {
+            const existing = acc.find((item) => item.exercise === curr.exercise.name);
+            if (existing) {
+              existing.sets.push(curr);
+            } else {
+              acc.push({ exercise: curr.exercise.name, sets: [curr] });
+            }
+            return acc;
+          }, []);
+        }
         this.workouts = [...this.workouts, ...res.results];
+        console.log(this.workouts)
         this.page++;
       },
       error: (err) => {
