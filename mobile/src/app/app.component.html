@@ -1,3 +1,98 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title class="ion-text-center">
+            <img id='logo' src="../../assets/logo.png">
+          </ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list lines="full">
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/tabs/workouts']">
+              <ion-icon name="barbell-outline" slot="start"></ion-icon>
+              <ion-label>Workouts</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/tabs/workouts/exercises']">
+              <ion-icon name="bicycle-outline" slot="start"></ion-icon>
+              <ion-label>Exercises</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/moments']">
+              <ion-icon name="star" slot="start"></ion-icon>
+              <ion-label>Moments</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/tabs/meals']">
+              <ion-icon name="restaurant-outline" slot="start"></ion-icon>
+              <ion-label>Meals</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/tabs/profile']">
+              <ion-icon name="person-outline" slot="start"></ion-icon>
+              <ion-label>Profile</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/users']">
+              <ion-icon name="people-outline" slot="start"></ion-icon>
+              <ion-label>Users</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/tabs/analytics']">
+              <ion-icon name="analytics-outline" slot="start"></ion-icon>
+              <ion-label>Analytics</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/notifications']">
+              <ion-icon name="notifications-outline" slot="start"></ion-icon>
+              <ion-label>Notifications</ion-label>
+              <ion-label slot="end">{{ notificationService.count }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/tabs/settings']">
+              <ion-icon name="settings-outline" slot="start"></ion-icon>
+              <ion-label>Settings</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-item lines="full">
+            <ion-icon slot="start" name="moon"></ion-icon>
+            <ion-toggle [checked]="settingsService.isDark()" (ionChange)="settingsService.toggleDarkMode($event)" labelPosition="start">
+              Dark mode
+            </ion-toggle>
+          </ion-item>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="authService.logout()">
+              <ion-icon name="log-out-outline" color="danger" slot="start"></ion-icon>
+              <ion-label color="danger">Logout</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+        <p class="ion-text-center">
+          Version {{ versionService.currentVersion }}
+        </p>
+        <div id="store-badges">
+          <img 
+            src="../../../../assets/app-store.png" 
+            class='store-badge' 
+          >
+          <img 
+            src="../../../../assets/google-play.png" 
+            class='store-badge' 
+          >
+        </div>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
 </ion-app>

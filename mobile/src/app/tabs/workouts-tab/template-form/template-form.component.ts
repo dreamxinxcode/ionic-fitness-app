@@ -11,9 +11,10 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 export class TemplateFormComponent implements OnInit {
   @Input() workoutData;
   @Input() modalController;
-  loading;
+  
+  private loading;
 
-  templateForm = new FormGroup({
+  private templateForm = new FormGroup({
     title: new FormControl(''),
   }); 
   

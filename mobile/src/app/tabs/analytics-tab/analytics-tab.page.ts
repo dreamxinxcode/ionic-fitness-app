@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { ApiService } from 'src/app/services/api/api.service';
+import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -11,63 +12,107 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./analytics-tab.page.scss'],
 })
 export class AnalyticsTabPage implements OnInit {
-  public barChart: any;
-  public pieChart: any;
+  private barChart: any;
+  private pieChart: any;
 
-  exercises = [];
-  exerciseSelect = new FormControl('');
+  private exercisesDone = [];
+  private exerciseSelect = new FormControl('');
+
+  private prExercise: string;
+  private prWeight: number;
+  private prReps: number;
+
+  private mostFrequent: any[] = [];
 
   constructor(
     private api: ApiService,
     private toast: ToastService,
-    public userService: UserService,
+    private datetimeService: DateTimeService,
+    private userService: UserService, // Used in template
   ) { }
 
   ngOnInit() {
     Chart.register(...registerables);
-    this.loadExercises();
-    this.createBarChart();
-    this.createPieChart();
+    this.getExercisesDone();
+    this.getMostFrequentExercises();
   }
 
-  loadExercises() {
-    this.api.get('exercises').subscribe({
+  getExercisesDone() {
+    this.api.get('analytics/exercises_done').subscribe({
       next: (res) => {
-        this.exercises = res;
+        this.exercisesDone = res;
+        this.exerciseSelect.setValue(this.exercisesDone[0]);
+        this.prByExercise(this.exercisesDone[0].name);
       },
       error: (err) => {
         this.toast.render(err.statusText, 'danger', 'alert');
       },
-      complete: () => {},
     });
   }
 
-  createBarChart(){
-    this.barChart = new Chart("MyBarChart", {
-      type: 'bar',
-
-      data: {
-        labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13',
-								 '2022-05-14', '2022-05-15', '2022-05-16','2022-05-17', ], 
-	       datasets: [
-          {
-            label: "Weight",
-            data: ['467','576', '572', '79', '92',
-								 '574', '573', '576'],
-            backgroundColor: '#D4192C'
-          },
-          {
-            label: "Reps",
-            data: ['542', '542', '536', '327', '17',
-									 '0.00', '538', '541'],
-            backgroundColor: '#F2F3F4',
-          }  
-        ]
+  getMostFrequentExercises() {
+    this.api.get('analytics/most_frequent').subscribe({
+      next: (res) => {
+        this.mostFrequent = res;
       },
-      options: {
-        aspectRatio:2.5
-      }
-      
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
+    });
+  }
+
+  handleExerciseChange(event) {
+    const exercise = event.detail.value;
+    this.prByExercise(exercise.name);
+  }
+
+  prByExercise(exercise: string) {
+    this.api.get('analytics/get_prs', { params: { exercise: exercise } }).subscribe({
+      next: (res) => {
+        this.prExercise = exercise;
+        this.prWeight = res.pr_weight;
+        this.prReps = res.pr_reps;
+        this.getSets(exercise);       
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
+    });
+  }
+
+  getSets(exercise: string) {
+    this.api.get('analytics/sets', { params: { exercise: exercise } }).subscribe({
+      next: (res) => {
+        const timestamps = res.map((item) => this.datetimeService.timestampFormat(item.timestamp));
+        const weights = res.map((item) => item.weight);
+        const reps = res.map((item) => item.reps);
+        this.barChart?.destroy(); // Destroy existing chart
+        this.barChart = new Chart("MyBarChart", {
+          type: 'bar',    
+          data: {
+            labels: timestamps, 
+             datasets: [
+              {
+                label: "Weight",
+                data: weights,
+                backgroundColor: '#D4192C'
+              },
+              {
+                label: "Repetitions",
+                data: reps,
+                backgroundColor: '#000000',
+              }  
+            ]
+          },
+          options: {
+            aspectRatio:2.5
+          }
+          
+        });
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
     });
   }
 

@@ -8,6 +8,7 @@ import { AnalyticsTabPageRoutingModule } from './analytics-tab-routing.module';
 
 import { AnalyticsTabPage } from './analytics-tab.page';
 import { ComponentsModule } from '../../shared/components/components.module';
+import { CountUpModule } from 'ngx-countup';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { ComponentsModule } from '../../shared/components/components.module';
     AnalyticsTabPageRoutingModule,
     ComponentsModule,
     ReactiveFormsModule,
+    CountUpModule,
   ],
   declarations: [AnalyticsTabPage]
 })

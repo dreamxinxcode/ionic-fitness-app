@@ -8,3 +8,16 @@ ion-avatar {
   justify-content: center;
   align-items: center;
 }
+
+#logo {
+  height: 4rem;
+}
+
+#store-badges {
+  display: flex;
+  justify-content: space-evenly;
+
+  img {
+    height: 2rem;
+  }
+}

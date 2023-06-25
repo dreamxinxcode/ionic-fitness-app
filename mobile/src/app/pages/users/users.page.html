@@ -1,0 +1,21 @@
+<ion-content>
+  <app-header></app-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)" show-clear-button="always"></ion-searchbar>
+
+  <ion-item *ngFor="let user of users" [routerLink]="['/user/', user.id]" >
+    <ion-thumbnail slot="start">
+      <img src="{{ user.profile.avatar ? 'http://localhost:8000' + user.profile.avatar : '../../../assets/avatar.png' }}" alt="avatar">
+    </ion-thumbnail>
+    <ion-label>
+      <h3>
+        {{ user.profile.first_name }} {{ user.profile.last_name }} <span class="fi fi-{{user.profile.country_code | lowercase}}"></span>
+      </h3>
+    </ion-label>
+  </ion-item>
+
+</ion-content>

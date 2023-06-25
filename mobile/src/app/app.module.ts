@@ -8,6 +8,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ComponentsModule } from './shared/components/components.module';
 
 export function tokenGetter() {
   return localStorage.getItem("access");
@@ -15,12 +16,12 @@ export function tokenGetter() {
 
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [],
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
     HttpClientModule,
+    ComponentsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

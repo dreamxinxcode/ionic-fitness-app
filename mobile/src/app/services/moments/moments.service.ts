@@ -16,4 +16,8 @@ export class MomentsService {
   syncMoments(): Observable<any> {
     return this.http.get(this.config.API_URL + '/moments/');
   }
+
+  query(query: string): Observable<any> {
+    return this.http.get(this.config.API_URL + `/moments/?query=${query}`);
+  }
 }

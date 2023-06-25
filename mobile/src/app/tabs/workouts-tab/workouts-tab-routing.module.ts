@@ -18,7 +18,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'workout/:uuid',
+    path: 'workout/:id',
     component: WorkoutComponent,
     canActivate: [AuthGuard]
   },

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from './services/auth/auth.service';
+import { NotificationService } from './services/notifications/notification.service';
 import { SettingsService } from './services/settings/settings.service';
 import { VersionService } from './services/version/version.service';
 
@@ -10,7 +12,9 @@ import { VersionService } from './services/version/version.service';
 export class AppComponent {
   constructor(
     private settingsService: SettingsService,
-    private versionService: VersionService
+    private versionService: VersionService,
+    private notificationService: NotificationService,
+    private authService: AuthService,
   ) {
     this.initializeApp();
     this.settingsService.setTheme();

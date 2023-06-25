@@ -27,6 +27,7 @@
 
 @import "../node_modules/flag-icons/css/flag-icons.min.css";
 
+
 @font-face {
     font-family: 'jakarta';
     src: url("./assets/fonts/PlusJakartaSans-Regular.ttf") format("truetype");
@@ -36,6 +37,8 @@
     font-family: 'noize';
     src: url("./assets/fonts/NoizeSportFreeVertionRegular.ttf") format("truetype");
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 @font-face {
     font-family: 'spartan';
@@ -64,10 +67,15 @@
     font-size: 1.2rem;
 }
 
+.label-text {
+    font-family: 'noize' !important;
+}
+
 #search-results {
     opacity: 95%;
     position: absolute;
     z-index: 2;
+    height: 100%;
     width: 100%;
 }
 
@@ -78,4 +86,16 @@ ion-card {
 ion-title {
     font-family: 'spartan' !important;
     font-size: 2rem;
+}
+
+.action-sheet-cancel {
+    color: #d4192c !important;
+}
+
+ion-badge {
+    background-color: #d4192c !important;
+}
+
+.picker-toolbar-cancel > button {
+    color: #d4192c !important;
 }

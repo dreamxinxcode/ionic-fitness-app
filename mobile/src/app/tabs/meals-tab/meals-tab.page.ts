@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { ConfigService } from 'src/app/services/config/config.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { MealsService } from '../../services/meals/meals.service';
+import { MealComponent } from './meal/meal/meal.component';
 
 @Component({
   selector: 'app-meals-tab',
@@ -9,6 +12,7 @@ import { MealsService } from '../../services/meals/meals.service';
 })
 export class MealsTabPage implements OnInit {
 
+  page: number = 1;
   meals: any;
   tags = [];
   loading: boolean = true;
@@ -17,7 +21,9 @@ export class MealsTabPage implements OnInit {
 
   constructor(
     private mealService: MealsService,
+    private config: ConfigService,
     private toast: ToastService,
+    private modalCtrl: ModalController,
   ) { }
 
   ngOnInit() {
@@ -30,20 +36,21 @@ export class MealsTabPage implements OnInit {
     });
   }
 
-  filterByTags(tag: string) {
-    // Check if tag is already in filter
-    if(this.selectedTags.includes(tag)) {
-      this.selectedTags = this.selectedTags.filter(t => t === tag);
+  filterByTags(tag: string): void {
+    const index = this.selectedTags.indexOf(tag);
+    if (index !== -1) {
+      this.selectedTags.splice(index, 1);
     } else {
       this.selectedTags.push(tag);
     }
+  
     this.loading = true;
     this.mealService.filterByTags(this.selectedTags).subscribe({
       next: (res) => {
         this.results = res;
       },
       error: (err) => {
-        this,this.toast.render(err.message, 'danger', 'alert-circle-outline');
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
       },
       complete: () => {
         this.loading = false;
@@ -51,13 +58,24 @@ export class MealsTabPage implements OnInit {
     });
   }
 
+  async openModal(meal) {
+    const modal = await this.modalCtrl.create({
+      component: MealComponent,
+      componentProps: {
+        meal
+      }
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+  }
+
   handleSearch(event) {
     this.loading = true;
     const query = event.target.value.toLowerCase();
     this.mealService.query(query).subscribe({
       next: (res) => {
-        console.log(res)
-        this.meals = res;
+        this.meals = res.results;
       },
       error: (err) => {
         this.toast.render(err.statusText, 'danger', 'alert');
@@ -68,6 +86,7 @@ export class MealsTabPage implements OnInit {
   }
 
   handleRefresh(event) {
+    this.page = 1;
     this.loading = true;
     setTimeout(() => {
       this.mealService.syncMeals().subscribe((res) => {

@@ -11,6 +11,6 @@ class Workout(models.Model):
   def sets(self):
       return self.set_set.all()
   
-  def __str__(self):
+  def __str__(self) -> str:
     return str(self.uuid)
 

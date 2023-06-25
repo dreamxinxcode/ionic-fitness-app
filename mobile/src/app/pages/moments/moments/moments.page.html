@@ -13,7 +13,8 @@
   <ion-searchbar [debounce]="1000" (ionChange)="handleSearch($event)" show-clear-button="always"></ion-searchbar>
   
   <app-moments-feed [moments]="moments"></app-moments-feed>
-  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+
+  <ion-infinite-scroll *ngIf="infiniteScroll" (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

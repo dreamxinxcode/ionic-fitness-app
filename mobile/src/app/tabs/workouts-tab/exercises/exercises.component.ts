@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ExerciseService } from 'src/app/services/exercise/exercise.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
@@ -12,10 +11,14 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 })
 export class ExercisesComponent implements OnInit {
 
-  exercises = [];
-  userExercises = [];
-  exerciseControl = new FormControl('');
-  loading: boolean = true;
+  private exercises = [];
+  private userExercises = [];
+  private muscleGroups = [];
+  private customExerciseForm = new FormGroup({
+    name: new FormControl(''),
+    muscle_group: new FormControl(''),
+  });
+  private loading: boolean = true;
 
   constructor(
     private exerciseService: ExerciseService,
@@ -24,11 +27,12 @@ export class ExercisesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadExercises();
-    this.loadUserExercises();
+    this.getExercises();
+    this.getUserExercises();
+    this.getMuscleGoups();
   }
 
-  loadExercises() {
+  getExercises() {
     this.exerciseService.syncExercises().subscribe({
       next: (res: any) => {
         this.exercises = res;
@@ -42,7 +46,7 @@ export class ExercisesComponent implements OnInit {
     });
   }
 
-  loadUserExercises() {
+  getUserExercises() {
     this.api.get('exercises/by_user').subscribe({
       next: (res: any) => {
         this.userExercises = res;
@@ -54,32 +58,52 @@ export class ExercisesComponent implements OnInit {
         this.loading = false;
       } 
     });
-  
   }
 
-  addExercise(exercise, index: number) {
-    console.log(exercise)
-    if (this.userExercises.includes(exercise)) {
-      this.userExercises.splice(index, 1);
-      return;
-    }
-    this.api.post('exercises/add_to_favorites', exercise).subscribe({
-      next: (res) => {
-        this.userExercises.push(exercise);
+  getMuscleGoups() {
+    this.api.get('muscle-groups').subscribe({
+      next: (res: any) => {
+        this.muscleGroups = res;
       },
       error: (err) => {
-        this.toast.render(err.statusText, 'danger', 'alert');
+        this.toast.render(err.message, 'danger', 'alert-circle-outline');
       },
-      complete: () => {},
+      complete: () => {
+        this.loading = false;
+      } 
     });
+  }
+
+  toggleExercise(exercise, remove?: boolean) {
+    const index = this.userExercises.indexOf(exercise);
+    
+    if (index !== -1 || remove) {
+      this.api.post('exercises/unfavorite', exercise).subscribe({
+        next: (res) => {
+          this.userExercises.splice(index, 1);
+        },
+        error: (err) => {
+          this.toast.render(err.statusText, 'danger', 'alert');
+        },
+      });
+    } else {
+      this.api.post('exercises/favorite', exercise).subscribe({
+        next: (res) => {
+          this.userExercises.push(exercise);
+        },
+        error: (err) => {
+          this.toast.render(err.statusText, 'danger', 'alert');
+        },
+      });
+    }
   }
 
   submitExercise() {
     this.loading = true;
-    this.api.post('exercises', { name: this.exerciseControl.value }).subscribe({
+    this.api.post('exercises', { name: this.customExerciseForm.value.name, muscle_group: this.customExerciseForm.value.muscle_group }).subscribe({
       next: (res: any) => {
         this.exercises.unshift(res);
-        this.exerciseControl.reset();
+        this.customExerciseForm.reset();
       },
       error: (err) => {
         this.toast.render(err.message, 'danger', 'alert-circle-outline');
@@ -88,5 +112,9 @@ export class ExercisesComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  isFavorited(exercise): boolean {
+    return this.userExercises.some(obj => obj.name === exercise.name);
   }
 }

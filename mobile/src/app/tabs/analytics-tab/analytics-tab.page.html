@@ -1,49 +1,58 @@
-<!-- <ion-content [fullscreen]="true" class="ion-page" id="main-content">
+<ion-content [fullscreen]="true" class="ion-page" id="main-content">
   <app-header></app-header>
 
   <ion-item>
-    Workouts
-    {{ userService.user.profile.workout_count }}
+    <ion-label class="spartan">Total Workouts</ion-label>
+    <h1 [countUp]="userService.user.profile.workout_count" class="spartan">0</h1>
   </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Exercise</ion-label>
-    <ion-select aria-label="Country" interface="action-sheet" placeholder="Select Exercise">
-      <ion-select-option *ngFor="let exercise of exercises" [value]="exercise">
-        {{ exercise.name }} 
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
-  
-  <div class="chart-container">
-    <canvas id="MyBarChart"></canvas>
-  </div>
-  
-  <div class="chart-container">
-    <canvas id="MyPieChart"></canvas>
-  </div>
-  
-</ion-content> -->
-
-<ion-item>
-  Workouts
-  {{ userService.user.profile.workout_count }}
-</ion-item>
-
-<ion-item>
-  <ion-label position="floating">Exercise</ion-label>
-  <ion-select aria-label="Country" interface="action-sheet" placeholder="Select Exercise">
-    <ion-select-option *ngFor="let exercise of exercises" [value]="exercise">
+  <ion-list-header class="spartan ion-text-center">Personal Records</ion-list-header>
+  <ion-select
+    [formControl]="exerciseSelect"
+    (ionChange)="handleExerciseChange($event)"
+    interface="action-sheet"
+    label="Exercise"
+    labelPosition="stacked"
+  >
+    <ion-select-option *ngFor="let exercise of exercisesDone" [value]="exercise">
       {{ exercise.name }} 
     </ion-select-option>
   </ion-select>
-</ion-item>
 
-<div class="chart-container">
-  <canvas id="MyBarChart"></canvas>
-</div>
+  <ion-grid>
+    <ion-row *ngIf="prWeight">
+      <ion-col>Max Weight</ion-col>
+      <ion-col>
+        {{ prWeight?.weight }} {{ userService.getWeightUnits() }} x {{ prWeight?.reps }} reps
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="prReps">
+      <ion-col>Max Repetitions</ion-col>
+      <ion-col>
+        {{ prReps?.weight }} {{ userService.getWeightUnits() }} x {{ prReps?.reps }} reps
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-<ion-label class="spartan">Body Parts</ion-label>
-<div class="chart-container">
-  <canvas id="MyPieChart"></canvas>
-</div>
+  <h3 class="spartan ion-text-center">Progress - {{ exerciseSelect.value.name }}</h3>
+  <div class="chart-container">
+    <canvas id="MyBarChart"></canvas>
+  </div>
+
+  <h3 class="spartan ion-text-center">Most Frequent</h3>
+  <ion-grid>
+    <ion-row>
+      <ion-col>Exercise</ion-col>
+      <ion-col></ion-col>
+      <ion-col>Sets</ion-col>
+      <ion-col>Reps</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let exercise of mostFrequent">
+      <ion-col>{{ exercise.exercise }}</ion-col>
+      <ion-col></ion-col>
+      <ion-col>{{ exercise.sets }}</ion-col>
+      <ion-col>{{ exercise.reps }}</ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

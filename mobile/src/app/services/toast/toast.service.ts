@@ -11,8 +11,9 @@ export class ToastService {
   async render(message: string, color?: string, icon?: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 3000,
+      duration: 2000,
       color: color,
+      position: 'bottom',
       icon: icon,
     });
     toast.present();

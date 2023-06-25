@@ -16,22 +16,23 @@ import { UserService } from '../../services/user/user.service';
 })
 export class ProfileTabPage implements OnInit {
 
-  users;
-  results;
-  currentUser;
-  moments = [];
-  momentsPage: number = 1;
-  loading: boolean = true;
-  loadingMoments: boolean = true;
-  loadingSearch = false;
-  momentForm = new FormGroup({
+  private user = this.userService.user;
+  private results;
+  tab: string = 'moments';
+  private moments = [];
+  private momentsPage: number = 1;
+  private infinateScroll: boolean = true;
+  private loading: boolean = true;
+  private loadingMoments: boolean = true;
+  private loadingSearch = false;
+  private momentForm = new FormGroup({
     moment: new FormControl()
   });
 
   constructor(
     private http: HttpClient,
     private api: ApiService,
-    public userService: UserService,
+    private userService: UserService,
     private momentsService: MomentsService,
     private dateTimeService: DateTimeService, // Used in template
     private toast: ToastService,
@@ -39,7 +40,6 @@ export class ProfileTabPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentUser = this.userService.user;
     this.loadMoments();
   }
 
@@ -48,6 +48,10 @@ export class ProfileTabPage implements OnInit {
       next: (res) => {
         this.moments = [...this.moments, ...res.results];
         this.momentsPage++;
+
+        if (!res.next) {
+          this.infinateScroll = false;
+        }
       },
       error: (err) => {
         this.toast.render(err.statusText, 'danger', 'alert');
@@ -65,7 +69,7 @@ export class ProfileTabPage implements OnInit {
       next: () => {
         this.momentForm.controls.moment.reset();
         this.api.get('moments/by_user/' + this.userService.user.id).subscribe((res) => {
-          this.moments = res;
+          this.moments = res.results;
         });
       },
       error: (err) => {
@@ -77,18 +81,8 @@ export class ProfileTabPage implements OnInit {
     });
   }
 
-  deleteMoment(index: number, id: number) {
-    this.api.delete(`moments/${id}`).subscribe({
-      next: (res) => {
-        this.moments.splice(index, 1);
-      },
-      error: (err) => {
-        this.toast.render(err.statusText, 'danger', 'alert');
-      },
-      complete: () => {
-
-      },
-    });
+  tabView(type: string) {
+    this.tab = type;
   }
 
   handleSearch(event) {
@@ -113,7 +107,15 @@ export class ProfileTabPage implements OnInit {
 
   handleRefresh(event) {
     setTimeout(() => {
-      this.currentUser = this.userService.setUser();
+      this.momentsPage = 1;
+      this.userService.syncUser().subscribe({
+        next: (res) => {
+          this.userService.user = res;
+        },
+        error: (err) => {
+          this.toast.render(err.statusText, 'danger', 'alert');
+        }
+      })
       this.momentsService.syncMoments().subscribe((res) => {
         this.loadMoments();
       });
@@ -121,10 +123,10 @@ export class ProfileTabPage implements OnInit {
     }, 2000);
   }
 
-  onIonInfinite(ev) {
+  onIonInfinite(event) {
     this.loadMoments();
     setTimeout(() => {
-      (ev as InfiniteScrollCustomEvent).target.complete();
+      (event as InfiniteScrollCustomEvent).target.complete();
     }, 500);
   }
 }

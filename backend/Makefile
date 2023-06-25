@@ -22,3 +22,7 @@ create_superuser:
 delete_db_container:
 	docker stop fitness_db
 	docker rm fitness_db
+
+
+# DROP SCHEMA public CASCADE;
+# CREATE SCHEMA public;

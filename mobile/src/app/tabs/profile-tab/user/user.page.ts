@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-user',
@@ -16,10 +17,10 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 })
 export class UserPage implements OnInit {
 
-  user;
-  loading: boolean = true;
-  loadingMoments: boolean = true;
-  moments = [];
+  private user;
+  private loading: boolean = true;
+  private loadingMoments: boolean = true;
+  private moments = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -27,17 +28,18 @@ export class UserPage implements OnInit {
     private api: ApiService,
     private config: ConfigService,
     private toast: ToastService,
-    public dateTimeService: DateTimeService,
+    private userService: UserService, // Used in template
+    private dateTimeService: DateTimeService,
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.http.get(this.config.BASE_URL + `/users/users/${params['id']}/`).subscribe({
+      this.http.get(this.config.BASE_URL + `/users/${params['id']}/`).subscribe({
         next: (res) => {
           this.user = res;
           this.api.get('moments/by_user/' + this.user?.id).subscribe({
             next: (res) => {
-              this.moments = res;
+              this.moments = [...this.moments, ...res.results];
             },
             error: (err) => {
               this.toast.render(err.statusText, 'danger', 'alert');

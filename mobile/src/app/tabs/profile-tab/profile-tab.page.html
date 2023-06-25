@@ -16,9 +16,9 @@
   <app-user-search-skeleton *ngIf="loadingSearch"></app-user-search-skeleton>
 
   <ion-list *ngIf="results?.length" id="search-results">
-    <ion-item *ngFor="let result of results">
+    <ion-item *ngFor="let result of results" [routerLink]="['/user/', result.id]" >
       <ion-thumbnail slot="start">
-        <img src="{{ result.profile.avatar ? 'http://localhost:8000' + result.profile.avatar : '../../../../../assets/avatar.png' }}" alt="avatar">
+        <img src="{{ result.profile.avatar ? 'http://localhost:8000' + result.profile.avatar : '../../../assets/avatar.png' }}" alt="avatar">
       </ion-thumbnail>
       <ion-label>
         <h3>
@@ -31,35 +31,49 @@
   <div class="card-body">
     <div class="ion-text-center">
       <ion-avatar id="profile-avatar">
-        <img src="http://localhost:8000/{{ userService.user.profile.avatar || 'media/avatars/default.svg' }}" alt="avatar">
+        <img src="{{ userService.user.profile.avatar ? 'http://localhost:8000' + userService.user.profile.avatar : '../../../assets/avatar.png' }}" alt="avatar">
       </ion-avatar>
-      <h3>{{ userService.user.profile.first_name }} {{ userService.user.profile.last_name }}</h3>
-      <h6>{{ userService.user.username }}</h6>
-      <h5>{{ userService.user.profile.city }}, {{ userService.user.profile.country }} <span class="fi fi-{{userService.user.profile.country_code | lowercase}}"></span></h5>
-      <h6>Current workouts: <ion-chip>
-        <ion-label>{{ userService.user.profile.workout_count }}</ion-label>
-        </ion-chip>
-      </h6>
+      <h3 class="spartan">{{ userService.user.username }}</h3>
+      <h5>{{ userService.user.profile.first_name }} {{ userService.user.profile.last_name }} {{ userService.user.profile.birthdate && dateTimeService.getAge(userService.user.profile.birthdate) }}</h5>
+      <h6><span class="fi fi-{{userService.user.profile.country_code | lowercase}}"></span> {{ userService.user.profile.city }}, {{ userService.user.profile.country }}</h6>
       <i>{{ userService.user.profile.bio }}</i>
     </div>
+  </div>
 
-    <div class="ion-text-center">
-      <ion-button [routerLink]="['user-workouts/', userService.user.id]" size="small" color="secondary">WORKOUTS</ion-button>
+  <div id="profile-tabs">
+    <div (click)="tabView('workouts')" class="profile-tab">
+      <ion-label>{{ userService.user.profile.workout_count }}</ion-label>
+      <ion-label>Workouts</ion-label>
+    </div>
+    <div (click)="tabView('moments')" class="profile-tab">
+      <ion-label>{{ userService.user.profile.moments_count }}</ion-label>
+      <ion-label>Moments</ion-label>
+    </div>
+    <div (click)="tabView('followers')" class="profile-tab">
+      <ion-label>{{ userService.user.profile.workout_count }}</ion-label>
+      <ion-label>Followers</ion-label>
     </div>
   </div>
 
-  <ion-list-header class="spartan"> Moments </ion-list-header>
+  <ion-list-header class="spartan">{{ tab | titlecase }}</ion-list-header>
 
-  <div [formGroup]="momentForm" id="moment-form">
-    <ion-textarea formControlName='moment' placeholder="Type something here"></ion-textarea>
-    <ion-button (click)="submitMoment()" [disabled]="!momentForm.value.moment?.trim().length" fill="clear">
-      <ion-icon slot="icon-only" name="send-outline"></ion-icon>
-    </ion-button>
+  <div *ngIf="tab==='moments'">
+    <div [formGroup]="momentForm" id="moment-form">
+      <ion-textarea formControlName='moment' placeholder="Type something here..."></ion-textarea>
+      <ion-button (click)="submitMoment()" [disabled]="!momentForm.value.moment?.trim().length" fill="clear">
+        <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+      </ion-button>
+    </div>
+  
+    <app-moments-feed [moments]="moments"></app-moments-feed>
+  
+    <ion-infinite-scroll *ngIf="infiniteScroll" (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </div>
-  
-  <app-moments-feed [moments]="moments"></app-moments-feed>
-  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-  
+
+  <div *ngIf="tab==='workouts'">
+
+  </div>
+
 </ion-content>

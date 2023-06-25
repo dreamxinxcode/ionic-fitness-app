@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/services/api/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { ConfigService } from 'src/app/services/config/config.service';
+import { WorkoutsService } from 'src/app/services/workouts/workouts.service';
 
 @Component({
   selector: 'app-user-workouts',
@@ -12,32 +13,40 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class UserWorkoutsPage implements OnInit {
 
-  loading: boolean = false;
-  workouts = [];
+  private loading: boolean = false;
+  private workouts = [];
+  private user;
 
   constructor(
-    private api: ApiService,
     private route: ActivatedRoute,
     private toast: ToastService,
-    public userService: UserService,
-    public dateTimeService: DateTimeService,
+    private userService: UserService,
+    private workoutService: WorkoutsService,
+    private dateTimeService: DateTimeService, // Used in template
   ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((res) => {
-      const id = res.get('id');
-      this.api.get('workouts/for_user/' + `${id}`).subscribe({
+      const id = Number(res.get('id'));
+
+      this.userService.getUserByID(id).subscribe({
         next: (res) => {
-          this.workouts = res;
+          this.user = res;
         },
         error: (err) => {
           this.toast.render(err.statusText, 'danger', 'alert');
-        },
-        complete: () => {
-          this.loading = false;
-        },
+        }
       });
-    })
+
+      this.workoutService.workoutsForUser(id).subscribe({
+        next: (res) => {
+          this.workouts = [...this.workouts, ...res.results];
+        },
+        error: (err) => {
+          this.toast.render(err.statusText, 'danger', 'alert');
+        }
+      });
+    });
   }
 
 }

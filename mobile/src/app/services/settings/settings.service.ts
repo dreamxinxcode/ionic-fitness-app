@@ -43,12 +43,4 @@ export class SettingsService {
   isDark(): boolean {
     return localStorage.getItem('dark_theme') === 'true';
   }
-
-  setAccent(accent: string): void {
-    localStorage.setItem('accent', accent);
-  }
-
-  getAccent(): string {
-    return localStorage.getItem('accent');
-  }
 }

@@ -13,18 +13,19 @@ import { TemplateFormComponent } from './template-form/template-form.component';
   styleUrls: ['./workouts-tab.page.scss'],
 })
 export class WorkoutsTabPage implements OnInit {
-  date:any = this.dateTimeService.formatDate(new Date());
-  workouts:any = [];
-  loading: boolean = true;
-  page = 1;
+  private date:any = this.dateTimeService.formatDate(new Date());
+  private workouts:any = [];
+  private loading: boolean = true;
+  private page: number = 1;
+  private infiniteScroll: boolean = true;
 
   constructor(
     private api: ApiService,
     private toast: ToastService,
     private dateTimeService: DateTimeService,
     private workoutsService: WorkoutsService,
-    public userService: UserService,
-    public modalController: ModalController,
+    private userService: UserService,
+    private modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -34,22 +35,12 @@ export class WorkoutsTabPage implements OnInit {
   loadWorkouts() {
     this.api.get('workouts', { params: { page: this.page.toString() } }).subscribe({
       next: (res) => {
-        // Group sets by exercise
-        for (let item of res.results) {
-          console.log(item)
-          item.sets = item.sets.reduce((acc, curr) => {
-            const existing = acc.find((item) => item.exercise === curr.exercise.name);
-            if (existing) {
-              existing.sets.push(curr);
-            } else {
-              acc.push({ exercise: curr.exercise.name, sets: [curr] });
-            }
-            return acc;
-          }, []);
-        }
         this.workouts = [...this.workouts, ...res.results];
-        console.log(this.workouts)
         this.page++;
+        
+        if (!res.next) {
+          this.infiniteScroll = false;
+        }
       },
       error: (err) => {
         this.toast.render(err.message, 'danger', 'alert-circle-outline');
@@ -60,57 +51,28 @@ export class WorkoutsTabPage implements OnInit {
     });
   }
 
-  onIonInfinite(ev) {
+  ionViewDidEnter() {
+    this.page = 1;
+    this.workouts = [];
+    this.loadWorkouts();
+  }
+
+  onIonInfinite(event) {
     this.loadWorkouts();
     setTimeout(() => {
-      (ev as InfiniteScrollCustomEvent).target.complete();
+      (event as InfiniteScrollCustomEvent).target.complete();
     }, 500);
   }
   
   handleRefresh(event) {
     this.loading = true;
     setTimeout(() => {
+      this.page = 1;
       this.workoutsService.syncWorkouts().subscribe((res) => {
         this.workouts = res;
         this.loading = false;
       });
       event.target.complete();
     }, 2000);
-  }
-
-  saveAsTemplate(name: string, schema) {
-    this.workoutsService.saveAsTempalte(schema).subscribe({
-      next: (res) => {},
-      error: (err) => {
-        this.toast.render(err.statusText, 'danger', 'alert');
-      },
-      complete: () => {},
-    });
-  }
-
-  onDelete(index: number, id):void {
-    this.api.delete(`workouts/${id}`).subscribe({
-      next: (res) => {
-        this.workouts.splice(index, 1);
-      },
-      error: (err) => {
-        this.toast.render(err.statusText, 'danger', 'alert');
-      },
-      complete: () => {
-
-      },
-    });
-  }
-
-  async presentModal(workoutData) {
-    const modal = await this.modalController.create({
-      component: TemplateFormComponent,
-      cssClass: 'my-custom-class',
-      componentProps: {
-        workoutData,
-        modalController: this.modalController
-      }
-    });
-    return await modal.present();
   }
 }

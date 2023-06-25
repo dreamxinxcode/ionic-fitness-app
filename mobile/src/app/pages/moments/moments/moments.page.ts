@@ -15,12 +15,14 @@ export class MomentsPage implements OnInit {
 
   moments = [];
   page: number = 1;
+  infiniteScroll: boolean = true;
   loading: boolean = true;
   results;
 
   constructor(
     private api: ApiService,
     private toast: ToastService,
+    private momentService: MomentsService,
     public dateTimeService: DateTimeService,
     public config: ConfigService,
   ) { }
@@ -34,6 +36,10 @@ export class MomentsPage implements OnInit {
       next: (res) => {
         this.moments = [...this.moments, ...res.results];
         this.page++;
+        
+        if (!res.next) {
+          this.infiniteScroll = false;
+        }
       },
       error: (err) => {
         this.toast.render(err.statusText, 'danger', 'alert');
@@ -45,14 +51,24 @@ export class MomentsPage implements OnInit {
   }
 
   handleSearch(event) {
+    this.loading = true;
     const query = event.target.value.toLowerCase();
-    this.results = this.moments.filter(d => d.text.toLowerCase().indexOf(query) > -1);
+    this.momentService.query(query).subscribe({
+      next: (res) => {
+        this.moments = res.results;
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
+      complete: () => {},
+    });
+    this.loading = false;
   }
 
-  onIonInfinite(ev) {
+  onIonInfinite(event) {
     this.loadMoments();
     setTimeout(() => {
-      (ev as InfiniteScrollCustomEvent).target.complete();
+      (event as InfiniteScrollCustomEvent).target.complete();
     }, 500);
   }
 }

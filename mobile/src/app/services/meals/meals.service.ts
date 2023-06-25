@@ -22,7 +22,6 @@ export class MealsService {
   } 
 
   query(query: string): Observable<any> {
-    console.log(query)
     return this.http.get(this.config.API_URL + `/meals/?query=${query}`);
   }
 

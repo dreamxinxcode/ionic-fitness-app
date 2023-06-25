@@ -24,6 +24,9 @@ class WorkoutViewSet(viewsets.ModelViewSet):
             user=user, 
             timestamp=data['timestamp'], 
         )
+        
+        user.profile.workout_count += 1
+        user.profile.save()
 
         # Create set objects
         for exercise in data['workout']:
@@ -49,9 +52,8 @@ class WorkoutViewSet(viewsets.ModelViewSet):
         serializer = WorkoutSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, *args, **kwargs):
-        uuid = kwargs['uuid']
-        workout = get_object_or_404(self.queryset, uuid=uuid)
+    def retrieve(self, request, pk):
+        workout = get_object_or_404(self.queryset, pk=pk)
         serializer = WorkoutSerializer(workout)
         return Response(serializer.data)
 
@@ -60,7 +62,10 @@ class WorkoutViewSet(viewsets.ModelViewSet):
     
     def destroy(self, request, pk):
         workout = get_object_or_404(self.queryset, pk=pk)
+        user = request.user
         self.perform_destroy(workout)
+        user.profile.workout_count -= 1
+        user.profile.save()
         return Response('hello')
     
     @action(detail=False, methods=['GET'])
@@ -70,6 +75,11 @@ class WorkoutViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['GET'])
     def for_user(self, request, pk=None):
-        queryset = self.queryset.filter(user=pk)
+        queryset = Workout.objects.filter(user=pk).order_by('-timestamp')
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = WorkoutSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = WorkoutSerializer(queryset, many=True)
         return Response(serializer.data)

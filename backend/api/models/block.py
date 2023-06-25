@@ -6,6 +6,6 @@ class Block(models.Model):
     blocked_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='blocked_by_users')
     timestamp = models.DateTimeField(auto_now_add=True)
    
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.blocking_user} blocked {self.blocked_user}'
     

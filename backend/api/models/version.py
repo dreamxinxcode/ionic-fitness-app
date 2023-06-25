@@ -10,5 +10,5 @@ class Version(models.Model):
   os = models.CharField(choices=OS_CHOICES, max_length=10)
   version = models.CharField(max_length=10)
 
-  def __str__(self):
+  def __str__(self) -> str:
     return f'{self.os}-{self.version}'

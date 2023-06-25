@@ -3,43 +3,44 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Privacy</ion-title>
+    <ion-title>Privacy Settings</ion-title>
     <ion-button (click)="save()" slot='end' fill="clear">Save</ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
+    <h2 class="spartan">Choose what others see</h2>
     <form [formGroup]="privacyForm">
       <ion-item>
-        <ion-label>
+        <ion-toggle formControlName='show_first_name' labelPlacement="start">
           First name
-        </ion-label>
-        <ion-toggle formControlName='show_first_name'slot="end"></ion-toggle>
+        </ion-toggle>
       </ion-item>
       <ion-item>
-        <ion-label>
+        <ion-toggle formControlName='show_last_name' labelPlacement="start">
           Last name
-        </ion-label>
-        <ion-toggle formControlName='show_last_name'slot="end"></ion-toggle>
+        </ion-toggle>
       </ion-item>
       <ion-item>
-        <ion-label>
+        <ion-toggle formControlName='show_age' labelPlacement="start">
           Age
-        </ion-label>
-        <ion-toggle formControlName='show_age'slot="end"></ion-toggle>
+        </ion-toggle>
       </ion-item>
       <ion-item>
-        <ion-label>
+        <ion-toggle formControlName='show_height' labelPlacement="start">
           Height
-        </ion-label>
-        <ion-toggle formControlName='show_height'slot="end"></ion-toggle>
+        </ion-toggle>
       </ion-item>
       <ion-item>
-        <ion-label>
+        <ion-toggle formControlName='show_weight' labelPlacement="start">
           Weight
-        </ion-label>
-        <ion-toggle formControlName='show_weight'slot="end"></ion-toggle>
+        </ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-toggle formControlName='show_workouts' labelPlacement="start">
+          Show Workouts
+        </ion-toggle>
       </ion-item>
     </form>
   </ion-list>

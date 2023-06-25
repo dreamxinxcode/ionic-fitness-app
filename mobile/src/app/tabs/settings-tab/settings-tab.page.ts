@@ -16,8 +16,8 @@ export class SettingsTabPage implements OnInit {
 
   constructor(
     private settingsService: SettingsService,
-    public authService: AuthService,
-    public userService: UserService,
+    private authService: AuthService,
+    private userService: UserService,
     private toast: ToastService,
     private pickerCtrl: PickerController,
     private actionSheetCtrl: ActionSheetController,
@@ -58,7 +58,7 @@ export class SettingsTabPage implements OnInit {
             this.settingsService.setUnits({ units_height: value.units.value }).subscribe({
               next: (res) => {
                 this.toast.render('Settings saved', 'light', 'settings-outline');
-                this.userService.user.profile = res;
+                this.userService.user = res;
               },
               error: (err) => {
                 this.toast.render(err, 'danger', 'alert');
@@ -105,43 +105,6 @@ export class SettingsTabPage implements OnInit {
                 this.toast.render(err, 'danger', 'alert');
               }
             });
-          },
-        },
-      ],
-    });
-    await picker.present();
-  }
-
-  async openAccentPicker() {
-    const picker = await this.pickerCtrl.create({
-      columns: [
-        {
-          name: 'accents',
-          options: [
-            {
-              text: 'Red',
-              value: 'red',
-            },
-            {
-              text: 'Green',
-              value: 'green',
-            },
-            {
-              text: 'Blue',
-              value: 'blue',
-            },
-          ],
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-        },
-        {
-          text: 'Confirm',
-          handler: (value) => {
-            this.settingsService.setAccent(value.accents.value);
           },
         },
       ],

@@ -1,4 +1,14 @@
+#here {
+  background: none !important;
+}
+
 #timer {
   display: flex;
   align-items: center;
 }
+
+#workout-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
