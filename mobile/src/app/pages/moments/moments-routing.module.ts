@@ -12,7 +12,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'moment/:uuid',
+    path: 'moment/:id',
     component: MomentPage,
     canActivate: [AuthGuard]
   },

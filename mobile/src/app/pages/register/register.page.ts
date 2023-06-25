@@ -23,8 +23,9 @@ export class RegisterPage implements OnInit {
     city: new FormControl(),
     email: new FormControl(),
     password: new FormControl(),
+    confirm_password: new FormControl(),
   }); 
-  
+  s = '<span class="fi fi-ca"></span>'
   constructor(
     private http: HttpClient,
     private toast: ToastService,
@@ -57,7 +58,7 @@ export class RegisterPage implements OnInit {
     ).subscribe({
       next: (res) => {
         this.toast.render(`Welcome, ${this.registerForm.value.first_name || this.registerForm.value.username}!`, 'success');
-        this.router.navigate(['/tabs/workouts']);
+        this.router.navigate(['/tabs/workouts/']);
       },
       error: (err) => {
         this.toast.render(err.statusText, 'danger', 'alert');

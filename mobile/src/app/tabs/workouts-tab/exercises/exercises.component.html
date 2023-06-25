@@ -1,18 +1,39 @@
 <ion-content [fullscreen]="true">
   <app-header></app-header>
-  <ion-item>
-    <ion-label position="floating">Create your own exercise</ion-label>
-    <ion-input [formControl]='exerciseControl' placeholder="Type here" [clearInput]="true"></ion-input>
-  </ion-item>
-  
-  <ion-button *ngIf="exerciseControl.value" (click)="submitExercise()" shape="round">
-    <ion-icon slot="icon-only" name="add"></ion-icon>
-  </ion-button>
 
-  <ion-list>
-    <ion-item *ngFor="let exercise of exercises">
+  <div [formGroup]="customExerciseForm">
+    <ion-item>
+      <ion-input formControlName='name' label='Add your own exercise...' labelPlacement='stacked' placeholder="Type here..." [clearInput]="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-select
+        formControlName='muscle_group'
+        label="Muscle Group"
+        labelPosition="stacked"
+      >
+        <ion-select-option *ngFor="let group of muscleGroups" [value]="group">
+          {{ group }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-button *ngIf="customExerciseForm.value.name" (click)="submitExercise()" class='spartan' expand='full'>
+      Create Exercise
+    </ion-button>
+  </div>
+
+  <ion-list *ngIf="userExercises.length">
+    <ion-list-header class="spartan">Your Exercises ({{userExercises?.length}})</ion-list-header>
+    <ion-item *ngFor="let exercise of userExercises; let i = index;">
       {{ exercise.name }}
+      <ion-icon (click)="toggleExercise(exercise, true)" class='accent' name="star" slot="end"></ion-icon>
     </ion-item>
   </ion-list>
 
+  <ion-list>
+    <ion-list-header class="spartan">All Exercises ({{exercises?.length}})</ion-list-header>
+    <ion-item *ngFor="let exercise of exercises; let i = index;">
+      {{ exercise.name }}
+      <ion-icon (click)="isFavorited(exercise) ? toggleExercise(exercise, true) : toggleExercise(exercise)" [ngClass]="isFavorited(exercise) ? 'accent' : ''"  name="star" slot="end"></ion-icon>
+    </ion-item>
+  </ion-list>
 </ion-content>

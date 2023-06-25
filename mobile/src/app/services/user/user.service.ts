@@ -1,27 +1,31 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { ConfigService } from '../config/config.service';
+import { ToastService } from '../toast/toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  user;
-
   constructor(
     private http: HttpClient, 
-    private config: ConfigService
-  ) { 
-    this.user = JSON.parse(localStorage.getItem('user'));
+    private config: ConfigService,
+    private toast: ToastService,
+  ) { }
+
+  get user() {
+    return JSON.parse(localStorage.getItem('user'));
   }
 
-  setUser() {
-    this.http.get(this.config.BASE_URL + '/users/me/').subscribe((res: any) => {
-      localStorage.setItem('user', JSON.stringify(res));
-      this.user = res;
-    });
+  set user(user) {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  syncUser(): Observable<any> {
+    return this.http.get(this.config.BASE_URL + '/users/me/');
   }
 
   getUser() {
@@ -33,15 +37,31 @@ export class UserService {
     this.user = null;
   }
 
+  getUserByID(id: number): Observable<any> {
+    return this.http.get(`${this.config.BASE_URL}/users/${id}/`);
+  }
+  
   getWeightUnits(): string {
-    return this.user.profile.units_weight === 'imperial' ? 'lbs' : 'kg';
+    return this.user?.profile.units_weight === 'imperial' ? 'lbs' : 'kg';
   }
 
   getHeightUnits(): string {
-    return this.user.profile.units_weight === 'imperial' ? 'ft' : 'cm';
+    return this.user?.profile.units_weight === 'imperial' ? 'ft' : 'cm';
   }
 
   savePrivacySettings(settings): Observable<any> {
-    return this.http.post(this.config.BASE_URL + '/users/privacy/', settings);
+    return this.http.post(this.config.BASE_URL + '/users/save_privacy_settings/', settings);
+  }
+
+  incrementWorkoutCount() {
+    const user = this.user;
+    user.profile.workout_count++;
+    this.user = user;
+  }
+
+  decrementWorkoutCount() {
+    const user = this.user;
+    user.profile.workout_count--;
+    this.user = user;
   }
 }

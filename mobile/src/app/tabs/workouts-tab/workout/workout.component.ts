@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ViewWillLeave } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { v4 as uuid } from 'uuid';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
@@ -15,13 +15,13 @@ import { UserService } from 'src/app/services/user/user.service';
   templateUrl: './workout.component.html',
   styleUrls: ['./workout.component.scss'],
 })
-export class WorkoutComponent implements OnInit {
-  timestamp = new FormControl(new Date());
-  workoutForm = new FormGroup({
+export class WorkoutComponent implements OnInit, ViewWillLeave {
+  private timestamp = new FormControl(new Date());
+  private workoutForm = new FormGroup({
     exercises: new FormArray([]),
   });
-  exerciseOptions;
-  datetime = new Date;
+  private exerciseOptions;
+  private datetime = new Date;
 
   constructor(
     public alertController: AlertController, 
@@ -38,10 +38,18 @@ export class WorkoutComponent implements OnInit {
   ngOnInit() {
     // If URL has a uuid param -> fetch workout and fill form values
     this.route.paramMap.subscribe((params: ParamMap) => {
-      const uuid = params.get('uuid');
-      if (uuid) {
-        this.http.get(this.config.API_URL + `/workouts/${uuid}/`).subscribe((res) => {
+      const id = params.get('id');
+      if (id) {
+        this.http.get(this.config.API_URL + `/workouts/${id}/`).subscribe({
+          next: (res) => {
+            this.populateWorkoutForm(res);
+          },
+          error: (err) => {
+            this.toast.render(err.statusText, 'danger', 'alert');
+          }
         });
+      } else {
+        this.addExercise();
       }
     });
     this.http.get(this.config.API_URL + '/exercises/').subscribe({
@@ -55,32 +63,48 @@ export class WorkoutComponent implements OnInit {
         this.toast.render(err.statusText, 'danger', 'alert');
       }, 
     });
-    this.addExercise();
+  }
+
+  ionViewWillLeave() {
+    if (!this.workoutForm.controls.exercises.value.length) {
+      console.log('No Exercises')
+    }
   }
 
   get exercises() {
     return this.workoutForm.controls.exercises as FormArray;
   }
 
-  public addExercise():void {
-    this.exercises.push(
-      new FormGroup({
-        name: new FormControl(),
-        sets: new FormArray([
+  addExercise(exercise?):void {
+    const exerciseForm = new FormGroup({
+      name: new FormControl(exercise?.exercise || ''),
+      sets: new FormArray([]),
+    });
+    if (exercise) {
+      for (let set of exercise.sets) {
+        exerciseForm.controls.sets.push(
           new FormGroup({
-            reps: new FormControl('', [ Validators.required, Validators.min(1), ]),
-            weight: new FormControl('', [ Validators.required, Validators.min(0), ]),
-          }),
-        ]),
-      })
-    );
+            reps: new FormControl(set.reps, [ Validators.required, Validators.min(1), ]),
+            weight: new FormControl(set.weight, [ Validators.required, Validators.min(0), ]),
+          })
+        );
+      }
+    } else {
+      exerciseForm.controls.sets.push(
+        new FormGroup({
+          reps: new FormControl('', [ Validators.required, Validators.min(1), ]),
+          weight: new FormControl('', [ Validators.required, Validators.min(0), ]),
+        })
+      );
+    }
+    this.workoutForm.controls.exercises.push(exerciseForm);
   }
 
   deleteExercise(index: number) {
     this.exercises.removeAt(index);
   }
 
-  public addSet(index: number):void {
+  addSet(index: number):void {
     this.getSets(index).push(          
       new FormGroup({
         reps: new FormControl(),
@@ -89,7 +113,7 @@ export class WorkoutComponent implements OnInit {
     );
   }
 
-  public deleteSet(index: number):void {
+  deleteSet(index: number):void {
     this.getSets(index).removeAt(index);
   }
 
@@ -111,17 +135,14 @@ export class WorkoutComponent implements OnInit {
   }
 
   cleanup() {
-    this.workoutForm.value.exercises.forEach((exercise) => {
+    this.workoutForm.value.exercises = this.workoutForm.value.exercises.filter((exercise) => {
       if (!exercise.name) {
         return false;
       }
       exercise.sets = exercise.sets.filter((set) => {
-        return set.weight;
+        return set.reps;
       });
-      return exercise;
     });
-
-    console.log(this.workoutForm.value);
   }
 
   async presentAlertConfirm() {
@@ -142,26 +163,37 @@ export class WorkoutComponent implements OnInit {
           text: 'Yes',
           id: 'confirm-button',
           handler: () => {
-            this.cleanup();
-            const data = {
+            // this.cleanup();
+            const workout_data = {
               uuid: uuid(),
               timestamp: this.timestamp.value,
               workout: this.workoutForm.value.exercises,
             };
-            this.http.post(this.config.API_URL + '/workouts/', data).subscribe({
-              next: (res) => {
-                this.toast.render('Success!', 'success', 'barbell-outline');
-                this.router.navigate(['/tabs/workouts/']);
-              },
-              error: (err) => {
-                this.toast.render(err.statusText, 'danger', 'alert');
-              },
-            });
+            this.submitWorkout(workout_data);
           }
         }
       ]
     });
 
     await alert.present();
+  }
+
+  populateWorkoutForm(workout) {
+    for (let exercise of workout.workout_data) {
+      this.addExercise(exercise);
+    }
+  }
+
+  submitWorkout(data) {
+    this.http.post(this.config.API_URL + '/workouts/', data).subscribe({
+      next: (res) => {
+        this.toast.render('Success!', 'success', 'barbell-outline');
+        this.userService.incrementWorkoutCount();
+        this.router.navigate(['/tabs/workouts/']);
+      },
+      error: (err) => {
+        this.toast.render(err.statusText, 'danger', 'alert');
+      },
+    });
   }
 }

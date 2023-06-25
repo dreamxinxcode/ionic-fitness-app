@@ -7,25 +7,34 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from .models import CustomUser, Profile
-from .serializers import UserSerializer, ProfileSerializer
+from .models import CustomUser, Profile, Ban
+from .serializers import UserSerializer, ProfileSerializer, BanSerializer
 
 
-class UserViewset(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
-    def list(self):
+    def list(self, request):
         queryset = CustomUser.objects.all()
         serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data)
     
     def retrieve(self, request, pk=None):
-        print('hellooo')
         user = get_object_or_404(self.queryset, pk=pk)
         serializer = UserSerializer(user)
         return Response(serializer.data)
+    
+    @action(detail=False, methods=['PUT'])
+    def save_profile(self, request):
+        user = request.user
+        profile = get_object_or_404(Profile, user=user)
+        serializer = ProfileSerializer(instance=profile, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['GET'])
     def query(self, request):
@@ -62,7 +71,9 @@ class UserViewset(viewsets.ModelViewSet):
 
         # If user is banned
         if user.is_banned:
-             return Response({'error': 'User is banned'}, status=status.HTTP_401_UNAUTHORIZED)
+             ban = Ban.objects.get(user=user)
+             serializer = BanSerializer(ban)
+             return Response({'error': 'User is banned', 'ban_data': serializer.data}, status=status.HTTP_401_UNAUTHORIZED)
 
         # Generate a JWT token for the user
         refresh = RefreshToken.for_user(user)
@@ -74,33 +85,22 @@ class UserViewset(viewsets.ModelViewSet):
         # Return a success response with the JWT token
         return Response(token, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['POST'])
+    @action(detail=False, methods=['post'])
     def register(self, request):
-        data = request.data
-        user_data = {
-            'username': data['username'],
-            'email': data['email'],
-            'password': data['password'],
-        }
-        # profile_data = data['profile']
-        profile_data = {
-            'first_name': data['profile']['first_name'],
-            'last_name': data['profile']['last_name'],
-            'country': data['profile']['country'],
-            'city': data['profile']['city'],
-            # 'avatar': data['avatar'],
-        }
-        user_serializer = UserSerializer(data=data)
-        profile_serializer = ProfileSerializer(data=profile_data)
-        if user_serializer.is_valid() and profile_serializer.is_valid():
-            user_serializer.save()
-            profile_serializer.save()
-            return Response(user_serializer.data)
-        else:
-            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        return Response(
+            {
+                "email": user.email,
+                "message": "User registered successfully.",
+            },
+            status=status.HTTP_201_CREATED,
+        )
 
     @action(detail=False, methods=['POST'])
-    def privacy(self, request):
+    def save_privacy_settings(self, request):
         settings = request.data
         user = get_object_or_404(CustomUser, id=request.user.id)
         user_serializer = UserSerializer(instance=user, data=settings, partial=True)
@@ -114,10 +114,10 @@ class UserViewset(viewsets.ModelViewSet):
     def units(self, request):
         settings = request.data
         user = get_object_or_404(CustomUser, id=request.user.id)
-        profile = get_object_or_404(Profile, user=user)
-        profile_serializer = ProfileSerializer(instance=profile, data=settings, partial=True)
-        if profile_serializer.is_valid():
-            profile_serializer.save()
-            return Response(profile_serializer.data)
+        serializer = UserSerializer(instance=user, data=settings, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
         else:
-            return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        

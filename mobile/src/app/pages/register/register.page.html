@@ -10,16 +10,13 @@
 <ion-content>
   <form [formGroup]="registerForm">
     <ion-item lines="full">
-      <ion-label position="floating">Username</ion-label>
-      <ion-input formControlName="username" type="text" required></ion-input>
+      <ion-input formControlName="username" label='Username' labelPlacement='stacked' type="text" required></ion-input>
     </ion-item>    
     <ion-item lines="full">
-      <ion-label position="floating">First name</ion-label>
-      <ion-input formControlName="first_name" type="text" required></ion-input>
+      <ion-input formControlName="first_name" label='First Name' labelPlacement='stacked' type="text" required></ion-input>
     </ion-item>
     <ion-item lines="full">
-      <ion-label position="floating">Last name</ion-label>
-      <ion-input formControlName="last_name" type="text" required></ion-input>
+      <ion-input formControlName="last_name" label='Last Name' labelPlacement='stacked' type="text" required></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Country</ion-label>
@@ -30,16 +27,16 @@
       </ion-select>
     </ion-item>
     <ion-item lines="full">
-      <ion-label position="floating">City</ion-label>
-      <ion-input formControlName="city" type="text"></ion-input>
+      <ion-input formControlName="city" label='City' labelPlacement='stacked' type="text"></ion-input>
     </ion-item>
     <ion-item lines="full">
-      <ion-label position="floating">Email</ion-label>
-      <ion-input formControlName="email" type="text" required></ion-input>
+      <ion-input formControlName="email" label='Email' labelPlacement='stacked' type="text" required></ion-input>
     </ion-item>
     <ion-item lines="full">
-      <ion-label position="floating">Password</ion-label>
-      <ion-input formControlName="password" type="password" required></ion-input>
+      <ion-input formControlName="password" label='Password' labelPlacement='stacked' type="password" required></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-input formControlName="confirm_password" label='Confirm Password' labelPlacement='stacked' type="password" required></ion-input>
     </ion-item>
     <ion-row>
       <ion-col>

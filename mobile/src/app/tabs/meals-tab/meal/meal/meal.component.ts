@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-meal',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MealComponent implements OnInit {
 
-  constructor() { }
+  @Input() meal: any;
+
+  constructor(
+    private config: ConfigService
+  ) { }
 
   ngOnInit() {}
 

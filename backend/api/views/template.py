@@ -6,7 +6,7 @@ from ..models.template import Template
 from ..serializers.template import TemplateSerializer
 
 
-class TemplateViewset(viewsets.ModelViewSet):
+class TemplateViewSet(viewsets.ModelViewSet):
     queryset = Template.objects.all()
     serializer_class = TemplateSerializer
     permission_classes = [IsAuthenticated]

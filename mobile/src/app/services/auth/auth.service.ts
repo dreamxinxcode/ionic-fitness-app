@@ -10,6 +10,8 @@ import { UserService } from '../user/user.service';
 })
 export class AuthService {
 
+  banData: any;
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -40,12 +42,22 @@ export class AuthService {
     this.http.post(this.config.BASE_URL + '/users/login/', creds).subscribe({
       next: (res: any) => {
         this.setToken(res);
-        this.userService.setUser();  
-        this.router.navigate(['/tabs/workouts']);
-        this.toast.render(`Welcome back, ${this.userService.user?.first_name || this.userService.user?.username}!`, 'success', 'person-outline')
+        this.userService.syncUser().subscribe({
+          next: (res) => {
+            this.userService.user = res;
+            this.router.navigate(['/tabs/workouts']);
+            this.toast.render(`Welcome, ${res.profile?.first_name || res?.username}!`, 'light', 'person-outline');
+          },
+          error: (err) => {
+            this.toast.render(err.statusText, 'danger', 'alert');
+          }
+        });
       },
       error: (err) => {
-        this.toast.render(err.error.detail, 'danger', 'person-outline');
+        if (err.error.ban_data) {
+          this.banData = err.error.ban_data;
+        }
+        this.toast.render(err.error.error || err.error.detail, 'danger', 'person-outline');
       }
     });
   }
@@ -53,7 +65,7 @@ export class AuthService {
   logout() {
     this.clearToken();
     this.userService.clearUser();
-    this.toast.render('Success! Logged out!', 'success', 'person-outline');
+    this.toast.render('Success! Logged out!', 'light', 'person-outline');
     this.router.navigate(['/login']);
   }
 }

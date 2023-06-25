@@ -16,19 +16,16 @@
     </ion-item>
     <ion-item (click)="openHeightPicker()">
       <ion-label>Height Units</ion-label>
-      <ion-label slot="end">{{ userService.user.profile.units_height | titlecase }}</ion-label>
+      <ion-label slot="end">{{ userService.user.units_height | titlecase }}</ion-label>
     </ion-item>
     <ion-item (click)="openWeightPicker()">
       <ion-label>Weight Units</ion-label>
-      <ion-label slot="end">{{ userService.user.profile.units_weight | titlecase }}</ion-label>
+      <ion-label slot="end">{{ userService.user.units_weight | titlecase }}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Dark Mode</ion-label>
-      <ion-toggle [checked]="settingsService.isDark()" (ionChange)="settingsService.toggleDarkMode($event)"></ion-toggle>
-    </ion-item>
-    <ion-item (click)="openAccentPicker()">
-      <ion-label>Accent</ion-label>
-      <ion-icon name="color-filter-outline" slot="end"></ion-icon>
+      <ion-toggle [checked]="settingsService.isDark()" (ionChange)="settingsService.toggleDarkMode($event)" labelPlacement="start">
+        Dark Mode
+      </ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label (click)="presentLogoutActionSheet()" color="danger">Log out</ion-label>

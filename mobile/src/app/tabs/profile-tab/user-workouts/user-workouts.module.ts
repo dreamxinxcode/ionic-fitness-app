@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { UserWorkoutsPageRoutingModule } from './user-workouts-routing.module';
 
 import { UserWorkoutsPage } from './user-workouts.page';
+import { ComponentsModule } from 'src/app/shared/components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    ComponentsModule,
     UserWorkoutsPageRoutingModule
   ],
   declarations: [UserWorkoutsPage]

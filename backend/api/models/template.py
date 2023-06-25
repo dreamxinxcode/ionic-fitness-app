@@ -7,5 +7,5 @@ class Template(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     data = models.JSONField()
 
-    def __str__(self):
+    def __str__(self) -> str:
       return self.title

@@ -1,27 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Login</ion-title>
+    <ion-title class="ion-text-center">
+      <img id='logo' src="../../assets/logo.png">
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <form [formGroup]="loginForm">
     <ion-item lines="full">
-      <ion-label position="floating">Email</ion-label>
-      <ion-input formControlName="email" type="text" required></ion-input>
+      <ion-input formControlName="email" type="text" label='Email' labelPlacement='stacked' required></ion-input>
     </ion-item>
     <ion-item lines="full">
-      <ion-label position="floating">Password</ion-label>
-      <ion-input formControlName="password" type="password" required></ion-input>
+      <ion-input formControlName="password" type="password" label='Password' labelPlacement='stacked' required></ion-input>
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button (click)="loginSubmit()" color="success" expand="block">Sign In</ion-button>
-        <p class="ion-text-center">or</p>
-        <ion-button [routerLink]="['/register']" color="primary" expand="block">Register</ion-button>
+        <ion-button (click)="loginSubmit()" class="spartan" expand="block">Sign In</ion-button>
+        <p class="spartan ion-text-center">or</p>
+        <ion-button [routerLink]="['/register']" class="spartan" color="primary" expand="block">Register</ion-button>
         <a [routerLink]="['/forgot-password']" class="small-text">Forgot Password?</a>
       </ion-col>
     </ion-row>
   </form>
-  v{{ this.versionService.currentVersion }}
+  
+  <div *ngIf="authService.banData" class="accent">
+    <p>You have been banned...</p>
+    <p>Reason: {{ authService.banData.reason }}</p>
+    <p>Expires: {{ authService.banData.permanent ? 'Never' : authService.banData.expires }}</p>
+  </div>
 </ion-content>

@@ -8,7 +8,7 @@ from ..models.meal import Meal, MealTag
 from ..serializers.meal import MealSerializer, MealTagSerializer
 
 
-class MealViewset(viewsets.ModelViewSet):
+class MealViewSet(viewsets.ModelViewSet):
     
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
@@ -18,7 +18,13 @@ class MealViewset(viewsets.ModelViewSet):
         pass
 
     def list(self, request):
-        serializer = MealSerializer(self.queryset, many=True)
+        queryset = self.get_queryset().order_by('-timestamp')
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = MealSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = MealSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
@@ -50,13 +56,10 @@ class MealViewset(viewsets.ModelViewSet):
         serializer = MealSerializer(meals, many=True)
         return Response(serializer.data)
     
+
     def get_queryset(self):
         queryset = Meal.objects.all()
         query = self.request.query_params.get('query', None)
         if query:
-            queryset = queryset.filter(
-                Q(name__icontains=query) |
-                Q(description__icontains=query) |
-                Q(tags__title__icontains=query)
-            )
+            queryset = queryset.filter(Q(title__icontains=query))
         return queryset

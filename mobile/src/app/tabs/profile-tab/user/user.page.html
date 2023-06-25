@@ -1,14 +1,5 @@
 <ion-content [fullscreen]="true" class="ion-page" id="main-content">
   <app-header></app-header>
-
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button></ion-back-button>
-      </ion-buttons>
-      <ion-title>{{ user?.username }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
   
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -31,10 +22,11 @@
     <div class="ion-text-center">
       <ion-avatar id="profile-avatar">
         <img src="{{ user?.profile.avatar ? config.BASE_URL + user?.profile.avatar : config.ASSETS_URL + 'avatar.png' }}" alt="avatar">
+        <span class="fi fi-{{user?.profile.country_code | lowercase}}"></span>
       </ion-avatar>
       <h3>{{ user?.profile.first_name }} {{ user?.profile.last_name }}</h3>
       <h6>{{ user?.username }}</h6>
-      <h5>{{ user?.profile.city }}, {{ user?.profile.country }} <span class="fi fi-{{user?.profile.country_code | lowercase}}"></span></h5>
+      <h5><span class="fi fi-{{user?.profile.country_code | lowercase}}"></span> {{ user?.profile.city }}, {{ user?.profile.country }}</h5>
       <h6>Current workouts: <ion-chip>
         <ion-label>{{ user?.profile.workout_count }}</ion-label>
         </ion-chip>
@@ -43,26 +35,10 @@
     </div>
 
     <div class="ion-text-center">
-      <ion-button *ngIf='user?.show_workouts' size="small" color="primary">Follow</ion-button>
-      <ion-button [routerLink]="['user-workouts/', user?.id]" size="small" color="secondary">WORKOUTS</ion-button>
+      <ion-button [routerLink]="['/tabs/profile/user-workouts/', user?.id]" size="small" color="secondary">WORKOUTS ({{ user?.profile.workout_count }})</ion-button>
     </div>
   </div>
 
-  <ion-list-header class="spartan"> Moments </ion-list-header>
+  <app-moments-feed [moments]="moments"></app-moments-feed>
 
-  <ion-card *ngFor="let moment of moments">
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="{{ moment.user.profile.avatar ? config.BASE_URL + moment.user.profile.avatar : config.ASSETS_URL + 'avatar.png' }}" alt="">
-      </ion-avatar>
-      <ion-label>
-        <h3>
-          {{ moment.text }}
-        </h3>
-        <p class="ion-text-right">
-          {{ dateTimeService.formatDistance(moment.timestamp) }}
-        </p>
-      </ion-label>
-    </ion-item>
-  </ion-card>
 </ion-content>

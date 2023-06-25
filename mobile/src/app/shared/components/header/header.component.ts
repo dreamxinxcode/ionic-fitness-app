@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from 'src/app/services/notifications/notification.service';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 
@@ -17,5 +18,7 @@ export class HeaderComponent implements OnInit {
     public settings: SettingsService,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 }

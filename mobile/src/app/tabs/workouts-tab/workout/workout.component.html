@@ -1,18 +1,18 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    <ion-datetime-button datetime="datetime" id='here' class="spartan"></ion-datetime-button>
     <ion-modal [keepContentsMounted]="true">
       <ng-template>
-        <ion-datetime formControl="timestamp" id="datetime"></ion-datetime>
+        <ion-datetime [formControl]="timestamp" id="datetime"></ion-datetime>
       </ng-template>
     </ion-modal>
 
-    <div id="timer" slot="end">
+    <!-- <div id="timer" slot="end">
       <ion-icon (click)="counting ? timer.pause() : timer.start()" [name]='timer.counting ? "pause" : "play"'></ion-icon>
       <p class="spartan">
         {{ timer.elapsedTime }}
       </p>
-    </div>
+    </div> -->
 
   </ion-toolbar>
 </ion-header>
@@ -25,48 +25,43 @@
   </ion-header>
 
   <form [formGroup]="workoutForm">      
-          
-    <ion-card *ngFor="let exercise of exercises.controls; let i = index">
-      <div [formGroup]="exercise">
+    <ion-card *ngFor="let exerciseForm of exercises.controls; let i = index">
+      <div [formGroup]="exerciseForm">
         <ion-item>
           <ion-select 
             formControlName='name' 
             (ionChange)="getTargets($event)"
-            label="Floating label" 
+            label="Select Exercise" 
             label-placement="floating"
             interface="action-sheet"
-            placeholder="Exercise"
           >
-            <ion-select-option [disabled]="true" class="option-group-custom"> Your Exercises </ion-select-option>
+            <ion-select-option class="spartan"> Your Exercises </ion-select-option>
             <ion-select-option *ngFor="let option of exerciseOptions?.custom">{{ option.name }}</ion-select-option>
-            <ion-select-option disabled class="option-group-custom"> Public </ion-select-option>
+            <ion-select-option class="spartan"> Public </ion-select-option>
             <ion-select-option *ngFor="let option of exerciseOptions?.default">{{ option.name }}</ion-select-option>
           </ion-select>
         </ion-item>
 
-        <ion-item *ngIf="exercise.value.name && userService.user.pr[exercise.value.name]">
-          <ion-label>Weight: {{ userService.user.pr[exercise.value.name].pr_weight.weight }} {{ userService.getWeightUnits() }} x {{ userService.user.pr[exercise.value.name].pr_weight.reps }}</ion-label>
-          <ion-label>Volume: {{ userService.user.pr[exercise.value.name].pr_volume.weight }} {{ userService.getWeightUnits() }} x {{ userService.user.pr[exercise.value.name].pr_weight.reps }}</ion-label>
-        </ion-item>
-
-        <ion-accordion-group *ngIf="exercise.value.name">
-          <ion-accordion *ngFor="let set of exercise.controls.sets.controls; let setIndex = index" value="first">
+        <ion-accordion-group *ngIf="exerciseForm.value.name">
+          <ion-accordion *ngFor="let set of exerciseForm.controls.sets.controls; let setIndex = index" value="first">
             <ion-item slot="header">
-              <ion-label class="spartan"> {{ exercise.value.name }} ({{ setIndex + 1 }}) </ion-label>
+              <ion-label class="spartan"> {{ exerciseForm.value.name }} #{{ setIndex + 1 }} </ion-label>
             </ion-item>
             <div [formGroup]="set" slot="content">
               <ion-item>
-                <ion-label position="floating"> Repetitions </ion-label>
                 <ion-input
                   formControlName="reps"
                   type="number"
+                  label='Repetitions' 
+                  labelPlacement='stacked'
                 ></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="floating"> Weight (Optional) </ion-label>
                 <ion-input 
                   formControlName="weight"
                   type="number"
+                  label='Weight (Optional)' 
+                  labelPlacement='stacked'
                 ></ion-input>
               </ion-item>
             </div>
@@ -76,6 +71,7 @@
       <ion-button 
         (click)="addSet(i)"
         fill="clear"
+        [disabled]="!exerciseForm.value.name"
       >
         Add Set
       </ion-button>
@@ -87,7 +83,9 @@
       </ion-button>
     </ion-card>
 
-    <ion-button (click)="addExercise()" fill='clear' class="spartan accent"> Add Exercise </ion-button>
-    <ion-button (click)="presentAlertConfirm()" fill='clear' class="spartan accent"> Finish </ion-button>
+    <div id="workout-controls">
+      <ion-button (click)="addExercise()" fill='clear' class="spartan accent"> Add Exercise </ion-button>
+      <ion-button (click)="presentAlertConfirm()" fill='clear' class="spartan accent"> Finish </ion-button>
+    </div>
   </form>
 </ion-content>

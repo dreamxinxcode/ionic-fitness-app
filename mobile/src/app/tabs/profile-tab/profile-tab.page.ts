@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { DateTimeService } from 'src/app/services/date-time/date-time.service';
@@ -15,21 +16,23 @@ import { UserService } from '../../services/user/user.service';
 })
 export class ProfileTabPage implements OnInit {
 
-  users;
-  results;
-  currentUser;
-  moments;
-  loading: boolean = true;
-  loadingMoments: boolean = true;
-  loadingSearch = false;
-  momentForm = new FormGroup({
+  private user = this.userService.user;
+  private results;
+  tab: string = 'moments';
+  private moments = [];
+  private momentsPage: number = 1;
+  private infinateScroll: boolean = true;
+  private loading: boolean = true;
+  private loadingMoments: boolean = true;
+  private loadingSearch = false;
+  private momentForm = new FormGroup({
     moment: new FormControl()
   });
 
   constructor(
     private http: HttpClient,
     private api: ApiService,
-    public userService: UserService,
+    private userService: UserService,
     private momentsService: MomentsService,
     private dateTimeService: DateTimeService, // Used in template
     private toast: ToastService,
@@ -37,10 +40,18 @@ export class ProfileTabPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentUser = this.userService.user;
-    this.api.get('moments/by_user/' + this.userService.user.id).subscribe({
+    this.loadMoments();
+  }
+
+  loadMoments() {
+    this.api.get('moments/by_user/' + this.userService.user.id, { params: { page: this.momentsPage.toString() } }).subscribe({
       next: (res) => {
-        this.moments = res;
+        this.moments = [...this.moments, ...res.results];
+        this.momentsPage++;
+
+        if (!res.next) {
+          this.infinateScroll = false;
+        }
       },
       error: (err) => {
         this.toast.render(err.statusText, 'danger', 'alert');
@@ -58,7 +69,7 @@ export class ProfileTabPage implements OnInit {
       next: () => {
         this.momentForm.controls.moment.reset();
         this.api.get('moments/by_user/' + this.userService.user.id).subscribe((res) => {
-          this.moments = res;
+          this.moments = res.results;
         });
       },
       error: (err) => {
@@ -70,18 +81,8 @@ export class ProfileTabPage implements OnInit {
     });
   }
 
-  deleteMoment(index: number, id: number) {
-    this.api.delete(`moments/${id}`).subscribe({
-      next: (res) => {
-        this.moments.splice(index, 1);
-      },
-      error: (err) => {
-        this.toast.render(err.statusText, 'danger', 'alert');
-      },
-      complete: () => {
-
-      },
-    });
+  tabView(type: string) {
+    this.tab = type;
   }
 
   handleSearch(event) {
@@ -106,11 +107,26 @@ export class ProfileTabPage implements OnInit {
 
   handleRefresh(event) {
     setTimeout(() => {
-      this.currentUser = this.userService.setUser();
+      this.momentsPage = 1;
+      this.userService.syncUser().subscribe({
+        next: (res) => {
+          this.userService.user = res;
+        },
+        error: (err) => {
+          this.toast.render(err.statusText, 'danger', 'alert');
+        }
+      })
       this.momentsService.syncMoments().subscribe((res) => {
-        this.moments = res;
+        this.loadMoments();
       });
       event.target.complete();
     }, 2000);
+  }
+
+  onIonInfinite(event) {
+    this.loadMoments();
+    setTimeout(() => {
+      (event as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
   }
 }
