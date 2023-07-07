@@ -1,0 +1,22 @@
+#prs {
+  display: flex;
+  justify-content: space-evenly;
+
+  .pr {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    .pr-stat {
+      font-size: 1rem;
+      margin: 0px;
+    }
+  }
+}
+
+ion-grid {
+  ion-row:nth-child(2n+2) {
+    background-color: #1b1d23;
+  }
+}
