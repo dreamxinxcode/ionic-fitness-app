@@ -41,7 +41,7 @@ export class RegisterPage implements OnInit {
     const registerForm = this.registerForm.value;
     const data = {
       username: registerForm.username,
-      email: registerForm.email,
+      email: registerForm.email.toLowerCase(),
       password: registerForm.password,
       profile: {
         first_name: registerForm.first_name,
@@ -49,7 +49,6 @@ export class RegisterPage implements OnInit {
         country: registerForm.country.name,
         country_code: registerForm.country.code,
         city: registerForm.city,
-        // avatar: registerForm.avatar,
       }
     }
     this.http.post(

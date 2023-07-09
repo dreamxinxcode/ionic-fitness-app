@@ -16,7 +16,7 @@
         </ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-button *ngIf="customExerciseForm.value.name" (click)="submitExercise()" class='spartan' expand='full'>
+    <ion-button (click)="submitExercise()" [disabled]="!customExerciseForm.valid" class='btn-red spartan' expand='full'>
       Create Exercise
     </ion-button>
   </div>

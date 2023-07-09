@@ -19,7 +19,7 @@
       <ion-input formControlName="last_name" label='Last Name' labelPlacement='stacked' type="text" required></ion-input>
     </ion-item>
     <ion-item lines="full">
-      <ion-label position="floating">Country</ion-label>
+      <ion-label class='spartan' position="floating">Country</ion-label>
       <ion-select formControlName="country" aria-label="Country" interface="action-sheet" placeholder="Select Country">
         <ion-select-option *ngFor="let country of locationService.COUNTRIES" [value]="country">
           {{ country.name }} 
@@ -40,7 +40,7 @@
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button (click)="registerSubmit()" color="primary" expand="block">Sign Up</ion-button>
+        <ion-button (click)="registerSubmit()" expand="block" class="btn-red spartan">Sign Up</ion-button>
       </ion-col>
     </ion-row>
   </form>

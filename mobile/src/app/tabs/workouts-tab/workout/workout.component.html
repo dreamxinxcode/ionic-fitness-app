@@ -28,17 +28,18 @@
     <ion-card *ngFor="let exerciseForm of exercises.controls; let i = index">
       <div [formGroup]="exerciseForm">
         <ion-item>
+          <ion-label class='spartan' position="floating">Exercise</ion-label>
           <ion-select 
             formControlName='name' 
             (ionChange)="getTargets($event)"
-            label="Select Exercise" 
-            label-placement="floating"
             interface="action-sheet"
           >
-            <ion-select-option class="spartan"> Your Exercises </ion-select-option>
-            <ion-select-option *ngFor="let option of exerciseOptions?.custom">{{ option.name }}</ion-select-option>
-            <ion-select-option class="spartan"> Public </ion-select-option>
-            <ion-select-option *ngFor="let option of exerciseOptions?.default">{{ option.name }}</ion-select-option>
+            <ion-select-option *ngFor="let option of exerciseOptions?.default">
+              {{ option.name }} (custom)
+            </ion-select-option>
+            <ion-select-option *ngFor="let option of exerciseOptions?.default" class="option-with-icon">
+              {{ option.name }}
+            </ion-select-option>
           </ion-select>
         </ion-item>
 

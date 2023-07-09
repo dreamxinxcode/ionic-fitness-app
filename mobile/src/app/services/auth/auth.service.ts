@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { ConfigService } from '../config/config.service';
 import { ToastService } from '../toast/toast.service';
 import { UserService } from '../user/user.service';
@@ -38,28 +39,8 @@ export class AuthService {
     localStorage.removeItem('refresh');
   }
 
-  login(creds) {
-    this.http.post(this.config.BASE_URL + '/users/login/', creds).subscribe({
-      next: (res: any) => {
-        this.setToken(res);
-        this.userService.syncUser().subscribe({
-          next: (res) => {
-            this.userService.user = res;
-            this.router.navigate(['/tabs/workouts']);
-            this.toast.render(`Welcome, ${res.profile?.first_name || res?.username}!`, 'light', 'person-outline');
-          },
-          error: (err) => {
-            this.toast.render(err.statusText, 'danger', 'alert');
-          }
-        });
-      },
-      error: (err) => {
-        if (err.error.ban_data) {
-          this.banData = err.error.ban_data;
-        }
-        this.toast.render(err.error.error || err.error.detail, 'danger', 'person-outline');
-      }
-    });
+  login(creds): Observable<any> {
+    return this.http.post(this.config.BASE_URL + '/users/login/', creds);
   }
 
   logout() {
