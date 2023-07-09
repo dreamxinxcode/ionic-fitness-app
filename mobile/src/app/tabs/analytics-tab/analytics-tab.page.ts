@@ -39,6 +39,11 @@ export class AnalyticsTabPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    // Return if user hasn't completed any workouts
+    if (!this.userService.user?.profile.workouts_count) {
+      return
+    }
+    
     Chart.register(...registerables);
     Chart.register(Filler);
     this.getExercisesDone();

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ExerciseService } from 'src/app/services/exercise/exercise.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
@@ -15,8 +15,8 @@ export class ExercisesComponent implements OnInit {
   private userExercises = [];
   private muscleGroups = [];
   private customExerciseForm = new FormGroup({
-    name: new FormControl(''),
-    muscle_group: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
+    muscle_group: new FormControl('', [Validators.required]),
   });
   private loading: boolean = true;
 
