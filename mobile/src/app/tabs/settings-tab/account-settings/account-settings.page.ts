@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { LocationService } from 'src/app/services/location/location.service';
@@ -19,9 +19,9 @@ import { Platform } from '@ionic/angular';
 export class AccountSettingsPage implements OnInit {
 
   private accountForm = new FormGroup({
-    username: new FormControl(this.userService.user.username),
+    username: new FormControl(this.userService.user.username, [Validators.required]),
     bio: new FormControl(this.userService.user.profile.bio),
-    email: new FormControl(this.userService.user.email),
+    email: new FormControl(this.userService.user.email, [Validators.required]),
     first_name: new FormControl(this.userService.user.profile.first_name),
     last_name: new FormControl(this.userService.user.profile.last_name),
     birthdate: new FormControl(this.userService.user.profile.birthdate),
@@ -131,5 +131,13 @@ export class AccountSettingsPage implements OnInit {
 
   clearAvatar() {
     this.avatarImage = null;
+    this.http.delete('').subscribe({
+      next: (res) => {
+
+      },
+      error: (err) => {
+
+      }
+    });
   }
 }

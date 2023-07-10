@@ -11,12 +11,18 @@
     <ion-item lines="full">
       <ion-input formControlName="email" type="text" label='Email' labelPlacement='stacked' required></ion-input>
     </ion-item>
+    <ion-item *ngIf="loginForm.get('email').invalid && (loginForm.get('email').dirty || loginForm.get('email').touched)">
+      <span class="accent">Email is required</span>
+    </ion-item>
     <ion-item lines="full">
       <ion-input formControlName="password" type="password" label='Password' labelPlacement='stacked' required></ion-input>
     </ion-item>
+    <ion-item *ngIf="loginForm.get('password').invalid && (loginForm.get('password').dirty || loginForm.get('password').touched)">
+      <span class="accent">Password is required</span>
+    </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button (click)="loginSubmit()" class="spartan" expand="block">Sign In</ion-button>
+        <ion-button (click)="loginSubmit()" class="btn-red spartan" expand="block">Sign In</ion-button>
         <p class="spartan ion-text-center">or</p>
         <ion-button [routerLink]="['/register']" class="spartan" color="primary" expand="block">Register</ion-button>
         <a [routerLink]="['/forgot-password']" class="small-text">Forgot Password?</a>
