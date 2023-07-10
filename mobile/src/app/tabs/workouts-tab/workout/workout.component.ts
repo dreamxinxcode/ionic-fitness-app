@@ -107,7 +107,7 @@ export class WorkoutComponent implements OnInit, ViewWillLeave {
   addSet(index: number):void {
     this.getSets(index).push(          
       new FormGroup({
-        reps: new FormControl(),
+        reps: new FormControl('', [ Validators.required, Validators.min(1), ]),
         weight: new FormControl(),
       }),
     );

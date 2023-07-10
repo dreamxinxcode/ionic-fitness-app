@@ -26,9 +26,7 @@
 
   <app-workout-list *ngIf="workouts.length && !loading" [workouts]="workouts"></app-workout-list>
 
-  <ion-content>
-    <ion-infinite-scroll *ngIf="infiniteScroll" (ionInfinite)="onIonInfinite($event)">
-      <ion-infinite-scroll-content></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-  </ion-content>
+  <ion-infinite-scroll *ngIf="infiniteScroll" (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

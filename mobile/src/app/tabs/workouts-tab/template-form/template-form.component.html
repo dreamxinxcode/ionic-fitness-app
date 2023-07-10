@@ -6,7 +6,10 @@
   <form [formGroup]="templateForm">
     <ion-item lines="full">
       <ion-input formControlName="title" label='Title' labelPlacement='stacked' type="text" required></ion-input>
-    </ion-item> 
+    </ion-item>
+    <ion-item *ngIf="templateForm.get('titke').invalid && (templateForm.get('title').dirty || templateForm.get('title').touched)">
+      <span class="accent">Workout name is required</span>
+    </ion-item>
     <ion-row>
       <ion-col>
         <ion-button (click)="handleSubmit()" fill="clear"> Save </ion-button>
