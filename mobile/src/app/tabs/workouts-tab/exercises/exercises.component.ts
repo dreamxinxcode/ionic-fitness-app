@@ -16,7 +16,7 @@ export class ExercisesComponent implements OnInit {
   private muscleGroups = [];
   private customExerciseForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    muscle_group: new FormControl('', [Validators.required]),
+    muscle_group: new FormControl(''),
   });
   private loading: boolean = true;
 

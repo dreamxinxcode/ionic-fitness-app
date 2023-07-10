@@ -34,7 +34,7 @@
             (ionChange)="getTargets($event)"
             interface="action-sheet"
           >
-            <ion-select-option *ngFor="let option of exerciseOptions?.default">
+            <ion-select-option *ngFor="let option of exerciseOptions?.custom">
               {{ option.name }} (custom)
             </ion-select-option>
             <ion-select-option *ngFor="let option of exerciseOptions?.default" class="option-with-icon">
@@ -56,6 +56,9 @@
                   label='Repetitions' 
                   labelPlacement='stacked'
                 ></ion-input>
+              </ion-item>
+              <ion-item *ngIf="set.get('reps').invalid && (set.get('reps').dirty || set.get('reps').touched)">
+                <span class="accent">Repetitions is required</span>
               </ion-item>
               <ion-item>
                 <ion-input 

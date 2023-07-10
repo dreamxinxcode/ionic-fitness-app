@@ -59,7 +59,12 @@
 
   <div *ngIf="tab==='moments'">
     <div [formGroup]="momentForm" id="moment-form">
-      <ion-textarea formControlName='moment' placeholder="Type something here..."></ion-textarea>
+      <ion-textarea 
+        formControlName='moment' 
+        placeholder="Type something here..."
+        [counter]="true"
+        maxlength="200"
+      ></ion-textarea>
       <ion-button (click)="submitMoment()" [disabled]="!momentForm.value.moment?.trim().length" fill="clear">
         <ion-icon slot="icon-only" name="send-outline"></ion-icon>
       </ion-button>
