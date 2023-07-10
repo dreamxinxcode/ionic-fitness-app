@@ -5,6 +5,9 @@
     <ion-item>
       <ion-input formControlName='name' label='Add your own exercise...' labelPlacement='stacked' placeholder="Type here..." [clearInput]="true"></ion-input>
     </ion-item>
+    <ion-item *ngIf="customExerciseForm.get('name').invalid && (accountForm.get('name').dirty || accountForm.get('name').touched)">
+      <span class="accent">Exercise name is required</span>
+    </ion-item>
     <ion-item>
       <ion-select
         formControlName='muscle_group'

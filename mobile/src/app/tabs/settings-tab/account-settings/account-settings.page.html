@@ -19,11 +19,26 @@
       <ion-item>
         <ion-input formControlName="username" type="text" label='Username' labelPlacement='stacked' required></ion-input>
       </ion-item>
+      <ion-item *ngIf="accountForm.get('username').invalid && (accountForm.get('username').dirty || accountForm.get('username').touched)">
+        <span class="accent">Username is required</span>
+      </ion-item>
       <ion-item>
-        <ion-textarea formControlName="bio" value="userService.user.profile.bio" label="Bio" labelPlacement="stacked" [autoGrow]="true" fill="solid" placeholder="Enter text"></ion-textarea>
+        <ion-textarea 
+          formControlName="bio" 
+          value="userService.user.profile.bio" 
+          label="Bio" labelPlacement="stacked" 
+          [autoGrow]="true" 
+          fill="solid" 
+          placeholder="Enter text"
+          [counter]="true"
+          maxlength="200"
+        ></ion-textarea>
       </ion-item>
       <ion-item>
         <ion-input formControlName="email" type="text" label='Email' labelPlacement='stacked' required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="accountForm.get('email').invalid && (accountForm.get('email').dirty || accountForm.get('email').touched)">
+        <span class="accent">Email is required</span>
       </ion-item>
       <ion-item>
         <ion-input formControlName="first_name" type="text" label='First Name' labelPlacement='stacked' required></ion-input>
