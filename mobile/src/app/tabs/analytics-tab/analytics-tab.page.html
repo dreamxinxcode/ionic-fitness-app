@@ -7,18 +7,18 @@
   </ion-item>
 
   <div *ngIf="userService.user.profile.workout_count">
-    <h3 class="spartan ion-text-center">Personal Records</h3>
-    <ion-select
-      [formControl]="exerciseSelect"
-      (ionChange)="handleExerciseChange($event)"
-      interface="action-sheet"
-      label="Exercise"
-      labelPosition="stacked"
-    >
-      <ion-select-option *ngFor="let exercise of exercisesDone" [value]="exercise">
-        {{ exercise.name }} 
-      </ion-select-option>
-    </ion-select>
+    <ion-item>
+      <ion-label class='spartan' position="stacked">Exercise</ion-label>
+      <ion-select
+        [formControl]="exerciseSelect"
+        (ionChange)="handleExerciseChange($event)"
+        interface="action-sheet"
+      >
+        <ion-select-option *ngFor="let exercise of exercisesDone" [value]="exercise">
+          {{ exercise.name }} 
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
   
     <div id="prs">
       <div class="pr">
@@ -31,8 +31,6 @@
         <p class="spartan">Max REPS</p>
       </div>
     </div>
-  
-    <h3 class="spartan ion-text-center">Progress - {{ exerciseSelect.value.name }}</h3>
   
     <ion-segment (ionChange)="toggleChartType($event)" value="line">
       <ion-segment-button value="line">
@@ -48,13 +46,13 @@
       <canvas id="barChart"></canvas>
     </div>  
   
-    <h3 class="spartan ion-text-center">Most Frequent</h3>
+    <h2 class="spartan ion-text-center">Most Frequent</h2>
     <ion-grid>
       <ion-row>
-        <ion-col>EXERCISE</ion-col>
+        <ion-col class="spartan">EXERCISE</ion-col>
         <ion-col></ion-col>
-        <ion-col>SETS</ion-col>
-        <ion-col>REPS</ion-col>
+        <ion-col class="spartan">SETS</ion-col>
+        <ion-col class="spartan">REPS</ion-col>
       </ion-row>
       <ion-row *ngFor="let exercise of mostFrequent">
         <ion-col>{{ exercise.exercise }}</ion-col>
